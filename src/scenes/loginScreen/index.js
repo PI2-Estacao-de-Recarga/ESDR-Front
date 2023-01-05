@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 import { Card, Header, Input } from 'react-native-elements';
 import FooterComponent from '../../components/footer';
 import HeaderComponent from '../../components/header';
@@ -11,10 +11,17 @@ const Login = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontSize: 20, marginBottom: 10 }}>
+      <Text style={{ fontWeight: 'bold' ,fontSize: 50, marginBottom: 100}}>
+        ESDR
+      </Text>
+      <Text style={{ fontWeight: 'bold', fontSize: 20, marginBottom: 25, marginRight: 200 }}>
         Login
       </Text>
-      <Input
+      <TextInput
+        style={{ width: 270,
+          margin: 12,
+          borderBottomWidth: 1,
+          padding: 0}}
         placeholder='Email'
         value={email}
         onChangeText={setEmail}
@@ -22,14 +29,18 @@ const Login = ({ navigation }) => {
         autoCorrect={false}
         keyboardType='email-address'
       />
-      <Input
+      <TextInput
+        style={{ width: 270,
+          margin: 12,
+          borderBottomWidth: 1,
+          padding: 0}}
         placeholder='Password'
         value={password}
         onChangeText={setPassword}
         secureTextEntry
       />
-      <Button
-        color='#000'
+      <TouchableOpacity
+        style={{ color: '#000', borderRadius: '15' }}
         title='Login'
         onPress={() => navigation.navigate('homePage')}
       />

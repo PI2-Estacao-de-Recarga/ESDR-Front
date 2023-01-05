@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "ESDR-Front",
-    "slug": "ESDR-Front",
+    "slug": "pi-2-esdr",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -28,6 +28,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "c89d4a23-e64e-4398-b1db-897547b8d636"
+      }
+    },
+    "owner": "davimarinho"
   }
 }
