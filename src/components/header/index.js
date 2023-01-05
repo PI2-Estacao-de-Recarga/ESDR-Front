@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, Modal } from 'react-native';
 import { Header, Left, Right, Icon, Button, Pressable } from 'react-native-elements';
 

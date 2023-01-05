@@ -7,9 +7,9 @@ import HeaderComponent from '../../components/header';
 const HomePage = ({ navigation }) => {
 
     return (
-        <View style={styles.container}>
-        <HeaderComponent></HeaderComponent>
-        <FooterComponent></FooterComponent>
+        <View>
+            <HeaderComponent></HeaderComponent>
+            <FooterComponent></FooterComponent>
         </View>
     );
 };
