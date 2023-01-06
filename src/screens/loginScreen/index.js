@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 import { Card, Header, Input } from 'react-native-elements';
-import FooterComponent from '../../components/footer';
-import HeaderComponent from '../../components/header';
 import styles from './styles';
 
 const Login = ({ navigation }) => {
@@ -11,17 +9,14 @@ const Login = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={{ fontWeight: 'bold' ,fontSize: 50, marginBottom: 100}}>
+      <Text style={styles.fontTitle}>
         ESDR
       </Text>
-      <Text style={{ fontWeight: 'bold', fontSize: 20, marginBottom: 25, marginRight: 200 }}>
+      <Text style={styles.fontLogin}>
         Login
       </Text>
       <TextInput
-        style={{ width: 270,
-          margin: 12,
-          borderBottomWidth: 1,
-          padding: 0}}
+        style={styles.input}
         placeholder='Email'
         value={email}
         onChangeText={setEmail}
@@ -30,28 +25,28 @@ const Login = ({ navigation }) => {
         keyboardType='email-address'
       />
       <TextInput
-        style={{ width: 270,
-          margin: 12,
-          borderBottomWidth: 1,
-          padding: 0}}
+        style={styles.input}
         placeholder='Password'
         value={password}
         onChangeText={setPassword}
         secureTextEntry
       />
       <TouchableOpacity
-        style={{ color: '#000', borderRadius: '15' }}
-        title='Login'
+        style={styles.button}
         onPress={() => navigation.navigate('homePage')}
-      />
+      >
+        <Text style={styles.textButton}>
+          Entrar
+      </Text>
+      </TouchableOpacity>
       <Text
-        style={{ marginTop: 10, color: 'black' }}
+        style={styles.fontCreateAccount}
         onPress={() => navigation.navigate('register')}
       >
         Criar conta
       </Text>
       <Text
-        style={{ marginTop: 50, color: 'black' }}
+        style={styles.fontForgotPassword}
         onPress={() => navigation.navigate('register')}
       >
         Esqueci a senha
