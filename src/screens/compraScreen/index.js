@@ -2,12 +2,13 @@ import React , { useState } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, Image } from 'react-native';
 import { Card, Header, Input } from 'react-native-elements';
 import styles from './styles';
+import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
 
 const CompraPage = ({ navigation }) => {
     const [creditos, setCreditos] = useState('');
 
     return (
-        <View>
+        <View style={styles.container}>
          <View style={styles.item}>
                 <Text style={styles.itemTitle1}>Compra de créditos</Text>
                 <TextInput
@@ -36,6 +37,7 @@ const CompraPage = ({ navigation }) => {
              Confirmar
          </Text>
          </TouchableOpacity>
+         <BottomTabs icons={bottomTabIcons} />
         </View>
     );
 };

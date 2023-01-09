@@ -17,7 +17,16 @@ export function AuthRoutes() {
         headerShown: false,
         cardStyle: { backgroundColor: '#FFFFFF' },
       }}
+      
     >
+      <Stack.Screen
+        name="profile"
+        component={Profile}
+      />
+      <Stack.Screen
+        name="home"
+        component={HomePage}
+      />
       <Stack.Screen
         name="choosePaymentScreen"
         component={ChoosePaymentScreen}
@@ -29,19 +38,20 @@ export function AuthRoutes() {
       <Stack.Screen
         name="login"
         component={Login}
+        options={{
+          headerShown: false,
+          footerShown: false,
+        }}
       />
       <Stack.Screen
         name="register"
         component={Register}
+        options={{
+          headerShown: false,
+          footerShown: false,
+        }}
       />
-      <Stack.Screen
-        name="homePage"
-        component={HomePage}
-      />
-      <Stack.Screen
-        name="profile"
-        component={Profile}
-      />
+      
       <Stack.Screen
         name="statement"
         component={Statement}

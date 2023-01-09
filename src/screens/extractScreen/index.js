@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
 import { Card, Header, Input } from 'react-native-elements';
+import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
 
 const ExtractPage = ({ navigation }) => {
 
@@ -9,6 +10,7 @@ const ExtractPage = ({ navigation }) => {
             <Text>
                 Extrato
             </Text> 
+            <BottomTabs icons={bottomTabIcons} />
         </View>
     );
 };

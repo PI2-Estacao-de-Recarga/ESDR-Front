@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Image } from 'react-native';
 import { styles } from './styles';
+import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
 
 const PixPayment = () => {
 
@@ -30,6 +31,7 @@ const PixPayment = () => {
       <Text style={styles.fontBody}>
         123456789
       </Text>
+      <BottomTabs icons={bottomTabIcons} />
     </View>
   )
 };

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 import { Card, Header, Input } from 'react-native-elements';
 import styles from './styles';
+import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
 
 const ChoosePaymentScreen = ({ navigation }) => {
 
@@ -33,7 +34,7 @@ const ChoosePaymentScreen = ({ navigation }) => {
         </Text>
       </TouchableOpacity>
 
-      
+      <BottomTabs icons={bottomTabIcons} />
     </View>
   );
 };

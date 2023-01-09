@@ -1,6 +1,7 @@
 import React, { useState} from 'react';
 import { View, Text, Image } from 'react-native';
 import { styles } from './styles';
+import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
 
 const Profile = () => {
   const [profile, setProfile] = useState({
@@ -31,6 +32,7 @@ const Profile = () => {
           {profile.cpf}
         </Text>
       </View>
+      <BottomTabs icons={bottomTabIcons} />
 		</View>
 	);
 }

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, Image, TextInput, Button, TouchableOpacity } from 'react-native';
 import { styles } from './styles';
+import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
 
 const CreditCardPayment = () => {
   const [creditCard, setCreditCard] = React.useState({});
@@ -49,6 +50,7 @@ const CreditCardPayment = () => {
       >
         <Text style={styles.buttonText}>Confirmar</Text>
       </TouchableOpacity>
+      <BottomTabs icons={bottomTabIcons} />
     </View>
   )
 };
