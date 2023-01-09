@@ -1,35 +1,55 @@
-import React from 'react';
-import { View, Text, Image } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Image, TextInput, Button, TouchableOpacity } from 'react-native';
 import { styles } from './styles';
 
 const CreditCardPaymentScreen = () => {
+  const [creditCard, setCreditCard] = React.useState({});
+
+  handleChange = (name, value) => {
+    setCreditCard({ ...creditCard, [name]: value });
+  }
+
+  handleConfirm = () => {
+    console.log('creditCard:: ', creditCard)
+  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.fontTitle}>
-        Pedido de créditos realizado!
-      </Text>
-      <View style={styles.divider} />
-      <Text style={styles.fontBody2}>
-        Parar finalizar a compra, escaneie<br></br>
-        o QR Code abaixo ou copie o código
-      </Text>
-      <Text style={styles.fontSubtitle}>
-        Código - QRCode
-      </Text>
-      <View style={styles.viewQRCode}>
-        <Image
-          style={styles.qrcode}
-          source={require('../../assets/icon.png')}
+      <TextInput
+        placeholder='Número do cartão'
+        style={styles.inputBig}
+        value={creditCard.number}
+        onChangeText={value => handleChange('number', value)}
+        keyboardType='numeric'
+      />
+      <View style={styles.flex}>
+        <TextInput
+          placeholder='CVV'
+          style={styles.input}
+          value={creditCard.cvv}
+          onChangeText={value => handleChange('cvv', value)}
+          keyboardType='numeric'
+        />
+        <TextInput
+          placeholder='Validade'
+          style={styles.input}
+          value={creditCard.validity}
+          onChangeText={value => handleChange('validity', value)}
+          
         />
       </View>
-      <View style={styles.divider} />
-      <Text style={styles.fontSubtitle}>
-        Código - copia e cola
-      </Text>
-      <Text style={styles.fontBody}>
-        123456789
-      </Text>
+      <TextInput
+        placeholder='Nome do titular'
+        style={styles.inputBig}
+        value={creditCard.name}
+        onChangeText={value => handleChange('name', value)}
+      />
+      <TouchableOpacity
+        style={styles.button}
+        onPress={handleConfirm}
+      >
+        <Text style={styles.buttonText}>Confirmar</Text>
+      </TouchableOpacity>
     </View>
   )
 };

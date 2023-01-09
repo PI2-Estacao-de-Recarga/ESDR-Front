@@ -22,7 +22,7 @@ const App = () => {
     Inter_500Medium,
     Inter_700Bold,
   });
-
+  
   useEffect(() => {
     setTimeout(() => {
       SplashScreen.hideAsync()

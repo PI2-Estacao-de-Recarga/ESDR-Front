@@ -7,45 +7,34 @@ export const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFFF22',
+    backgroundColor: '#FFFFFF',
   },
-  fontTitle: {
-    fontSize: 20,
-    fontFamily: theme.fonts.InterLight,
-    color: '#000000',
+  inputBig: {
+    borderBottomColor: '#000000',
+    borderBottomWidth: 1,
+    margin: 20,
+    width: 200,
   },
-  fontSubtitle: {
-    fontSize: 20,
-    fontFamily: theme.fonts.InterBold,
-    color: '#000000',
+  input: {
+    borderBottomColor: '#000000',
+    borderBottomWidth: 1,
+    margin: 20,
+    width: 80,
   },
-  fontBody: {
-    fontSize: 16,
-    fontFamily: theme.fonts.InterLight,
-    color: '#000000',
+  flex: {
+    display: 'flex',
+    flexDirection: 'row',
   },
-  fontBody2: {
-    fontSize: 14,
-    fontFamily: theme.fonts.InterLight,
-    color: '#000000',
-  },
-  viewQRCode: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    // width: 200,
-    // height: 200,
+  button: {
+    backgroundColor: '#000000',
+    color: '#FFFFFF',
+    borderRadius: 10,
+    width: 200,
+    height: 40,
     marginVertical: 20,
   },
-  qrcode: {
-    width: 200,
-    height: 200,
-  },
-  divider: { 
-    backgroundColor: 'black',
-    height: 2,
-    width: 300,
-    marginTop: 20,
-    marginBottom: 20
-  },
+  buttonText: {
+    fontFamily: theme.fonts.InterRegular,
+    fontSize: 16,
+  }
 });
