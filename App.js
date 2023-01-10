@@ -6,10 +6,9 @@ import {
   useFonts,
 } from '@expo-google-fonts/inter';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-import { View } from 'react-native';
+import { View, StatusBar } from 'react-native';
 import { Routes } from './src/routes';
-import { StatusBar } from 'react-native';
+import React from 'react';
 
 SplashScreen.preventAutoHideAsync()
   .then(() => console.log('SplashScreen prevented'))
