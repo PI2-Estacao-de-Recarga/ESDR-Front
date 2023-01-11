@@ -2,21 +2,20 @@ import { StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
     container:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     button1:{
         backgroundColor: 'black',
         borderRadius: 10,
         marginTop: 200,
-        marginLeft: 50,
-        marginRight: 5,
         borderWidth: 2,
         width: 300
     },
     button2:{
         backgroundColor: 'black',
         borderRadius: 10,
-        marginLeft: 50,
-        marginRight: 5,
         marginTop: 20,
         marginBottom: 20,
         borderWidth: 2,
@@ -25,8 +24,6 @@ const styles = StyleSheet.create({
     button3:{
         backgroundColor: 'black',
         borderRadius: 10,
-        marginLeft: 50,
-        marginRight: 5,
         borderWidth: 2,
         width: 300
     },
