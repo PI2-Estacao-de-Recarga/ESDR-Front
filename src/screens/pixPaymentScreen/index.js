@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Image } from 'react-native';
 import { styles } from './styles';
 
-const PixPaymentScreen = () => {
+const PixPayment = () => {
 
   return (
     <View style={styles.container}>
@@ -34,4 +34,4 @@ const PixPaymentScreen = () => {
   )
 };
 
-export default PixPaymentScreen;
+export default PixPayment;
