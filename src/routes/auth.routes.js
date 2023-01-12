@@ -4,6 +4,7 @@ import Login from '../../src/screens/loginScreen';
 import Register from '../../src/screens/registerScreen';
 import PixPayment from '../../src/screens/pixPaymentScreen';
 import CreditCardPayment from '../../src/screens/creditCardPaymentScreen';
+import PixPaymentScreen from '../../src/screens/pixPaymentScreen';
 
 const Stack = createStackNavigator();
 
@@ -15,6 +16,10 @@ export function AuthRoutes() {
         cardStyle: { backgroundColor: '#FFFFFF' },
       }}
     >
+      <Stack.Screen
+        name="choosePaymentScreen"
+        component={ChoosePaymentScreen}
+      />
       <Stack.Screen
         name="creditCardPaymentScreen"
         component={CreditCardPayment}
