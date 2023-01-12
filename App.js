@@ -23,14 +23,13 @@ const App = () => {
     Inter_700Bold,
   });
   
-  useEffect(() => {
+  if (!fontsLoaded) {
     setTimeout(() => {
       SplashScreen.hideAsync()
         .then(() => console.log('SplashScreen hidden'))
         .catch(() => console.warn('SplashScreen hidden failed'));
     }, 2000)
-    console.log('fontsLoaded', fontsLoaded)
-  }, [fontsLoaded])
+  }
   
   return (
     <View style={{backgroundColor: "#FFFFFF", flex: 1}}>
