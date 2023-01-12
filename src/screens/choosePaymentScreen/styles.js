@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
         width: 200,
         height: 40,
         marginVertical: 20,
+        justifyContent: 'center',
     },
     textButton:{
         fontFamily: theme.fonts.InterRegular,
