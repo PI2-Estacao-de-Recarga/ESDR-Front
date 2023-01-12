@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Image, TextInput, Button, TouchableOpacity } from 'react-native';
 import { styles } from './styles';
 
-const CreditCardPaymentScreen = () => {
+const CreditCardPayment = () => {
   const [creditCard, setCreditCard] = React.useState({});
 
   handleChange = (name, value) => {
@@ -35,7 +35,6 @@ const CreditCardPaymentScreen = () => {
           style={styles.input}
           value={creditCard.validity}
           onChangeText={value => handleChange('validity', value)}
-          
         />
       </View>
       <TextInput
@@ -54,4 +53,4 @@ const CreditCardPaymentScreen = () => {
   )
 };
 
-export default CreditCardPaymentScreen;
+export default CreditCardPayment;

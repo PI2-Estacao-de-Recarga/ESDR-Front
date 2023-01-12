@@ -32,9 +32,12 @@ export const styles = StyleSheet.create({
     width: 200,
     height: 40,
     marginVertical: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   buttonText: {
     fontFamily: theme.fonts.InterRegular,
     fontSize: 16,
+    color: '#FFFFFF',
   }
 });

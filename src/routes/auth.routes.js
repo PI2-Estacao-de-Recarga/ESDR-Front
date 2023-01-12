@@ -2,8 +2,8 @@ import { createStackNavigator } from '@react-navigation/stack';
 import HomePage from '../../src/screens/homeScreen';
 import Login from '../../src/screens/loginScreen';
 import Register from '../../src/screens/registerScreen';
-import PixPaymentScreen from '../../src/screens/pixPaymentScreen';
-import CreditCardPaymentScreen from '../../src/screens/creditCardPaymentScreen';
+import PixPayment from '../../src/screens/pixPaymentScreen';
+import CreditCardPayment from '../../src/screens/creditCardPaymentScreen';
 import Profile from '../screens/profileScreen';
 import Statement from '../screens/statementScreen';
 
@@ -18,12 +18,12 @@ export function AuthRoutes() {
       }}
     >
       <Stack.Screen
-        name="creditCardPaymentScreen"
-        component={CreditCardPaymentScreen}
+        name="choosePaymentScreen"
+        component={ChoosePaymentScreen}
       />
       <Stack.Screen
-        name="pixPaymentScreen"
-        component={PixPaymentScreen}
+        name="creditCardPaymentScreen"
+        component={CreditCardPayment}
       />
       <Stack.Screen
         name="login"
@@ -44,6 +44,10 @@ export function AuthRoutes() {
       <Stack.Screen
         name="statement"
         component={Statement}
+      />
+      <Stack.Screen
+        name="pixPaymentScreen"
+        component={PixPayment}
       />
     </Stack.Navigator>
   )
