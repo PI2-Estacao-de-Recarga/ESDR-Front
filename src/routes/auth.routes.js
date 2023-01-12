@@ -6,6 +6,7 @@ import PixPayment from '../../src/screens/pixPaymentScreen';
 import CreditCardPayment from '../../src/screens/creditCardPaymentScreen';
 import Profile from '../screens/profileScreen';
 import Statement from '../screens/statementScreen';
+import ChoosePaymentScreen from '../screens/choosePaymentScreen';
 
 const Stack = createStackNavigator();
 
