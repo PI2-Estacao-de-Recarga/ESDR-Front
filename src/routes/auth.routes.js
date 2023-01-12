@@ -4,6 +4,8 @@ import Login from '../../src/screens/loginScreen';
 import Register from '../../src/screens/registerScreen';
 import PixPaymentScreen from '../../src/screens/pixPaymentScreen';
 import CreditCardPaymentScreen from '../../src/screens/creditCardPaymentScreen';
+import Profile from '../screens/profileScreen';
+import Statement from '../screens/statementScreen';
 
 const Stack = createStackNavigator();
 
@@ -34,6 +36,14 @@ export function AuthRoutes() {
       <Stack.Screen
         name="homePage"
         component={HomePage}
+      />
+      <Stack.Screen
+        name="profile"
+        component={Profile}
+      />
+      <Stack.Screen
+        name="statement"
+        component={Statement}
       />
     </Stack.Navigator>
   )
