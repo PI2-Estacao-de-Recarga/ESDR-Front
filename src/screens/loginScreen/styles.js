@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { theme } from '../../global/styles/theme';
 
 const styles = StyleSheet.create({
     container:{
@@ -8,11 +9,13 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFF',
     },
     fontTitle:{
+        fontFamily: theme.fonts.InterRegular,
         fontWeight: 'bold',
         fontSize: 50,
-        marginBottom: 100
+        marginBottom: 60
     },
     fontLogin:{
+        fontFamily: theme.fonts.InterRegular,
         fontWeight: 'bold',
         fontSize: 20,
         marginBottom: 25,
@@ -21,6 +24,7 @@ const styles = StyleSheet.create({
     input:{
         width: 270,
         margin: 12,
+        marginTop: 30,
         borderBottomWidth: 1,
         padding: 0
     },
@@ -29,10 +33,12 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginLeft: 5,
         marginRight: 5,
+        marginTop: 20,
         borderWidth: 2,
         width: 100
     },
     textButton:{
+        fontFamily: theme.fonts.InterRegular,
         alignSelf: 'center',
         fontSize: 16,
         fontWeight: '600',
@@ -41,10 +47,13 @@ const styles = StyleSheet.create({
         color: '#FFF'
     },
     fontCreateAccount:{
+        fontFamily: theme.fonts.InterRegular,
+        paddingTop: 20,
         marginTop: 10,
         color: 'black'
     },
     fontForgotPassword:{
+        fontFamily: theme.fonts.InterRegular,
         marginTop: 25,
         color: 'black'
     }
