@@ -1,43 +1,42 @@
 import { StyleSheet } from 'react-native';
+import { theme } from '../../global/styles/theme';
 
 const styles = StyleSheet.create({
-    container:{
+    container: {
+        flex: 1,
         height: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
-    item:{
+    item: {
         margin: 10,
     },
-    itemTitle1:{
+    itemTitle1: {
         fontSize: 20,
         alignSelf: 'center',
         fontWeight: '800',
-        marginTop: 200,
         paddingBottom: 30,
     },
-    input:{
+    input: {
         width: 270,
         alignSelf: 'center',
-        margin: 12,
+        margin: 20,
         borderBottomWidth: 1,
-        padding: 0
     },
-    itemTitle2:{
+    itemTitle2: {
         borderTopWidth: 2,
         fontSize: 15,
         fontWeight: '600',
         margin: 20,
         paddingTop: 50,
     },
-    button1:{
+    button1: {
         backgroundColor: 'black',
         borderRadius: 10,
-        marginTop: 40,
-        marginLeft: 50,
-        marginRight: 5,
         borderWidth: 2,
         width: 300
     },
-    textButton:{
+    textButton: {
         alignSelf: 'center',
         fontSize: 16,
         fontWeight: '600',
@@ -45,18 +44,21 @@ const styles = StyleSheet.create({
         paddingBottom: 5,
         color: '#FFF'
     },
-    viewMoneyIcon:{
+    viewMoneyIcon: {
         justifyContent: 'center',
-        width: 30,
-        height: 30,
-        marginTop: 100,
-        marginLeft: 50,
-        marginBottom: 10,
-      },
-      moneyicon:{
+        alignItems: 'center',
+        flexDirection: 'row',
+        paddingVertical: 12,
+    },
+    moneyicon: {
         width: 50,
         height: 50,
-      },
+        margin: 12,
+    },
+    textMoney: {
+        fontFamily: theme.fonts.InterBold,
+        fontSize: 20,
+    }
 });
 
 export default styles;
