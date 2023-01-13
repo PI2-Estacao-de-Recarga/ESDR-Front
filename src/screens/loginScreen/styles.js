@@ -3,10 +3,16 @@ import { theme } from '../../global/styles/theme';
 
 const styles = StyleSheet.create({
     container:{
+        height: '100%',
         flex: 1, 
+        backgroundColor: '#FFF',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#FFF',
+    },
+    box:{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     fontTitle:{
         fontFamily: theme.fonts.InterRegular,
@@ -19,7 +25,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 20,
         marginBottom: 25,
-        marginRight: 200 
+        marginRight: 220 
     },
     input:{
         width: 270,

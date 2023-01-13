@@ -7,6 +7,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FFFFFF',
+    height: '100%',
   },
   fontTitle: {
     fontSize: 20,

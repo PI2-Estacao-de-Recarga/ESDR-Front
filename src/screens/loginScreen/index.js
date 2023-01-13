@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 import { Card, Header, Input } from 'react-native-elements';
 import styles from './styles';
+import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -9,6 +10,7 @@ const Login = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+    <View style={styles.box}>
       <Text style={styles.fontTitle}>
         ESDR
       </Text>
@@ -51,6 +53,8 @@ const Login = ({ navigation }) => {
       >
         Esqueci a senha
       </Text>
+    </View>
+    <BottomTabs icons={bottomTabIcons} />
     </View>
   );
 };
