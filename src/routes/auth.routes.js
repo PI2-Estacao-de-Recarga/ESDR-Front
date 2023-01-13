@@ -3,6 +3,7 @@ import HomePage from '../../src/screens/homeScreen';
 import Login from '../../src/screens/loginScreen';
 import Register from '../../src/screens/registerScreen';
 import PixPayment from '../../src/screens/pixPaymentScreen';
+import CompraPage from '../screens/compraScreen';
 import CreditCardPayment from '../../src/screens/creditCardPaymentScreen';
 import Profile from '../screens/profileScreen';
 import Statement from '../screens/statementScreen';
@@ -17,24 +18,7 @@ export function AuthRoutes() {
         headerShown: false,
         cardStyle: { backgroundColor: '#FFFFFF' },
       }}
-      
     >
-      <Stack.Screen
-        name="profile"
-        component={Profile}
-      />
-      <Stack.Screen
-        name="home"
-        component={HomePage}
-      />
-      <Stack.Screen
-        name="choosePaymentScreen"
-        component={ChoosePaymentScreen}
-      />
-      <Stack.Screen
-        name="creditCardPaymentScreen"
-        component={CreditCardPayment}
-      />
       <Stack.Screen
         name="login"
         component={Login}
@@ -51,7 +35,26 @@ export function AuthRoutes() {
           footerShown: false,
         }}
       />
-      
+      <Stack.Screen
+        name="profile"
+        component={Profile}
+      />
+      <Stack.Screen
+        name="home"
+        component={HomePage}
+      />
+      <Stack.Screen
+        name="compra"
+        component={CompraPage}
+      />
+      <Stack.Screen
+        name="choosePaymentScreen"
+        component={ChoosePaymentScreen}
+      />
+      <Stack.Screen
+        name="creditCardPaymentScreen"
+        component={CreditCardPayment}
+      />
       <Stack.Screen
         name="statement"
         component={Statement}
