@@ -3,7 +3,7 @@ import { View, Text, Image } from 'react-native';
 import { styles } from './styles';
 import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
 import { useSelector, useDispatch } from 'react-redux'
-import { getUserProfile } from '../../domain/store/user/userSlice';
+import { getUserProfile } from '../../domain/user/userSlice';
 
 
 const Profile = () => {

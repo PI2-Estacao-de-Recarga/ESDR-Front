@@ -5,7 +5,9 @@ const initialState = {
   loading: false,
   error: "",
   access_token: "",
-  currentUser: new UserModel(),
+  currentUser:  {nome: 'Fulano',
+  email: 'Fulano@email.com',
+  cpf: '999.999.999-99',},
 }
 
 export const authSlice = createSlice({
