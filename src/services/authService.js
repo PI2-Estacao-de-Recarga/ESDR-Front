@@ -2,8 +2,8 @@ export const signIn = async (username, password) => {
     try {
         // dispatch(setLoading(true));
 
-        const login = await authRepository.signIn(username, password);
-        console.log("Login", login);
+        // const login = await authRepository.signIn(username, password);
+        console.log("Login");
         // dispatch(setCurrentUser(login));
         // dispatch(setAccessToken(login));
 

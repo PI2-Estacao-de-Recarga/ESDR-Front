@@ -33,7 +33,7 @@ const App = () => {
   }
   
   return (
-    <Provider value={store}>
+    <Provider store={store}>
       <View style={{backgroundColor: "#FFFFFF", flex: 1}}>
         <StatusBar barStyle="dark-content" backgroundColor="transparent" />
         <Routes/>
