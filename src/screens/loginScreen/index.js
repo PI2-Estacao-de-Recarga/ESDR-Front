@@ -1,10 +1,18 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
+import { signIn } from '../../services/authService';
 import styles from './styles';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    signIn(email, password);
+}
+
 
   return (
     <View style={styles.container}>
@@ -33,7 +41,7 @@ const Login = ({ navigation }) => {
         />
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('home')}
+          onPress={(e) => handleSubmit(e)}
         >
           <Text style={styles.textButton}>
             Entrar
