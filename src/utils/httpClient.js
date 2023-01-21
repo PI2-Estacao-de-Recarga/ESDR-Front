@@ -1,4 +1,5 @@
-import store from '../../../domain/stores/store';
+import store from '../domain/store';
+import axios from 'axios';
 
 
 export default class HttpClient {

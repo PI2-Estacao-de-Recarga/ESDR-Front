@@ -1,4 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { signInRepository } from '../repositories/authRepository';
+
+//Slice
 
 const initialState = {
   isAuthenticated: false,
@@ -48,3 +51,16 @@ const { actions, reducer } = authSlice
 export const { setCurrentUser, setLoading } = actions
 
 export default reducer
+
+// Actions
+
+ export const signIn = (username, password) => async dispratch => {
+    try {
+      const login = await signInRepository(username, password);
+      // dispatch(setCurrentUser(login));
+      console.log("oi", login);
+    }
+    catch (e) {
+        return console.error(e.message);
+    }
+}

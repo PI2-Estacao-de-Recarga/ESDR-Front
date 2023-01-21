@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
-import { signIn } from '../../services/authService';
+import { useDispatch } from 'react-redux';
+import { signIn } from '../../domain/auth/authSlice';
 import styles from './styles';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    signIn(email, password);
+    dispatch(signIn(email, password));
 }
 
 
