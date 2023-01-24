@@ -1,10 +1,19 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
+import { useDispatch } from 'react-redux';
+import { signIn } from '../../domain/auth/authSlice';
 import styles from './styles';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    dispatch(signIn(email, password));
+}
+
 
   return (
     <View style={styles.container}>
@@ -33,7 +42,7 @@ const Login = ({ navigation }) => {
         />
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('home')}
+          onPress={(e) => handleSubmit(e)}
         >
           <Text style={styles.textButton}>
             Entrar

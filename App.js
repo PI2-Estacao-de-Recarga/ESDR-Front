@@ -9,15 +9,12 @@ import * as SplashScreen from 'expo-splash-screen';
 import { View, StatusBar } from 'react-native';
 import { Routes } from './src/routes';
 import React from 'react';
+import { store } from './src/domain/store';
+import { Provider } from 'react-redux';
 
 SplashScreen.preventAutoHideAsync()
   .then(() => console.log('SplashScreen prevented'))
   .catch(() => console.warn('SplashScreen prevented failed'));
-
-const defaultContext = {
-  activeTab: 'home',
-}
-export const AppContext = React.createContext();
 
 const App = () => {
   const [fontsLoaded] = useFonts({
@@ -36,12 +33,12 @@ const App = () => {
   }
   
   return (
-    <AppContext.Provider value={defaultContext}>
+    <Provider store={store}>
       <View style={{backgroundColor: "#FFFFFF", flex: 1}}>
         <StatusBar barStyle="dark-content" backgroundColor="transparent" />
         <Routes/>
       </View>
-    </AppContext.Provider>
+    </Provider>
   )
 }
 
