@@ -11,7 +11,7 @@ export default class HttpClient {
         } else {
             if (props.api) {
                 this._axios = axios.create({
-                    baseURL: 'http://localhost:4001',
+                    baseURL: 'http://localhost:4001/user-control',
                     timeout: 3000,
                 });
                 if (((props.authenticated)) || (props.authenticated === undefined) || (props.authenticated == null))

@@ -3,6 +3,7 @@ import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { signIn } from '../../domain/auth/authSlice';
 import styles from './styles';
+import axios from 'axios';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -10,9 +11,21 @@ const Login = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    dispatch(signIn(email, password));
-}
+    axios.post('http://localhost:4001/user-control/login', {
+      email: email,
+      password: password,
+    })
+    .then(function (response) {
+      console.log(response);
+      console.log(JSON.stringify(response));
+    })
+    .catch(function (error) {
+      console.error(error);
+      console.log(JSON.stringify(error));
+    });
+    // e.preventDefault();
+    // dispatch(signIn(email, password));
+  }
 
 
   return (
