@@ -9,7 +9,6 @@ const footerSlice = createSlice({
   initialState: initialState,
   reducers: {
     setActiveTab: (state, action) => {
-      console.log("action.payload", action.payload);
       state.activeTab = action.payload;
     }
   }

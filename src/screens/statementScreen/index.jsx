@@ -5,21 +5,37 @@ import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
 import { PaymentRepository } from '../../domain/payment/paymentRepositorie';
 
 const Statement = () => {
-  const [statment, setStatment] = useState();
+  const [statment, setStatment] = useState([
+    {
+      id: 1,
+      date: '01/01/2021',
+      quantity: 'R$ 100,00',
+    },
+    {
+      id: 2,
+      date: '01/01/2021',
+      quantity: 'R$ 100,00',
+    },
+    {
+      id: 3,
+      date: '01/01/2021',
+      quantity: 'R$ 100,00',
+    }
+  ]);
   const [isError, setIsError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    PaymentRepository.getPayments()
-      .then((payments) => {
-        setStatment(payments);
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        setIsError(true);
-        setIsLoading(false);
-      });
-  }, [])
+  // useEffect(() => {
+  //   PaymentRepository.getPayments()
+  //     .then((payments) => {
+  //       setStatment(payments);
+  //       setIsLoading(false);
+  //     })
+  //     .catch((error) => {
+  //       setIsError(true);
+  //       setIsLoading(false);
+  //     });
+  // }, [])
 
   return (
     <View style={styles.container}>
