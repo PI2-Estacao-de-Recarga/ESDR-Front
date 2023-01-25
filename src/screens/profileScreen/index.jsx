@@ -1,27 +1,29 @@
-import React, { useState} from 'react';
-import { View, Text, Image } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Image, ActivityIndicator } from 'react-native';
 import { styles } from './styles';
 import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
 import { useSelector, useDispatch } from 'react-redux'
-import { getUserProfile } from '../../domain/store/user/userSlice';
-
+import { getUserProfile } from '../../domain/user/userSlice';
 
 const Profile = () => {
   const dispatch = useDispatch()
   const userRedux = useSelector((state) => state.user)
+  const [isError, setError] = useState(false)
+  const [isLoading, setLoading] = useState(true)
 
   if (!userRedux) {
     dispatch(getUserProfile())
   }
 
-  const [profile, setProfile] = useState(userRedux = {
+  const [profile, setProfile] = useState({
     name: 'Teste',
     email: 'teste@email.com',
     cpf: '***.***.***-**',
   });
 
-	return (
-		<View style={styles.container}>
+  return (
+    <View style={styles.container}>
+      {/* <ActivityIndicator animating={isLoading} color="#000000" size="large" /> */}
       <View style={styles.profilePic}>
         <Image
           style={styles.profilePicImage}
@@ -43,8 +45,8 @@ const Profile = () => {
         </Text>
       </View>
       <BottomTabs icons={bottomTabIcons} />
-		</View>
-	);
+    </View>
+  );
 }
 
 export default Profile;

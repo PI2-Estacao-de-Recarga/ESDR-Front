@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Divider } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
-import { AppContext } from '../../../App';
+import { useSelector, useDispatch } from 'react-redux';
+import { setActiveTab } from '../../domain/footer/footerSlice';
 
 export const bottomTabIcons = [
     {
@@ -23,12 +24,13 @@ export const bottomTabIcons = [
 ]
 
 const BottonTabs = ({ icons }) => {
-    const navigation = useNavigation(); 
-    const {activeTab} = React.useContext(AppContext);
+    const navigation = useNavigation();
+    const dispatch = useDispatch();
+    const { activeTab } = useSelector((state) => state.footer)
 
     const buttonPress = (icon) => {
         navigation.navigate(icon.name);
-        // activeTab = icon.name;
+        dispatch(setActiveTab(icon.name));
     }
 
     const Icon = ({ icon }) => (
@@ -38,16 +40,16 @@ const BottonTabs = ({ icons }) => {
         </TouchableOpacity>
     )
 
-  return (
-    <View style={styles.wrapper}>
-        <Divider width={1} orientation='vertical' />
+    return (
+        <View style={styles.wrapper}>
+            <Divider width={1} orientation='vertical' />
             <View style={styles.container}>
-            {icons.map((icon, index) => (
-                <Icon key={index} icon={icon} />
-            ))}
+                {icons.map((icon, index) => (
+                    <Icon key={index} icon={icon} />
+                ))}
+            </View>
         </View>
-    </View>
-  );
+    );
 }
 
 const styles = StyleSheet.create({
@@ -57,7 +59,7 @@ const styles = StyleSheet.create({
         bottom: 0,
         backgroundColor: '#FFF',
     },
-    container:{
+    container: {
         flexDirection: 'row',
         justifyContent: 'space-around',
         height: 50,

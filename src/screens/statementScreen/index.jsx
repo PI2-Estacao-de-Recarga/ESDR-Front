@@ -1,26 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image } from 'react-native';
 import { styles } from './styles';
 import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
+import { PaymentRepository } from '../../domain/payment/paymentRepositorie';
 
 const Statement = () => {
-  const [statment, setStatment] = useState([
-    {
-      id: 1,
-      date: '01/01/2021',
-      quantity: +100,
-    },
-    {
-      id: 2,
-      date: '02/01/2021',
-      quantity: -200,
-    },
-    {
-      id: 3,
-      date: '03/01/2021',
-      quantity: +300,
-    }
-  ]);
+  const [statment, setStatment] = useState();
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    PaymentRepository.getPayments()
+      .then((payments) => {
+        setStatment(payments);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        setIsError(true);
+        setIsLoading(false);
+      });
+  }, [])
 
   return (
     <View style={styles.container}>

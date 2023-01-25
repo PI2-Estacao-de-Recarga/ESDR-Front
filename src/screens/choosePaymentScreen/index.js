@@ -21,7 +21,7 @@ const ChoosePaymentScreen = ({ navigation }) => {
         onPress={() => navigation.navigate('creditCardPaymentScreen')}
       >
         <Text style={styles.textButton}>
-          Cartão de crédito
+          PicPay
         </Text>
       </TouchableOpacity>
 

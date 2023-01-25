@@ -9,7 +9,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { View, StatusBar } from 'react-native';
 import { Routes } from './src/routes';
 import React from 'react';
-import { store } from './src/domain/store/store';
+import { store } from './src/domain/store';
 import { Provider } from 'react-redux';
 
 SplashScreen.preventAutoHideAsync()
@@ -33,7 +33,7 @@ const App = () => {
   }
   
   return (
-    <Provider value={store}>
+    <Provider store={store}>
       <View style={{backgroundColor: "#FFFFFF", flex: 1}}>
         <StatusBar barStyle="dark-content" backgroundColor="transparent" />
         <Routes/>
