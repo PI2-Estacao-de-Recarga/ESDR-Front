@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux';
 import { signIn } from '../../domain/auth/authSlice';
 import styles from './styles';
 import axios from 'axios';
+import loginService from '../../services/loginService';
+
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
@@ -11,18 +13,48 @@ const Login = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
-    axios.post('http://localhost:4001/user-control/login', {
+
+    let data = {
       email: email,
-      password: password,
+      password: password
+    }
+    
+    loginService.login(data).then((response) => {
+      console.log("ihuuuu", response);
+    }).catch((error) => {
+      console.log("ihuu tbm", error);
     })
-    .then(function (response) {
-      console.log(response);
-      console.log(JSON.stringify(response));
-    })
-    .catch(function (error) {
-      console.error(error);
-      console.log(JSON.stringify(error));
-    });
+    
+    // const api = axios.create({
+    //   baseURL: 'http://localhost:4001/user-control',
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'content-type': 'application/json',
+    //   }
+    // })
+
+    // const {data} = api.post(
+    //   '/login',
+    //   {
+    //     email: email,
+    //     password: password,
+    //   }
+    // )
+
+    console.log("data:", data);
+
+    // axios.post('http://localhost:4001/user-control/login', {
+    //   email: username,
+    //   password: password,
+    // })
+    // .then(function (response) {
+    //   console.log(response);
+    //   console.log(JSON.stringify(response));
+    // })
+    // .catch(function (error) {
+    //   console.error(error);
+    //   console.log(JSON.stringify(error));
+    // });
     // e.preventDefault();
     // dispatch(signIn(email, password));
   }
