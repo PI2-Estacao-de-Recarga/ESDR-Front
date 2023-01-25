@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 import styles from './styles';
 import Balance from '../../components/balance';
+import Modal from '../../components/modal';
 import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
 import { useNavigation } from '@react-navigation/native';
 
@@ -31,13 +32,14 @@ const HomePage = () => {
 
       <TouchableOpacity
         style={styles.button3}
-        onPress={() => navigation.navigate('home')}
+        // onPress={() => }
       >
         <Text style={styles.textButton}>
           Carregar Patins/Bicicleta
         </Text>
       </TouchableOpacity>
       <BottomTabs icons={bottomTabIcons} />
+      <Modal/>
     </View>
   );
 };
