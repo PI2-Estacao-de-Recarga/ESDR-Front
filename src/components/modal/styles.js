@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import { theme } from '../../global/styles/theme';
 
 const styles = StyleSheet.create({
     centeredView: {
@@ -21,17 +20,18 @@ const styles = StyleSheet.create({
       },
       shadowOpacity: 0.25,
       shadowRadius: 4,
-      elevation: 5
+      elevation: 5,
     },
-    button: {
+    buttonClose:{
+      backgroundColor: 'black',
       borderRadius: 10,
+      marginTop: 200,
+      borderWidth: 2,
       padding: 10,
-      elevation: 2
-    },
+      elevation: 2,
+      width: 100
+  },
     buttonOpen: {
-      backgroundColor: "#59595912"
-    },
-    buttonClose: {
       backgroundColor: "#59595912"
     },
     textStyle: {

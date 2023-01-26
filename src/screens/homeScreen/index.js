@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { useState } from "react";
 import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 import styles from './styles';
 import Balance from '../../components/balance';
-import Modal from '../../components/modal';
+import ModalCarregar from '../../components/modal';
 import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
 import { useNavigation } from '@react-navigation/native';
 
 const HomePage = () => {
   const navigation = useNavigation();
-  
+
+  const [carregarOption, setCarregarOption] = useState(false);
+
   return (
+    <>
     <View style={styles.container}>
       <Balance />
       <TouchableOpacity
@@ -32,15 +35,18 @@ const HomePage = () => {
 
       <TouchableOpacity
         style={styles.button3}
-        // onPress={() => }
+        onPress={() => setCarregarOption(true)}
       >
         <Text style={styles.textButton}>
           Carregar Patins/Bicicleta
         </Text>
       </TouchableOpacity>
       <BottomTabs icons={bottomTabIcons} />
-      <Modal/>
     </View>
+    
+    {carregarOption && <ModalCarregar />}
+    </>
+
   );
 };
 

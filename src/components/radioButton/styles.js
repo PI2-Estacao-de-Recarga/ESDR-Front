@@ -8,14 +8,20 @@ const styles = StyleSheet.create({
   unselected: {
     backgroundColor: "#9E9E9E",
     margin: 5,
-    padding: 8,
-    borderRadius: 10
+    padding: 5,
+    borderRadius: 10,
+    width: 150,
+    alignSelf: "center",
+    textAlign: "center"
   },
   selected: {
     backgroundColor: "#595959",
-    margin: 6,
-    padding: 8,
-    borderRadius: 10
+    margin: 5,
+    padding: 5,
+    borderRadius: 10,
+    width: 150,
+    alignSelf: "center",
+    textAlign: "center"
   }
 });
 export default styles;
