@@ -1,26 +1,33 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { Card, Input } from 'react-native-elements';
+import styles from './styles';
 
 const Register = ({ navigation }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [cpf, setCpf] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFF' }}>
-      <Text style={{ fontSize: 20, marginBottom: 10 }}>
+    <View style={styles.container}>
+      <Text style={styles.fontTitle}>
+          ESDR
+      </Text>
+      <Text style={styles.fontRegister}>
         Register
       </Text>
-      <Input
+      <TextInput
+        style={styles.input}
         placeholder='Name'
         value={name}
         onChangeText={setName}
         autoCapitalize='none'
         autoCorrect={false}
       />
-      <Input
+      <TextInput
+        style={styles.input}
         placeholder='Email'
         value={email}
         onChangeText={setEmail}
@@ -28,23 +35,40 @@ const Register = ({ navigation }) => {
         autoCorrect={false}
         keyboardType='email-address'
       />
-      <Input
+      <TextInput
+        style={styles.input}
+        placeholder='CPF'
+        value={cpf}
+        onChangeText={setCpf}
+        autoCapitalize='none'
+        autoCorrect={false}
+      />
+      <TextInput
+        style={styles.input}
         placeholder='Password'
         value={password}
         onChangeText={setPassword}
+        autoCapitalize='none'
+        autoCorrect={false}
         secureTextEntry
       />
-      <Input
-        placeholder='Confirm Password'
+      <TextInput
+        style={styles.input}
+        placeholder='Password Confirmation'
         value={passwordConfirmation}
         onChangeText={setPasswordConfirmation}
+        autoCapitalize='none'
+        autoCorrect={false}
         secureTextEntry
       />
-      <Button
-        color='#000'
-        title='Register'
+      <TouchableOpacity
+        style={styles.button}
         onPress={() => navigation.navigate('login')}
-      />
+      >
+        <Text style={styles.textButton}>
+          Register
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
