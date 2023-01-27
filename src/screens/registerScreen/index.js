@@ -16,11 +16,11 @@ const Register = ({ navigation }) => {
           ESDR
       </Text>
       <Text style={styles.fontRegister}>
-        Register
+        Registro
       </Text>
       <TextInput
         style={styles.input}
-        placeholder='Name'
+        placeholder='Nome'
         value={name}
         onChangeText={setName}
         autoCapitalize='none'
@@ -45,7 +45,7 @@ const Register = ({ navigation }) => {
       />
       <TextInput
         style={styles.input}
-        placeholder='Password'
+        placeholder='Senha'
         value={password}
         onChangeText={setPassword}
         autoCapitalize='none'
@@ -54,7 +54,7 @@ const Register = ({ navigation }) => {
       />
       <TextInput
         style={styles.input}
-        placeholder='Password Confirmation'
+        placeholder='Confirme a senha'
         value={passwordConfirmation}
         onChangeText={setPasswordConfirmation}
         autoCapitalize='none'
@@ -66,7 +66,7 @@ const Register = ({ navigation }) => {
         onPress={() => navigation.navigate('login')}
       >
         <Text style={styles.textButton}>
-          Register
+          Registrar
         </Text>
       </TouchableOpacity>
     </View>
