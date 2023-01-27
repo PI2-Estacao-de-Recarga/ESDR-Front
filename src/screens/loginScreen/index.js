@@ -1,63 +1,33 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
-import { useDispatch } from 'react-redux';
-import { signIn } from '../../domain/auth/authSlice';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSignIn } from '../../domain/auth/authSlice';
 import styles from './styles';
-import axios from 'axios';
-import loginService from '../../services/loginService';
+import { useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
 
-
-const Login = ({ navigation }) => {
+const Login = () => {
   const [email, setEmail] = useState('');
+  const navigation = useNavigation();
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
+  const authState = useSelector((state) => state.auth);
 
-  const handleSubmit = (e) => {
-
-    let data = {
-      email: email,
-      password: password
-    }
-    
-    loginService.login(data).then((response) => {
-      console.log("ihuuuu", response);
-    }).catch((error) => {
-      console.log("ihuu tbm", error);
-    })
-    
-    // const api = axios.create({
-    //   baseURL: 'http://localhost:4001/user-control',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'content-type': 'application/json',
-    //   }
-    // })
-
-    // const {data} = api.post(
-    //   '/login',
-    //   {
-    //     email: email,
-    //     password: password,
-    //   }
-    // )
-
-    console.log("data:", data);
-
-    // axios.post('http://localhost:4001/user-control/login', {
-    //   email: username,
-    //   password: password,
-    // })
-    // .then(function (response) {
-    //   console.log(response);
-    //   console.log(JSON.stringify(response));
-    // })
-    // .catch(function (error) {
-    //   console.error(error);
-    //   console.log(JSON.stringify(error));
-    // });
-    // e.preventDefault();
-    // dispatch(signIn(email, password));
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    dispatch(setSignIn({email,password}));
   }
+
+  useEffect(() => {
+    if (authState.isAuthenticated) {
+      navigation.navigate('home');
+    }
+
+    if (authState.error) {
+      console.log(authState.error);
+      setError(authState.error);
+    }
+  }, [authState])
 
 
   return (

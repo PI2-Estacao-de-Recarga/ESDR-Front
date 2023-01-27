@@ -7,60 +7,68 @@ const initialState = {
   isAuthenticated: false,
   loading: false,
   error: "",
-  access_token: "",
-  currentUser:  {nome: 'Fulano',
-  email: 'Fulano@email.com',
-  cpf: '999.999.999-99',},
+  tokenInfo: {
+    token: "",
+    expireIn: "",
+  },
+  currentUser: {
+    cpf: '',
+    email: '',
+    name: '',
+  },
 }
 
-export const authSlice = createSlice({
+const authSlice = createSlice({
   name: 'auth',
-  initialState,
+  initialState: initialState,
   reducers: {
-    setCurrentUser(state, action) {
-      return {
-        ...state,
+    setSignIn: async (state, action) => {
+      state = {...state,
+        loading: true,
+      }
+      await authRepository.signIn(action.payload)
+    .then(response => { 
+      state.currentUser = {...state.currentUser, 
+        cpf: response.cpf,
+        email: response.email,
+        name: response.name,
+      };
+      state.tokenInfo = {...state.tokenInfo, 
+        token: response.token,
+        expireIn: response.expireIn,
+      };
+      state = {...state,
         isAuthenticated: true,
+        loading:false
+      }
+    })
+    .catch(error => {
+      state = {...state,
+        isAuthenticated: false,
         loading: false,
-        error: "",
-        currentUser: action.payload,
-      };
-    },
-    setAccessToken(state, action) {
-      return {
-        ...state,
-        isAuthenticated: true,
-        loading: false,
-        error: "",
-        access_token: action.payload,
-      };
-    },
-    setLoading(state, action) {
-      return {
-        ...state,
-        error: "",
-        loading: action.payload,
-      };
-
-    },
+        error: error.response.data.error,
+      }
+    })
+    console.log("Estado: ", state)
+    }, 
   },
 })
 
 const { actions, reducer } = authSlice
 
-export const { setCurrentUser, setLoading } = actions
+export const { setSignIn } = actions
 
 export default reducer
 
-// Actions
+// // Actions
 
- export const signIn = (username, password) => async dispratch => {
-    try {
-      const login = await authRepository.signIn(username, password);
-      // dispatch(setCurrentUser(login));
-      console.log("oi");
-    }
-    catch (e) {
-        return console.error(e.message);
-    }
-}
+//  export const signIn = (username, password) => async dispatch => {
+//     try {
+//       const login = await authRepository.signIn(action.payload);
+//       dispatch(setCurrentUser(login.data.cpf));
+//       console.log("Deu certo", login.data);
+//     }
+//     catch (error) {
+//         return console.error(error);
+//     }
+// }

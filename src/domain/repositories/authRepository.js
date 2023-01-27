@@ -4,15 +4,15 @@ export const authRepository = {
     signIn,
 };
 
-async function signIn(email, password) {
+async function signIn({email,password}) {
     let _axios = new HttpClient({ api: true, authenticated: false }).instance;
 
     let body = {
-        "email": email,
-        "password": password,
+        email, 
+        password
     }
-    
+
     let ret = await _axios.post('/login', body);
 
-    return ret;
+    return ret.data;
 }
