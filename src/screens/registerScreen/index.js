@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Button, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, TextInput, Button, Alert, TouchableOpacity } from 'react-native';
 import { Card, Input } from 'react-native-elements';
 import { signUp } from '../../domain/signUp/signUpSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { signUpRepository } from '../../domain/signUp/signUpRepository';
+import { styles } from './styles';
+import { useNavigation } from '@react-navigation/native';
 
-const Register = ({ navigation }) => {
+
+const Register = ({  }) => {
+  const navigation = useNavigation();
   const dispatch = useDispatch();
-  const signUpState = useSelector(state => state.signUp);  
+  const signUpState = useSelector((state) => state.signUp);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -17,33 +21,34 @@ const Register = ({ navigation }) => {
   const [error, setError] = useState('');
 
   const signUpConfirm = () => {
-    // console.log('signUpConfirm', name, email, password, passwordConfirmation)
-    
-    // dispatch(signUp({ name, cpf, email, password, passwordConfirmation }));
-    signUpRepository.signUp({ name, cpf, email, password })
-      .then(response => {
-        console.log('response', response)
-        navigation.navigate('Login');
-      })
-      .catch(error => {
-        console.log('error', error)
-        setError(error);
-      })
-    
-    // if (signUpState.success) {
-    //   navigation.navigate('Login');
-    // }
+    console.log('signUpConfirm', name, email, password, passwordConfirmation)
 
-    // if (signUpState.error) {
-    //   console.log(signUpState.error);
-    //   setError(signUpState.error);
-    // }
+    dispatch(
+      signUp({
+        name: name,
+        cpf: cpf,
+        email: email,
+        password: password,
+        confirmPassword: passwordConfirmation
+      })
+    );
   }
+
+  useEffect(() => {
+    if (signUpState.success) {
+      navigation.navigate('Login');
+    }
+
+    if (signUpState.error) {
+      console.log(signUpState.error);
+      setError(signUpState.error);
+    }
+  }, [signUpState])
 
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFF' }}>
       <Text style={{ fontSize: 20, marginBottom: 10 }}>
-        Register
+        Criar Conta
       </Text>
       <Input
         placeholder='Name'
@@ -80,11 +85,12 @@ const Register = ({ navigation }) => {
         onChangeText={setPasswordConfirmation}
         secureTextEntry
       />
-      <Button
-        color='#000'
-        title='Register'
-        onPress={() => signUpConfirm()}
-      />
+      <TouchableOpacity
+        style={styles.button}
+        onPress={signUpConfirm}
+      >
+        <Text style={styles.buttonText}>Criar Conta</Text>
+      </TouchableOpacity>
       {/* <Alert
         title='Error'
         message={error}

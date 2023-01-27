@@ -7,11 +7,20 @@ const initialState = {
 }
 
 const signUpSlice = createSlice({
-  name: 'signUp',
-  initialState,
+  name: "signUp",
+  initialState: initialState,
   reducers: {
-    signUp: (state, action) => {
+    signUp: async (state, action) => {
       console.log('action.payload', action.payload)
+      await signUpRepository.signUp(action.payload)
+        .then(response => {
+          console.log('response', response.data)
+          state.success = true
+        })
+        .catch(error => {
+          console.log('error', error)
+          state.error = error;
+        })
     }
   }
 })

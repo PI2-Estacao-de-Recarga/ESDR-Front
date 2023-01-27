@@ -1,5 +1,5 @@
-import store from '../domain/store';
 import axios from 'axios';
+import { useSelector } from 'react-redux';
 
 export default class HttpClient {
   _axios;
@@ -10,15 +10,17 @@ export default class HttpClient {
     } else {
       if (props.api) {
         this._axios = axios.create({
-          baseURL: 'http://192.168.56.1:4001/user-control',
+          baseURL: 'http://192.168.15.140:4001/user-control',
           timeout: 5000,
           headers: {
             Accept: 'application/json',
-            'content-type': 'application/json',
+            'Content-Type': 'application/json',
           }
         });
-        if ((props.authenticated) || (props.authenticated === undefined || props.authenticated == null))
-          this._axios.defaults.headers.common['Authorization'] = `Bearer ${ store.getState().auth.access_token }`;
+        if ((props.authenticated) || (props.authenticated === undefined || props.authenticated == null)) {
+
+        }
+          // this._axios.defaults.headers.common['Authorization'] = `Bearer ${ store.getState().auth.access_token }`;
       } else {
         this._axios = axios.create({
           timeout: 3000,
