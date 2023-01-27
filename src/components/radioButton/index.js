@@ -10,7 +10,7 @@ export default function RadioButton({ data, onSelect }) {
   };
   return (
     <View>
-      {data.map((item) => {
+      {data.map(item => {
         return (
           <Pressable
             style={
@@ -18,7 +18,7 @@ export default function RadioButton({ data, onSelect }) {
             }
             onPress={() => selectHandler(item.value)}
           >
-            <Text style={styles.option}> {item.value}</Text>
+            <Text style={styles.option} key={item}> {item.value}</Text>
           </Pressable>
         );
       })}

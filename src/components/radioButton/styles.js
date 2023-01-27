@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+
 const styles = StyleSheet.create({
   option: {
     fontSize: 20,
@@ -11,6 +12,7 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 10,
     width: 150,
+    height: 40,
     alignSelf: "center",
     textAlign: "center"
   },
@@ -20,8 +22,10 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 10,
     width: 150,
+    height: 40,
     alignSelf: "center",
     textAlign: "center"
   }
 });
+
 export default styles;
