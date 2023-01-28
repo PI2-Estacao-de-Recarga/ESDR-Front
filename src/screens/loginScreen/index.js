@@ -1,25 +1,32 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
+import { useEffect } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { setLoading, login } from '../../store/auth/authSlice';
 import styles from './styles';
 
-const Login = ({ navigation }) => {
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
-  const { auth } = useSelector((state) => state.auth);
+  const navigation = useNavigation();
+  const auth  = useSelector((state) => state.auth);
 
   const handleSubmit = async () => {
-    // if(email == "a"){
-    //   dispatch(setLoading(false));
-    // } else {
-    //   dispatch(setLoading(true));
-    // }
-
     dispatch(login({email, password}));
-    console.log(auth);
   }
+
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      navigation.navigate('home');
+    }
+
+    if (auth.error) {
+      console.log(auth.error);
+      setError(auth.error);
+    }
+  }, [auth])
 
   return (
     <View style={styles.container}>

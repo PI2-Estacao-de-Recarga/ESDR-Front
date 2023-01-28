@@ -5,7 +5,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 //Slice
 
 export const login = createAsyncThunk('login', async (data) => {
-  console.log(data);
   const response = await authRepository.signIn(data);
   return response;
 });
@@ -62,6 +61,7 @@ const { actions, reducer } = authSlice
 export const { setSignIn, setLoading } = actions
 
 export default reducer
+
 
 
 
