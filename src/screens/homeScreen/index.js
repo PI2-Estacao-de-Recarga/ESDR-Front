@@ -7,7 +7,6 @@ import { Alert,
   TouchableOpacity } from 'react-native';
 import styles from './styles';
 import Balance from '../../components/balance';
-import ModalCarregar from '../../components/modal';
 import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
 import { useNavigation } from '@react-navigation/native';
 import RadioButton from "../../components/radioButton";
@@ -20,9 +19,9 @@ const HomePage = () => {
   const [quantidade, setQuantidade] = useState('');
 
   const data = [
-    { value: "Tomada 1" },
-    { value: "Tomada 2" },
-    { value: "Tomada 3" }
+    { value: "Celular" },
+    { value: "Patinete/Bike" },
+    { value: "Patinete/Bike" }
   ];
 
   return (
@@ -39,19 +38,10 @@ const HomePage = () => {
 
       <TouchableOpacity
         style={styles.button2}
-        onPress={() => navigation.navigate('home')}
-      >
-        <Text style={styles.textButton}>
-          Carregar Celular
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.button3}
         onPress={() => setCarregarOption(true)}
       >
         <Text style={styles.textButton}>
-          Carregar Patins/Bicicleta
+          Carregamento
         </Text>
       </TouchableOpacity>
       <Modal
