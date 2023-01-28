@@ -1,10 +1,25 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLoading, login } from '../../store/auth/authSlice';
 import styles from './styles';
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+  const { auth } = useSelector((state) => state.auth);
+
+  const handleSubmit = async () => {
+    // if(email == "a"){
+    //   dispatch(setLoading(false));
+    // } else {
+    //   dispatch(setLoading(true));
+    // }
+
+    dispatch(login({email, password}));
+    console.log(auth);
+  }
 
   return (
     <View style={styles.container}>
@@ -33,7 +48,7 @@ const Login = ({ navigation }) => {
         />
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('home')}
+          onPress={(e) => handleSubmit()}
         >
           <Text style={styles.textButton}>
             Entrar

@@ -9,6 +9,8 @@ import * as SplashScreen from 'expo-splash-screen';
 import { View, StatusBar } from 'react-native';
 import { Routes } from './src/routes';
 import React from 'react';
+import { store } from './src/store/store';
+import { Provider } from 'react-redux';
 
 SplashScreen.preventAutoHideAsync()
   .then(() => console.log('SplashScreen prevented'))
@@ -36,12 +38,12 @@ const App = () => {
   }
   
   return (
-    <AppContext.Provider value={defaultContext}>
+    <Provider store={store}>
       <View style={{backgroundColor: "#FFFFFF", flex: 1}}>
         <StatusBar barStyle="dark-content" backgroundColor="transparent" />
         <Routes/>
       </View>
-    </AppContext.Provider>
+    </Provider>
   )
 }
 
