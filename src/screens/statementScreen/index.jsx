@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Image } from 'react-native';
 import { styles } from './styles';
 import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
-import { PaymentRepository } from '../../domain/payment/paymentRepositorie';
 
 const Statement = () => {
   const [statment, setStatment] = useState([
