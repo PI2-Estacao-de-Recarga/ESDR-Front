@@ -2,9 +2,9 @@ import { useNavigation } from '@react-navigation/native';
 import { atob } from 'buffer';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { setLoading, login } from '../../store/auth/authSlice';
+import { login } from '../../store/auth/authSlice';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import styles from './styles';
 
 
