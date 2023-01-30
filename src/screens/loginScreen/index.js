@@ -1,10 +1,34 @@
+import { useNavigation } from '@react-navigation/native';
+import { atob } from 'buffer';
 import React, { useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { login } from '../../store/auth/authSlice';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import styles from './styles';
 
-const Login = ({ navigation }) => {
+
+const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+  const auth  = useSelector((state) => state.auth);
+
+  const handleSubmit = async () => {
+    dispatch(login({email, password}));
+  }
+
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      navigation.navigate('home');
+    }
+
+    if (auth.error) {
+      console.log(auth.error);
+      setError(auth.error);
+    }
+  }, [auth])
 
   return (
     <View style={styles.container}>
@@ -33,7 +57,7 @@ const Login = ({ navigation }) => {
         />
         <TouchableOpacity
           style={styles.button}
-          onPress={() => navigation.navigate('home')}
+          onPress={(e) => handleSubmit()}
         >
           <Text style={styles.textButton}>
             Entrar
