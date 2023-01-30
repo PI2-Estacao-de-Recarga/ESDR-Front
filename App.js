@@ -11,6 +11,9 @@ import { Routes } from './src/routes';
 import React from 'react';
 import { Provider } from 'react-redux';
 import store from './src/store/store';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+export const queryClient = new QueryClient();
 
 SplashScreen.preventAutoHideAsync()
   .then(() => console.log('SplashScreen prevented'))
@@ -38,6 +41,7 @@ const App = () => {
   }
 
   return (
+    <QueryClientProvider client={queryClient}>
     <AppContext.Provider value={defaultContext}>
       <Provider store={store}>
         <View style={{ backgroundColor: "#FFFFFF", flex: 1 }}>
@@ -46,6 +50,7 @@ const App = () => {
         </View>
       </Provider>
     </AppContext.Provider>
+    </QueryClientProvider>
   )
 }
 
