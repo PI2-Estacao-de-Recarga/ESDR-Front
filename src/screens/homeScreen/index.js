@@ -7,7 +7,6 @@ import { Alert,
   TouchableOpacity } from 'react-native';
 import styles from './styles';
 import Balance from '../../components/balance';
-import ModalCarregar from '../../components/modal';
 import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
 import { useNavigation } from '@react-navigation/native';
 import RadioButton from "../../components/radioButton";
