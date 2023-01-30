@@ -1,4 +1,4 @@
-import HttpClient from "../../util/httpClient";
+import HttpClient from "../../utils/httpClient";
 
 export const signUpRepository = {
   signUp,

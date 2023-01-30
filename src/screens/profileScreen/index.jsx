@@ -7,45 +7,33 @@ import { useQuery } from "react-query";
 import { getToken } from '../../utils/getToken';
 import jwt_decode from 'jwt-decode';
 import { useEffect } from 'react';
-import { queryClient } from '../../../App';
 
 const Profile = () => {
-  const dispatch = useDispatch()
-  const userRedux = useSelector((state) => state.user)
-  const [isError, setError] = useState(false)
-  const [isLoading, setLoading] = useState(true)
-
-  if (!userRedux) {
-    dispatch(getUserProfile())
-  }
-
   const [profile, setProfile] = useState({
     name: 'Teste',
     email: 'teste@email.com',
     cpf: '***.***.***-**',
   });
-  const [name, setName] = useState ('');
+  const [name, setName] = useState('');
   const [token, setToken] = useState('');
   const [userId, setUserId] = useState('');
 
   useEffect(() => {
-      const Token = getToken();
-      setToken(Token);
-      console.log(Token);
-      var decoded = jwt_decode(Token);
-      setUserId(decoded.userId);
+    const Token = getToken();
+    setToken(Token);
+    console.log(Token);
+    var decoded = jwt_decode(Token);
+    setUserId(decoded.userId);
   }, [])
 
-  
-    const query = useQuery(['getUser', token, userId], () => authRepository.getUser(token, userId), {
-      initialData: profile,
-    });
-
-  
+  const query = useQuery(['getUser', token, userId], () => authRepository.getUser(token, userId), {
+    initialData: profile,
+  });
 
   useEffect(() => {
     console.log(query.data);
-    setProfile({...profile,
+    setProfile({
+      ...profile,
       cpf: query.data.cpf,
       name: query.data.name,
       email: query.data.email,

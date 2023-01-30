@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Button, Alert, TouchableOpacity } from 'react-native';
 import { Card, Input } from 'react-native-elements';
-import { signUp } from '../../domain/signUp/signUpSlice';
+import { signUp } from '../../store/signUp/signUpSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { signUpRepository } from '../../domain/signUp/signUpRepository';
+import { signUpRepository } from '../../store/signUp/signUpRepository';
 import { styles } from './styles';
 import { useNavigation } from '@react-navigation/native';
 
@@ -61,7 +61,8 @@ const Register = ({ }) => {
         autoCapitalize='none'
         autoCorrect={false}
       />
-      <Input
+      <TextInput
+        style={styles.input}
         placeholder='CPF'
         value={cpf}
         onChangeText={setCpf}
@@ -98,7 +99,7 @@ const Register = ({ }) => {
       />
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('login')}
+        onPress={() => signUpConfirm()}
       >
         <Text style={styles.textButton}>
           Criar Conta

@@ -3,7 +3,7 @@ import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Divider } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
-import { setActiveTab } from '../../domain/footer/footerSlice';
+import { setActiveTab } from '../../store/footer/footerSlice';
 
 export const bottomTabIcons = [
     {
