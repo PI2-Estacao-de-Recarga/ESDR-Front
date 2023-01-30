@@ -8,16 +8,16 @@ import { styles } from './styles';
 import { useNavigation } from '@react-navigation/native';
 
 
-const Register = ({  }) => {
+const Register = ({ }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const signUpState = useSelector((state) => state.signUp);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [cpf, setCpf] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
-  const [cpf, setCpf] = useState('');
   const [error, setError] = useState('');
 
   const signUpConfirm = () => {
@@ -46,12 +46,16 @@ const Register = ({  }) => {
   }, [signUpState])
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFF' }}>
-      <Text style={{ fontSize: 20, marginBottom: 10 }}>
+    <View style={styles.container}>
+      <Text style={styles.fontTitle}>
+        ESDR
+      </Text>
+      <Text style={styles.fontRegister}>
         Criar Conta
       </Text>
-      <Input
-        placeholder='Name'
+      <TextInput
+        style={styles.input}
+        placeholder='Nome'
         value={name}
         onChangeText={setName}
         autoCapitalize='none'
@@ -65,7 +69,8 @@ const Register = ({  }) => {
         autoCorrect={false}
         keyboardType="numbers-and-punctuation"
       />
-      <Input
+      <TextInput
+        style={styles.input}
         placeholder='Email'
         value={email}
         onChangeText={setEmail}
@@ -73,29 +78,33 @@ const Register = ({  }) => {
         autoCorrect={false}
         keyboardType='email-address'
       />
-      <Input
-        placeholder='Password'
+      <TextInput
+        style={styles.input}
+        placeholder='Senha'
         value={password}
         onChangeText={setPassword}
+        autoCapitalize='none'
+        autoCorrect={false}
         secureTextEntry
       />
-      <Input
-        placeholder='Confirm Password'
+      <TextInput
+        style={styles.input}
+        placeholder='Confirme a senha'
         value={passwordConfirmation}
         onChangeText={setPasswordConfirmation}
+        autoCapitalize='none'
+        autoCorrect={false}
         secureTextEntry
       />
       <TouchableOpacity
         style={styles.button}
-        onPress={signUpConfirm}
+        onPress={() => navigation.navigate('login')}
       >
-        <Text style={styles.buttonText}>Criar Conta</Text>
+        <Text style={styles.textButton}>
+          Criar Conta
+        </Text>
       </TouchableOpacity>
-      {/* <Alert
-        title='Error'
-        message={error}
-      /> */}
-    </View>
+    </View >
   );
 };
 

@@ -1,11 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
-import userReducer from './user/userSlice'
+import { getDefaultMiddleware } from '@reduxjs/toolkit';
+import userReducer from '../store/user/userSlice'
 import signUpReducer from './signUp/signUpSlice'
 import footerReducer from './footer/footerSlice'
-import { getDefaultMiddleware } from '@reduxjs/toolkit';
+import reducer from './auth/authSlice';
 
-export const store = configureStore({
+
+ const store = configureStore({
   reducer: {
+    auth: reducer,
     user: userReducer,
     signUp: signUpReducer,
     footer: footerReducer,
@@ -13,4 +16,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: false,
   }),
+
 })
+
+export default store;

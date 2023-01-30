@@ -9,8 +9,11 @@ import * as SplashScreen from 'expo-splash-screen';
 import { View, StatusBar } from 'react-native';
 import { Routes } from './src/routes';
 import React from 'react';
-import { store } from './src/domain/store';
 import { Provider } from 'react-redux';
+import store from './src/store/store';
+import { QueryClient, QueryClientProvider } from 'react-query';
+
+export const queryClient = new QueryClient();
 
 SplashScreen.preventAutoHideAsync()
   .then(() => console.log('SplashScreen prevented'))
@@ -23,7 +26,7 @@ const App = () => {
     Inter_500Medium,
     Inter_700Bold,
   });
-  
+
   if (!fontsLoaded) {
     setTimeout(() => {
       SplashScreen.hideAsync()
@@ -31,14 +34,16 @@ const App = () => {
         .catch(() => console.warn('SplashScreen hidden failed'));
     }, 2000)
   }
-  
+
   return (
-    <Provider store={store}>
-      <View style={{backgroundColor: "#FFFFFF", flex: 1}}>
-        <StatusBar barStyle="dark-content" backgroundColor="transparent" />
-        <Routes/>
-      </View>
-    </Provider>
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <View style={{ backgroundColor: "#FFFFFF", flex: 1 }}>
+          <StatusBar barStyle="dark-content" backgroundColor="transparent" />
+          <Routes />
+        </View>
+      </Provider>
+    </QueryClientProvider>
   )
 }
 
