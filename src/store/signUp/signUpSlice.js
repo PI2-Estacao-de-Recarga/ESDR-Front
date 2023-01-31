@@ -1,5 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit'
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { signUpRepository } from './signUpRepository'
+
+export const signUpThunk = createAsyncThunk('signUp', async (data) => {
+  console.log("data: ", data);
+  const response = await signUpRepository.signUp(data);
+  return response;
+});
 
 const initialState = {
   success: false,
@@ -10,18 +16,20 @@ const signUpSlice = createSlice({
   name: "signUp",
   initialState: initialState,
   reducers: {
-    signUp: async (state, action) => {
-      console.log('action.payload', action.payload)
-      await signUpRepository.signUp(action.payload)
-        .then(response => {
-          console.log('response', response.data)
-          state.success = true
-        })
-        .catch(error => {
-          console.log('error', error)
-          state.error = error;
-        })
-    }
+    
+  },
+  extraReducers: builder => {
+    builder.addCase(signUpThunk.pending, state => {
+      state.loading = true
+    })
+    builder.addCase(signUpThunk.fulfilled, (state, action) => {
+      state.success = true;
+      state.loading = false;
+    })
+    builder.addCase(signUpThunk.rejected, state => {
+      state.error = true;
+      state.loading = false;
+    })
   }
 })
 

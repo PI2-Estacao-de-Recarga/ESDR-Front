@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, Alert, TouchableOpacity } from 'react-native';
-import { Card, Input } from 'react-native-elements';
-import { signUp } from '../../store/signUp/signUpSlice';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { signUpThunk } from '../../store/signUp/signUpSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { signUpRepository } from '../../store/signUp/signUpRepository';
 import { styles } from './styles';
 import { useNavigation } from '@react-navigation/native';
 
@@ -24,7 +22,7 @@ const Register = ({ }) => {
     console.log('signUpConfirm', name, email, password, passwordConfirmation)
 
     dispatch(
-      signUp({
+      signUpThunk({
         name: name,
         cpf: cpf,
         email: email,
@@ -36,7 +34,7 @@ const Register = ({ }) => {
 
   useEffect(() => {
     if (signUpState.success) {
-      navigation.navigate('Login');
+      navigation.navigate('login');
     }
 
     if (signUpState.error) {

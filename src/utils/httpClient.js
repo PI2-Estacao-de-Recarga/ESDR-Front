@@ -9,7 +9,7 @@ export default class HttpClient {
     } else {
       if (props.api) {
         this._axios = axios.create({
-          baseURL: ' http://192.168.15.140:4001/user-control', 
+          baseURL: 'http://192.168.15.140:4001/user-control', 
           timeout: 5000,
           headers: {
             Accept: 'application/json',

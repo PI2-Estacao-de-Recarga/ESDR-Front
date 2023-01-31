@@ -1,5 +1,4 @@
 import { useNavigation } from '@react-navigation/native';
-import { atob } from 'buffer';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,6 +15,7 @@ const Login = () => {
   const auth  = useSelector((state) => state.auth);
 
   const handleSubmit = async () => {
+    // navigation.navigate('home')
     dispatch(login({email, password}));
   }
 
