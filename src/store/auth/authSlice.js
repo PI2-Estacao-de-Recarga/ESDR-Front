@@ -5,7 +5,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 //Slice
 
 export const login = createAsyncThunk('login', async (data) => {
-  console.log("data: ", data);
   const response = await authRepository.signIn(data);
   return response;
 });
@@ -32,8 +31,7 @@ const authSlice = createSlice({
     setSignIn: (state, action) => {
     }, 
     setLoading(state, action) { 
-      state.loading = action.payload;  
-      console.log(state);    
+      state.loading = action.payload;   
     },
   },
   extraReducers: builder => {
