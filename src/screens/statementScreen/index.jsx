@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Image } from 'react-native';
 import { styles } from './styles';
 import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
@@ -8,19 +8,33 @@ const Statement = () => {
     {
       id: 1,
       date: '01/01/2021',
-      quantity: +100,
+      quantity: 'R$ 100,00',
     },
     {
       id: 2,
-      date: '02/01/2021',
-      quantity: -200,
+      date: '01/01/2021',
+      quantity: 'R$ 100,00',
     },
     {
       id: 3,
-      date: '03/01/2021',
-      quantity: +300,
+      date: '01/01/2021',
+      quantity: 'R$ 100,00',
     }
   ]);
+  const [isError, setIsError] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // useEffect(() => {
+  //   PaymentRepository.getPayments()
+  //     .then((payments) => {
+  //       setStatment(payments);
+  //       setIsLoading(false);
+  //     })
+  //     .catch((error) => {
+  //       setIsError(true);
+  //       setIsLoading(false);
+  //     });
+  // }, [])
 
   return (
     <View style={styles.container}>

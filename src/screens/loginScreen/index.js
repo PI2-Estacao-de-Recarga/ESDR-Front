@@ -15,6 +15,7 @@ const Login = () => {
   const auth  = useSelector((state) => state.auth);
 
   const handleSubmit = async () => {
+    // navigation.navigate('home')
     dispatch(login({email, password}));
   }
 

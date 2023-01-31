@@ -5,6 +5,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 //Slice
 
 export const login = createAsyncThunk('login', async (data) => {
+  console.log("data: ", data);
   const response = await authRepository.signIn(data);
   return response;
 });

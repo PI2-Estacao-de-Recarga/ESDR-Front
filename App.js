@@ -19,11 +19,6 @@ SplashScreen.preventAutoHideAsync()
   .then(() => console.log('SplashScreen prevented'))
   .catch(() => console.warn('SplashScreen prevented failed'));
 
-const defaultContext = {
-  activeTab: 'home',
-}
-export const AppContext = React.createContext();
-
 const App = () => {
   const [fontsLoaded] = useFonts({
     Inter_300Light,
@@ -42,14 +37,12 @@ const App = () => {
 
   return (
     <QueryClientProvider client={queryClient}>
-    <AppContext.Provider value={defaultContext}>
       <Provider store={store}>
         <View style={{ backgroundColor: "#FFFFFF", flex: 1 }}>
           <StatusBar barStyle="dark-content" backgroundColor="transparent" />
           <Routes />
         </View>
       </Provider>
-    </AppContext.Provider>
     </QueryClientProvider>
   )
 }

@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { theme } from '../../global/styles/theme';
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
     container:{
         flex: 1,
         justifyContent: 'center', 
@@ -46,6 +46,19 @@ const styles = StyleSheet.create({
         marginBottom: 25,
         marginRight: 200 
     },
+    button: {
+        backgroundColor: '#000000',
+        color: '#FFFFFF',
+        borderRadius: 10,
+        width: 200,
+        height: 40,
+        marginVertical: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    buttonText: {
+        fontFamily: theme.fonts.InterRegular,
+        fontSize: 16,
+        color: '#FFFFFF',
+    }
 });
-
-export default styles;
