@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../store/auth/authSlice';
 import { View, Text, TextInput, TouchableOpacity, Modal } from 'react-native';
 import styles from './styles';
+import { setError } from '../../store/auth/authSlice';
 
 
 const Login = () => {
@@ -19,7 +20,14 @@ const Login = () => {
     dispatch(login({email, password}));
   }
 
+  const closeErrorModal = () => {
+    setShowError(false);
+    dispatch(setError({error: false, errorMessage: ''}));
+  }
+
   useEffect(() => {
+    setShowError(false);
+
     if (auth.isAuthenticated) {
       navigation.navigate('home');
     }
@@ -83,9 +91,9 @@ const Login = () => {
         onRequestClose={() => setShowError(false)}
       >
         <View style={styles.modalContent}>
-          <Text>{auth.error}</Text>
+          <Text>{auth.errorMessage}</Text>
           <TouchableOpacity
-            onPress={() => setShowError(false)}
+            onPress={() => closeErrorModal()}
             style={styles.button}
           >
             <Text style={styles.buttonText}>Rescrever Dados</Text>

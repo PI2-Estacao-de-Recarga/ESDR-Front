@@ -30,6 +30,8 @@ const signUpSlice = createSlice({
     })
     builder.addCase(signUpThunk.fulfilled, (state, action) => {
       state.success = true;
+      state.error = false;
+      state.errorMessage = '';
     })
     builder.addCase(signUpThunk.rejected, (state, action) => {
       state.error = true;
