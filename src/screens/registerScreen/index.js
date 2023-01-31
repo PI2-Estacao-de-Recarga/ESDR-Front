@@ -4,7 +4,7 @@ import { signUpThunk } from '../../store/signUp/signUpSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
 import { useNavigation } from '@react-navigation/native';
-
+import { setError } from '../../store/signUp/signUpSlice';
 
 const Register = ({ }) => {
   const navigation = useNavigation();
@@ -16,12 +16,9 @@ const Register = ({ }) => {
   const [cpf, setCpf] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
-  const [showError, setShowError] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
 
   const signUpConfirm = () => {
-    console.log('signUpConfirm', name, email, password, passwordConfirmation)
-
     dispatch(
       signUpThunk({
         name: name,
@@ -33,13 +30,13 @@ const Register = ({ }) => {
     );
   }
 
+  const closeErrorModal = () => {
+    dispatch(setError({ error: false, errorMessage: '' }));
+  }
+
   useEffect(() => {
     if (signUpState.success) {
       setShowSuccess(true);
-    }
-
-    if (signUpState.error) {
-      setShowError(true);
     }
   }, [signUpState])
 
@@ -105,15 +102,15 @@ const Register = ({ }) => {
       </TouchableOpacity>
       <Modal
         animationType="slide"
-        visible={showError}
+        visible={signUpState.error}
         transparent={true}
         style={styles.modal}
-        onRequestClose={() => setShowError(false)}
+        onRequestClose={() => closeErrorModal()}
       >
         <View style={styles.modalContent}>
           <Text>{signUpState.errorMessage}</Text>
           <TouchableOpacity
-            onPress={() => setShowError(false)}
+            onPress={() => closeErrorModal()}
             style={styles.button}
           >
             <Text style={styles.buttonText}>Rescrever Dados</Text>

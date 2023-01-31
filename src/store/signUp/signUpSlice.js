@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { signUpRepository } from './signUpRepository'
 
 export const signUpThunk = createAsyncThunk('signUp', async (data, {rejectWithValue}) => {
-  console.log("data: ", data);
   const response = await signUpRepository.signUp(data)
     .then((response) => {
       return response.data;
@@ -23,7 +22,10 @@ const signUpSlice = createSlice({
   name: "signUp",
   initialState: initialState,
   reducers: {
-    
+    setError: (state, action) => {
+      state.error = action.payload.error;
+      state.errorMessage = action.payload.errorMessage;
+    }
   },
   extraReducers: builder => {
     builder.addCase(signUpThunk.pending, state => {
@@ -35,7 +37,6 @@ const signUpSlice = createSlice({
     })
     builder.addCase(signUpThunk.rejected, (state, action) => {
       state.error = true;
-      console.log("action.payload: ", action.payload);
       state.errorMessage = action.payload;
     })
   }
@@ -43,6 +44,6 @@ const signUpSlice = createSlice({
 
 const { actions, reducer } = signUpSlice
 
-export const { signUp } = actions
+export const { signUp, setError } = actions
 
 export default reducer
