@@ -15,23 +15,9 @@ export const styles = StyleSheet.create({
         borderBottomWidth: 1,
         padding: 0
     },
-    button:{
-        backgroundColor: 'black',
-        borderRadius: 10,
-        marginLeft: 5,
-        marginRight: 5,
-        marginTop: 40,
-        borderWidth: 2,
-        width: 100
-    },
-    textButton:{
+    text: {
         fontFamily: theme.fonts.InterRegular,
-        alignSelf: 'center',
         fontSize: 16,
-        fontWeight: '600',
-        paddingTop: 5,
-        paddingBottom: 5,
-        color: '#FFF'
     },
     fontTitle:{
         fontFamily: theme.fonts.InterRegular,
@@ -60,5 +46,18 @@ export const styles = StyleSheet.create({
         fontFamily: theme.fonts.InterRegular,
         fontSize: 16,
         color: '#FFFFFF',
-    }
+    },
+    modal: {
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalContent: {
+        flex: 1,
+        backgroundColor: '#FFF',
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });

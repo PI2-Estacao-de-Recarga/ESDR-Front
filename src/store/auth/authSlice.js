@@ -4,9 +4,14 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 
 //Slice
 
-export const login = createAsyncThunk('login', async (data) => {
-  console.log("data: ", data);
-  const response = await authRepository.signIn(data);
+export const login = createAsyncThunk('login', async (data, { rejectWithValue }) => {
+  const response = await authRepository.signIn(data)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      return rejectWithValue(error.response.data.error);
+    });
   return response;
 });
 
@@ -50,9 +55,9 @@ const authSlice = createSlice({
       state.loading = false;
       console.log("Estado: ", state);
     })
-    builder.addCase(login.rejected, state => {
+    builder.addCase(login.rejected, (state, action) => {
       state.loading = false;
-      console.log("Erro: ", state);
+      state.error = action.payload;
     })
   }
 })

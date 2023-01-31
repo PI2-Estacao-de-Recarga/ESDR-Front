@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Modal } from 'react-native';
 import { signUpThunk } from '../../store/signUp/signUpSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
@@ -16,7 +16,8 @@ const Register = ({ }) => {
   const [cpf, setCpf] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
-  const [error, setError] = useState('');
+  const [showError, setShowError] = useState('');
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const signUpConfirm = () => {
     console.log('signUpConfirm', name, email, password, passwordConfirmation)
@@ -34,12 +35,11 @@ const Register = ({ }) => {
 
   useEffect(() => {
     if (signUpState.success) {
-      navigation.navigate('login');
+      setShowSuccess(true);
     }
 
     if (signUpState.error) {
-      console.log(signUpState.error);
-      setError(signUpState.error);
+      setShowError(true);
     }
   }, [signUpState])
 
@@ -99,10 +99,50 @@ const Register = ({ }) => {
         style={styles.button}
         onPress={() => signUpConfirm()}
       >
-        <Text style={styles.textButton}>
+        <Text style={styles.buttonText}>
           Criar Conta
         </Text>
       </TouchableOpacity>
+      <Modal
+        animationType="slide"
+        visible={showError}
+        transparent={true}
+        style={styles.modal}
+        onRequestClose={() => setShowError(false)}
+      >
+        <View style={styles.modalContent}>
+          <Text>{signUpState.errorMessage}</Text>
+          <TouchableOpacity
+            onPress={() => setShowError(false)}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Rescrever Dados</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('login')}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Ir para Login</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+      <Modal
+        animationType="slide"
+        visible={showSuccess}
+        transparent={true}
+        style={styles.modal}
+        onRequestClose={() => setShowSuccess(false)}
+      >
+        <View style={styles.modalContent}>
+          <Text style={styles.text}>Conta criada com sucesso</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('login')}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Fazer Login</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View >
   );
 };
