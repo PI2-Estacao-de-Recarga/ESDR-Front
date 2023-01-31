@@ -34,24 +34,6 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         padding: 0
     },
-    button:{
-        backgroundColor: 'black',
-        borderRadius: 10,
-        marginLeft: 5,
-        marginRight: 5,
-        marginTop: 20,
-        borderWidth: 2,
-        width: 100
-    },
-    textButton:{
-        fontFamily: theme.fonts.InterRegular,
-        alignSelf: 'center',
-        fontSize: 16,
-        fontWeight: '600',
-        paddingTop: 5,
-        paddingBottom: 5,
-        color: '#FFF'
-    },
     fontCreateAccount:{
         fontFamily: theme.fonts.InterRegular,
         paddingTop: 20,
@@ -62,7 +44,35 @@ const styles = StyleSheet.create({
         fontFamily: theme.fonts.InterRegular,
         marginTop: 25,
         color: 'black'
-    }
+    },
+    button: {
+        backgroundColor: '#000000',
+        color: '#FFFFFF',
+        borderRadius: 10,
+        width: 200,
+        height: 40,
+        marginVertical: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    buttonText: {
+        fontFamily: theme.fonts.InterRegular,
+        fontSize: 16,
+        color: '#FFFFFF',
+    },
+    modal: {
+        width: '100%',
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalContent: {
+        flex: 1,
+        backgroundColor: '#FFF',
+        borderRadius: 10,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 });
 
 export default styles;

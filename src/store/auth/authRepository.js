@@ -12,10 +12,10 @@ async function signIn({email,password}) {
         email, 
         password, 
     }
-    console.log("body: ", body);
-    let ret = await _axios.post('/login', body);
-    console.log("ret: ", ret);
-    return ret.data;
+    
+    let ret = _axios.post('/login', body);
+
+    return ret;
 }
 
 async function getUser(token, userId) {

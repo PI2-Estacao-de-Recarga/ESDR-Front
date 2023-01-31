@@ -17,5 +17,5 @@ async function signUp({ name, cpf, email, password, confirmPassword }) {
 
   let response = _axios.post('/create-user', body)
 
-  return response.data;
+  return response;
 }

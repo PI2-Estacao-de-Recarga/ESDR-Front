@@ -1,40 +1,49 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { signUpRepository } from './signUpRepository'
 
-export const signUpThunk = createAsyncThunk('signUp', async (data) => {
-  console.log("data: ", data);
-  const response = await signUpRepository.signUp(data);
+export const signUpThunk = createAsyncThunk('signUp', async (data, {rejectWithValue}) => {
+  const response = await signUpRepository.signUp(data)
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      return rejectWithValue(error.response.data.error);
+    });
   return response;
 });
 
 const initialState = {
   success: false,
   error: false,
+  errorMessage: '',
 }
 
 const signUpSlice = createSlice({
   name: "signUp",
   initialState: initialState,
   reducers: {
-    
+    setError: (state, action) => {
+      state.error = action.payload.error;
+      state.errorMessage = action.payload.errorMessage;
+    }
   },
   extraReducers: builder => {
     builder.addCase(signUpThunk.pending, state => {
-      state.loading = true
     })
     builder.addCase(signUpThunk.fulfilled, (state, action) => {
       state.success = true;
-      state.loading = false;
+      state.error = false;
+      state.errorMessage = '';
     })
-    builder.addCase(signUpThunk.rejected, state => {
+    builder.addCase(signUpThunk.rejected, (state, action) => {
       state.error = true;
-      state.loading = false;
+      state.errorMessage = action.payload;
     })
   }
 })
 
 const { actions, reducer } = signUpSlice
 
-export const { signUp } = actions
+export const { signUp, setError } = actions
 
 export default reducer

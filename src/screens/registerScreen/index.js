@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Modal } from 'react-native';
 import { signUpThunk } from '../../store/signUp/signUpSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
 import { useNavigation } from '@react-navigation/native';
-
+import { setError } from '../../store/signUp/signUpSlice';
 
 const Register = ({ }) => {
   const navigation = useNavigation();
@@ -16,11 +16,9 @@ const Register = ({ }) => {
   const [cpf, setCpf] = useState('');
   const [password, setPassword] = useState('');
   const [passwordConfirmation, setPasswordConfirmation] = useState('');
-  const [error, setError] = useState('');
+  const [showSuccess, setShowSuccess] = useState(false);
 
   const signUpConfirm = () => {
-    console.log('signUpConfirm', name, email, password, passwordConfirmation)
-
     dispatch(
       signUpThunk({
         name: name,
@@ -32,14 +30,13 @@ const Register = ({ }) => {
     );
   }
 
+  const closeErrorModal = () => {
+    dispatch(setError({ error: false, errorMessage: '' }));
+  }
+
   useEffect(() => {
     if (signUpState.success) {
-      navigation.navigate('login');
-    }
-
-    if (signUpState.error) {
-      console.log(signUpState.error);
-      setError(signUpState.error);
+      setShowSuccess(true);
     }
   }, [signUpState])
 
@@ -99,10 +96,50 @@ const Register = ({ }) => {
         style={styles.button}
         onPress={() => signUpConfirm()}
       >
-        <Text style={styles.textButton}>
+        <Text style={styles.buttonText}>
           Criar Conta
         </Text>
       </TouchableOpacity>
+      <Modal
+        animationType="slide"
+        visible={signUpState.error}
+        transparent={true}
+        style={styles.modal}
+        onRequestClose={() => closeErrorModal()}
+      >
+        <View style={styles.modalContent}>
+          <Text>{signUpState.errorMessage}</Text>
+          <TouchableOpacity
+            onPress={() => closeErrorModal()}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Rescrever Dados</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('login')}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Ir para Login</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
+      <Modal
+        animationType="slide"
+        visible={showSuccess}
+        transparent={true}
+        style={styles.modal}
+        onRequestClose={() => setShowSuccess(false)}
+      >
+        <View style={styles.modalContent}>
+          <Text style={styles.text}>Conta criada com sucesso</Text>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('login')}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Fazer Login</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View >
   );
 };

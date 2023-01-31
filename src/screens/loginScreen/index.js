@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { login } from '../../store/auth/authSlice';
-import { View, Text, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, Modal } from 'react-native';
 import styles from './styles';
+import { setError } from '../../store/auth/authSlice';
 
 
 const Login = () => {
@@ -13,20 +14,26 @@ const Login = () => {
   const dispatch = useDispatch();
   const navigation = useNavigation();
   const auth  = useSelector((state) => state.auth);
+  const [showError, setShowError] = useState(false);
 
   const handleSubmit = async () => {
-    // navigation.navigate('home')
     dispatch(login({email, password}));
   }
 
+  const closeErrorModal = () => {
+    setShowError(false);
+    dispatch(setError({error: false, errorMessage: ''}));
+  }
+
   useEffect(() => {
+    setShowError(false);
+
     if (auth.isAuthenticated) {
       navigation.navigate('home');
     }
 
     if (auth.error) {
-      console.log(auth.error);
-      setError(auth.error);
+      setShowError(true);
     }
   }, [auth])
 
@@ -59,7 +66,7 @@ const Login = () => {
           style={styles.button}
           onPress={(e) => handleSubmit()}
         >
-          <Text style={styles.textButton}>
+          <Text style={styles.buttonText}>
             Entrar
           </Text>
         </TouchableOpacity>
@@ -76,6 +83,23 @@ const Login = () => {
           Esqueci a senha
         </Text>
       </View>
+      <Modal
+        animationType="slide"
+        visible={showError}
+        transparent={true}
+        style={styles.modal}
+        onRequestClose={() => setShowError(false)}
+      >
+        <View style={styles.modalContent}>
+          <Text>{auth.errorMessage}</Text>
+          <TouchableOpacity
+            onPress={() => closeErrorModal()}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Rescrever Dados</Text>
+          </TouchableOpacity>
+        </View>
+      </Modal>
     </View>
   );
 };
