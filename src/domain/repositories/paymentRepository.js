@@ -7,7 +7,6 @@ export const paymentRepository = {
 
 
 async function createPayment(token, userId, value) {
-    
     let _axios = new HttpClient({ api: true, authenticated: true, token: token }).instance;
 
     let body = {
@@ -21,16 +20,24 @@ async function createPayment(token, userId, value) {
     return ret.data;
 }
 
-async function createOperation(token, userId, operationType, paymentId) {
-    
+async function createOperation(token, userId, operationType, paymentId = null, creditAmount = null){
     let _axios = new HttpClient({ api: true, authenticated: true, token: token }).instance;
+    let body = {};
 
-    let body = {
-        operationType: operationType,
-        userId: userId,
-        paymentId: paymentId,
+    if(operationType == "COMPRA"){
+        body = {
+            operationType: operationType,
+            userId: userId,
+            paymentId: paymentId,
+        }
+    } else if (operationType == "USO") {
+        body = {
+            operationType: operationType,
+            creditAmount: creditAmount,
+            userId: userId, 
+        }
     }
-    
+      
     let ret = await _axios.post(`/create-operation`, body);
     
     return ret.data;
