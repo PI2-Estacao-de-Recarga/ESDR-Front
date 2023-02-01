@@ -14,7 +14,6 @@ const Profile = () => {
     email: 'teste@email.com',
     cpf: '***.***.***-**',
   });
-  const [name, setName] = useState('');
   const [token, setToken] = useState('');
   const [userId, setUserId] = useState('');
 

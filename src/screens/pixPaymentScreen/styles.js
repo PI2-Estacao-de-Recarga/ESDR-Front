@@ -2,6 +2,7 @@ import { StyleSheet } from 'react-native';
 import { theme } from '../../global/styles/theme';
 
 export const styles = StyleSheet.create({
+
   container: {
     flex: 1,
     justifyContent: 'center',
@@ -44,10 +45,39 @@ export const styles = StyleSheet.create({
     width: 200,
     height: 200,
   },
-  divider: { 
+  divider: {
     backgroundColor: 'black',
     height: 1,
     width: 300,
     marginVertical: 16,
   },
+  input: {
+    width: 270,
+    margin: 12,
+    marginTop: 30,
+    borderBottomWidth: 1,
+    padding: 0
+  },
+  copySection: {
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button: {
+    backgroundColor: 'black',
+    borderRadius: 10,
+    width: 200,
+    height: 40,
+    marginVertical: 10,
+    justifyContent: 'center',
+  },
+  textButton: {
+    fontFamily: theme.fonts.InterRegular,
+    alignSelf: 'center',
+    fontSize: 16,
+    fontWeight: '600',
+    paddingTop: 5,
+    paddingBottom: 5,
+    color: '#FFF'
+  }
+
 });
