@@ -3,7 +3,9 @@ import { View, Text, Image } from 'react-native';
 import { styles } from './styles';
 import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
 
-const PixPayment = () => {
+const PixPayment = ({route}) => {
+  const data = route.params.data;
+  console.log("data", data);
 
   return (
     <View style={styles.container}>

@@ -3,9 +3,16 @@ import { View, Text, TextInput, Button, TouchableOpacity, Image } from 'react-na
 import { Card, Header, Input } from 'react-native-elements';
 import styles from './styles';
 import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
+import { useNavigation } from '@react-navigation/native';
 
-const CompraPage = ({ navigation }) => {
+
+const CompraPage = () => {
   const [creditos, setCreditos] = useState(0);
+  const navigation = useNavigation();
+ 
+  const handleSubmit = async () => {
+    navigation.navigate('choosePaymentScreen',  { value: creditos });
+  }
 
   return (
     <View style={styles.container}>
@@ -35,7 +42,7 @@ const CompraPage = ({ navigation }) => {
       </View>
       <TouchableOpacity
         style={styles.button1}
-        onPress={() => navigation.navigate('choosePaymentScreen')}
+        onPress={() => handleSubmit()}
       >
         <Text style={styles.textButton}>
           Confirmar
