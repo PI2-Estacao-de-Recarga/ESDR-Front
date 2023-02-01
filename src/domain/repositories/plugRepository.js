@@ -5,7 +5,6 @@ export const plugRepository= {
 };
 
 async function setPlug(token, userId, timeAmount, name) {
-    console.log("plug name", name);
     let _axios = new HttpClient({ api: true, authenticated: true, token: token }).instance;
 
     let body = {

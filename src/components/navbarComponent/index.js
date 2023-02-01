@@ -18,7 +18,6 @@ const NavbarComponent = () => {
         useEffect(() => {
             const Token = getToken();
             setToken(Token);
-            console.log(Token);
             var decoded = jwt_decode(Token);
             setUserId(decoded.userId);
         }, [])
@@ -28,13 +27,11 @@ const NavbarComponent = () => {
         });
         
         useEffect(() => {
-            console.log(query.data);
             setAmount({
             ...amount,
             name: query.data.name,
             balance: query.data.balance,
             });
-            console.log(amount.balance);
         }, [query.data])
 
     return (

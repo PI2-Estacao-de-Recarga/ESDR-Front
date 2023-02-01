@@ -12,6 +12,7 @@ import { useMutation } from 'react-query';
 import { paymentRepository } from '../../domain/repositories/paymentRepository';
 import { useEffect } from 'react';
 import NavbarComponent from '../../components/navbarComponent';
+import { queryClient } from '../../../App';
 // import Clipboard from "@react-native-community/clipboard";
 
 const PixPayment = ({ route }) => {
@@ -35,6 +36,7 @@ const PixPayment = ({ route }) => {
   const mutation = useMutation(() => paymentRepository.createOperation(token, userId, "COMPRA", data.id), {
     onSuccess: async (data) => {
       console.log(data);
+      queryClient.invalidateQueries("getUser");
       navigation.navigate("home");
     },
     onError: (error) => console.log(error)
