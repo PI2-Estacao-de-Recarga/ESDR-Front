@@ -17,8 +17,7 @@ export default class HttpClient {
           }
         });
         if ((props.authenticated) || (props.authenticated === undefined || props.authenticated == null)) {
-          console.log("http client:", props.token);
-           this._axios.defaults.headers.common['Authorization'] = `Bearer ${ props.token }`;
+          this._axios.defaults.headers.common['Authorization'] = `Bearer ${ props.token }`;
         }
          
       } else {

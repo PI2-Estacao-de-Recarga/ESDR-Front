@@ -13,19 +13,92 @@ import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
 import { useNavigation } from '@react-navigation/native';
 import RadioButton from "../../components/radioButton";
 import NavbarComponent from '../../components/navbarComponent';
+import { useEffect } from "react";
+import { useMutation } from "react-query";
+import { getToken } from "../../utils/getToken";
+import jwt_decode from 'jwt-decode';
+import { paymentRepository } from "../../domain/repositories/paymentRepository";
+import { plugRepository } from "../../domain/repositories/plugRepository";
+import { queryClient } from "../../../App"
 
 const HomePage = () => {
   const navigation = useNavigation();
-
   const [carregarOption, setCarregarOption] = useState(false);
-  const [option, setOption] = useState(null);
-  const [quantidade, setQuantidade] = useState('');
-
+  const [token, setToken] = useState('');
+  const [userId, setUserId] = useState('');
+  const [creditAmount, setCreditAmount] = useState(0);
+  const [plugName, setPlugName] = useState("")
+  const [disabled, setDisabled] = useState(true);
   const data = [
     { value: "Celular" },
     { value: "Patinete/Bike T2" },
     { value: "Patinete/Bike T3" }
   ];
+
+  useEffect(() => {
+    const Token = getToken();
+    setToken(Token);
+    var decoded = jwt_decode(Token);
+    setUserId(decoded.userId);
+  }, [])
+
+  useEffect(() => {
+    if(creditAmount != 0 && plugName != "")
+      setDisabled(false)
+    else
+      setDisabled(true)
+  }, [creditAmount])
+
+  const mutationPlug = useMutation(() => plugRepository.setPlug(token, userId, creditAmount, plugName), {
+    onSuccess: async (data) => {
+      console.log("data", data);
+      mutationOperation.mutate();
+    },
+    onError: (error) => {
+      console.log(error.response.data.error)
+    } 
+  });
+
+  const mutationOperation = useMutation(() => paymentRepository.createOperation(token, userId, "USO", null, creditAmount), {
+    onSuccess: async (data) => {
+      console.log(data);
+      queryClient.invalidateQueries("getUser");
+    },
+    onError: (error) => {
+      console.log(error.response.data.error)
+    } 
+    
+  });
+
+  const confirmModal = async () => {
+    setCarregarOption(false);
+    // const paramAxios = plugName.substring(0, 1) + plugName.substring(7, 8);
+    //   console.log(paramAxios);
+    //   const resp = axios({
+    //     url: `http://192.168.4.1/${paramAxios}`,
+    //     method: "GET",
+    //     timeout: 5000,
+    //     headers: {
+    //       Accept: 'application/json',
+    //       'content-type': 'application/json',
+    //     }
+    //   }).then((response) => {
+    //     console.log("Deu certo", response.data);
+    //     mutationPlug.mutate();
+    //   }).catch((error) => {
+    //     console.error(error)
+    //   })
+    mutationPlug.mutate();
+  }
+
+  const selectPlug = async (value) => {
+    if (value == "Celular")
+      setPlugName("Tomada 1");
+    if (value == "Patinete/Bike T2")
+      setPlugName("Tomada 2");
+    if (value == "Patinete/Bike T3")
+      setPlugName("Tomada 3");
+  }
 
   return (
     <View style={styles.container}>
@@ -62,24 +135,27 @@ const HomePage = () => {
               {" "}
               Selecione a tomada que deseja usar:{" "}
             </Text>
-            <RadioButton data={data} onSelect={(value) => setOption(value)} />
+            <RadioButton data={data} onSelect={(value) => selectPlug(value)} />
             <TextInput
               style={styles.input}
               placeholder="Quantidade de créditos:"
-              value={quantidade}
-              onChangeText={setQuantidade}
-              secureTextEntry
+              value={creditAmount}
+              onChangeText={setCreditAmount}
+              keyboardType="numeric"
+              inputMode='numeric'
             />
 
             <View style={styles.buttons}>
               <TouchableOpacity
                 style={styles.buttonClose}
-                onPress={() => setCarregarOption(false)}>
+                onPress={() => {setCarregarOption(false); setPlugName(""); setCreditAmount(0);}}>
                 <Text style={styles.textStyle}>Fechar</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.buttonClose}
-                onPress={() => setCarregarOption(false)}>
+                onPress={() => confirmModal()}
+                disabled={disabled}
+              >
                 <Text style={styles.textStyle}>Confirmar</Text>
               </TouchableOpacity>
             </View>
