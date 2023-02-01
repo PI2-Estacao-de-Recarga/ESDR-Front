@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, ActivityIndicator } from 'react-native';
+import { View, Text, Image } from 'react-native';
 import { styles } from './styles';
 import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
 import { authRepository } from '../../store/auth/authRepository';
@@ -7,6 +7,7 @@ import { useQuery } from "react-query";
 import { getToken } from '../../utils/getToken';
 import jwt_decode from 'jwt-decode';
 import { useEffect } from 'react';
+import NavbarComponent from '../../components/navbarComponent';
 
 const Profile = () => {
   const [profile, setProfile] = useState({
@@ -41,6 +42,7 @@ const Profile = () => {
 
   return (
     <View style={styles.container}>
+      <NavbarComponent />
       {/* <ActivityIndicator animating={isLoading} color="#000000" size="large" /> */}
       <View style={styles.profilePic}>
         <Image

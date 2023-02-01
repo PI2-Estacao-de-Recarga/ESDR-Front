@@ -5,7 +5,7 @@ import styles from './styles';
 import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
 import { useNavigation } from '@react-navigation/native';
 import { useEffect } from 'react';
-
+import NavbarComponent from '../../components/navbarComponent';
 
 const CompraPage = () => {
   const [creditos, setCreditos] = useState(0);
@@ -25,6 +25,7 @@ const CompraPage = () => {
 
   return (
     <View style={styles.container}>
+      <NavbarComponent/>
       <View style={styles.item}>
         <Text style={styles.itemTitle1}>Compra de créditos</Text>
         <TextInput

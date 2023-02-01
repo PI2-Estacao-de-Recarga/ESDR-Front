@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { useMutation } from 'react-query';
 import { paymentRepository } from '../../domain/repositories/paymentRepository';
 import { useEffect } from 'react';
+import NavbarComponent from '../../components/navbarComponent';
 // import Clipboard from "@react-native-community/clipboard";
 
 const PixPayment = ({ route }) => {
@@ -41,6 +42,7 @@ const PixPayment = ({ route }) => {
 
   return (
     <View style={styles.container}>
+      <NavbarComponent />
       <Text style={styles.fontTitle}>
         Pedido de créditos realizado!
       </Text>
