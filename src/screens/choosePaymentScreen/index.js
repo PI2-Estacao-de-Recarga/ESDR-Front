@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, Button, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { Card, Header, Input } from 'react-native-elements';
 import styles from './styles';
 import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
@@ -12,7 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 import NavbarComponent from '../../components/navbarComponent';
 // import { useLocation } from "react-router-dom";
 
-const ChoosePaymentScreen = ({route}) => {
+const ChoosePaymentScreen = ({ route }) => {
   const [token, setToken] = useState('');
   const [userId, setUserId] = useState('');
   const navigation = useNavigation();
@@ -36,28 +36,32 @@ const ChoosePaymentScreen = ({route}) => {
 
   return (
     <View style={styles.container}>
-      <NavbarComponent/>
-      <Text style={styles.fontTitle}>
-        Selecione o método de pagamento:
-      </Text>
-      <TouchableOpacity
-        style={styles.button}
-        disabled={true}
-      >
-        <Text style={styles.textButton}>
-          PicPay (Desativado)
-        </Text>
-      </TouchableOpacity>
+      <NavbarComponent />
+      {mutation.isLoading || mutation.isFetching ?
+        <ActivityIndicator size={80} color="#000000" />
+        :
+        <>
+          <Text style={styles.fontTitle}>
+            Selecione o método de pagamento:
+          </Text>
+          <TouchableOpacity
+            style={styles.button}
+            disabled={true}
+          >
+            <Text style={styles.textButton}>
+              PicPay (Desativado)
+            </Text>
+          </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => mutation.mutate()}
-      >
-        <Text style={styles.textButton}>
-          Pix
-        </Text>
-      </TouchableOpacity>
-
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => mutation.mutate()}
+          >
+            <Text style={styles.textButton}>
+              Pix
+            </Text>
+          </TouchableOpacity>
+        </>}
       <BottomTabs icons={bottomTabIcons} />
     </View>
   );
