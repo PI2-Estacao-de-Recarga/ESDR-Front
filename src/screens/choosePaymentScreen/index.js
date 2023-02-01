@@ -15,8 +15,6 @@ const ChoosePaymentScreen = ({route}) => {
   const [token, setToken] = useState('');
   const [userId, setUserId] = useState('');
   const navigation = useNavigation();
-  // const location = useLocation();
-  // const { value } = location.state 
   const value = route.params.value;
 
   useEffect(() => {
@@ -34,9 +32,6 @@ const ChoosePaymentScreen = ({route}) => {
     onError: (error) => console.log(error)
   });
 
-  const handleSubmit = async () => {
-    mutation.mutate();
-  }
 
   return (
     <View style={styles.container}>
@@ -45,6 +40,7 @@ const ChoosePaymentScreen = ({route}) => {
       </Text>
       <TouchableOpacity
         style={styles.button}
+        disabled={true}
         onPress={() => navigation.navigate('creditCardPaymentScreen')}
       >
         <Text style={styles.textButton}>
@@ -54,7 +50,7 @@ const ChoosePaymentScreen = ({route}) => {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => handleSubmit()}
+        onPress={() => mutation.mutate()}
       >
         <Text style={styles.textButton}>
           Pix

@@ -51,7 +51,7 @@ export const styles = StyleSheet.create({
     width: 300,
     marginVertical: 16,
   },
-  input:{
+  input: {
     width: 270,
     margin: 12,
     marginTop: 30,
@@ -62,5 +62,22 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  button: {
+    backgroundColor: 'black',
+    borderRadius: 10,
+    width: 200,
+    height: 40,
+    marginVertical: 10,
+    justifyContent: 'center',
+  },
+  textButton: {
+    fontFamily: theme.fonts.InterRegular,
+    alignSelf: 'center',
+    fontSize: 16,
+    fontWeight: '600',
+    paddingTop: 5,
+    paddingBottom: 5,
+    color: '#FFF'
+  }
 
 });
