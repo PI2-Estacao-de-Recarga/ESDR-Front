@@ -48,7 +48,7 @@ const ChoosePaymentScreen = ({route}) => {
         onPress={() => navigation.navigate('creditCardPaymentScreen')}
       >
         <Text style={styles.textButton}>
-          PicPay
+          PicPay (Desativado)
         </Text>
       </TouchableOpacity>
 

@@ -4,11 +4,20 @@ import { Card, Header, Input } from 'react-native-elements';
 import styles from './styles';
 import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
 import { useNavigation } from '@react-navigation/native';
+import { useEffect } from 'react';
 
 
 const CompraPage = () => {
   const [creditos, setCreditos] = useState(0);
+  const [disabled, setDisabled] = useState(true);
   const navigation = useNavigation();
+
+  useEffect(() => {
+    if(creditos != 0)
+      setDisabled(false)
+    else if (creditos == 0)
+      setDisabled(true)
+  }, [creditos])
  
   const handleSubmit = async () => {
     navigation.navigate('choosePaymentScreen',  { value: creditos });
@@ -41,6 +50,8 @@ const CompraPage = () => {
         </Text>
       </View>
       <TouchableOpacity
+        disabled={disabled}
+        activeOpacity={0.5}
         style={styles.button1}
         onPress={() => handleSubmit()}
       >
