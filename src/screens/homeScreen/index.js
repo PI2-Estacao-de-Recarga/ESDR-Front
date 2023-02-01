@@ -12,6 +12,7 @@ import Balance from '../../components/balance';
 import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
 import { useNavigation } from '@react-navigation/native';
 import RadioButton from "../../components/radioButton";
+import NavbarComponent from '../../components/navbarComponent';
 
 const HomePage = () => {
   const navigation = useNavigation();
@@ -21,13 +22,14 @@ const HomePage = () => {
   const [quantidade, setQuantidade] = useState('');
 
   const data = [
-    { value: "Tomada 1" },
-    { value: "Tomada 2" },
-    { value: "Tomada 3" }
+    { value: "Celular" },
+    { value: "Patinete/Bike T2" },
+    { value: "Patinete/Bike T3" }
   ];
 
   return (
     <View style={styles.container}>
+      <NavbarComponent />
       <Balance />
       <TouchableOpacity
         style={styles.button1}
@@ -40,19 +42,10 @@ const HomePage = () => {
 
       <TouchableOpacity
         style={styles.button2}
-        onPress={() => navigation.navigate('home')}
-      >
-        <Text style={styles.textButton}>
-          Carregar Celular
-        </Text>
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        style={styles.button3}
         onPress={() => setCarregarOption(true)}
       >
         <Text style={styles.textButton}>
-          Carregar Patins/Bicicleta
+          Carregamento
         </Text>
       </TouchableOpacity>
       <Modal

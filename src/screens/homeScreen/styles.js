@@ -11,20 +11,14 @@ const styles = StyleSheet.create({
     button1:{
         backgroundColor: 'black',
         borderRadius: 10,
+        marginBottom: 10,
         marginTop: 200,
         borderWidth: 2,
         width: 300
     },
     button2:{
         backgroundColor: 'black',
-        borderRadius: 10,
-        marginTop: 20,
-        marginBottom: 20,
-        borderWidth: 2,
-        width: 300
-    },
-    button3:{
-        backgroundColor: 'black',
+        marginTop: 10,
         borderRadius: 10,
         borderWidth: 2,
         width: 300

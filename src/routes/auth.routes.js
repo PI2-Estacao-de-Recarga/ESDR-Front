@@ -4,7 +4,6 @@ import Login from '../../src/screens/loginScreen';
 import Register from '../../src/screens/registerScreen';
 import PixPayment from '../../src/screens/pixPaymentScreen';
 import CompraPage from '../screens/compraScreen';
-import CreditCardPayment from '../../src/screens/creditCardPaymentScreen';
 import Profile from '../screens/profileScreen';
 import Statement from '../screens/statementScreen';
 import ChoosePaymentScreen from '../screens/choosePaymentScreen';
@@ -50,10 +49,6 @@ export function AuthRoutes() {
       <Stack.Screen
         name="choosePaymentScreen"
         component={ChoosePaymentScreen}
-      />
-      <Stack.Screen
-        name="creditCardPaymentScreen"
-        component={CreditCardPayment}
       />
       <Stack.Screen
         name="statement"

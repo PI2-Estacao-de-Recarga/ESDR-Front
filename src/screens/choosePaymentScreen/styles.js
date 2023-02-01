@@ -28,8 +28,8 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         fontSize: 16,
         fontWeight: '600',
-        paddingTop: 5,
-        paddingBottom: 5,
+        paddingTop: 10,
+        paddingBottom: 10,
         color: '#FFF'
     }
 });

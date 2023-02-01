@@ -9,6 +9,7 @@ import { useEffect } from 'react';
 import { getToken } from '../../utils/getToken';
 import jwt_decode from 'jwt-decode';
 import { useNavigation } from '@react-navigation/native';
+import NavbarComponent from '../../components/navbarComponent';
 // import { useLocation } from "react-router-dom";
 
 const ChoosePaymentScreen = ({route}) => {
@@ -35,13 +36,13 @@ const ChoosePaymentScreen = ({route}) => {
 
   return (
     <View style={styles.container}>
+      <NavbarComponent/>
       <Text style={styles.fontTitle}>
         Selecione o método de pagamento:
       </Text>
       <TouchableOpacity
         style={styles.button}
         disabled={true}
-        onPress={() => navigation.navigate('creditCardPaymentScreen')}
       >
         <Text style={styles.textButton}>
           PicPay (Desativado)
