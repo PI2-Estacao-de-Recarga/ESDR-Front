@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import { theme } from '../../global/styles/theme';
 
 export const styles = StyleSheet.create({
   container: {
@@ -9,14 +10,16 @@ export const styles = StyleSheet.create({
     height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  modalContent: {
-    flex: 1,
+    backgroundColor: '#00000050',
+},
+modalContent: {
     backgroundColor: '#FFF',
+    width: '80%',
+    height: '40%',
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
-  },
+},
   button: {
     backgroundColor: '#000000',
     color: '#FFFFFF',

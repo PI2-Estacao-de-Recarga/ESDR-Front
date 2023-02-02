@@ -7,7 +7,7 @@
     "icon": "./assets/LogoESDR.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/LogoESDR.png",
+      "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
