@@ -22,13 +22,13 @@ import { paymentRepository } from "../../domain/repositories/paymentRepository";
 import { plugRepository } from "../../domain/repositories/plugRepository";
 import { queryClient } from "../../../App"
 
-
-
-const HomePage = ({route}) => {
+const HomePage = ({ route }) => {
   const navigation = useNavigation();
   const [carregarOption, setCarregarOption] = useState(false);
-  const token = route.params.token;
-  const userId = route.params.userId;
+  // const token = route.params.token;
+  // const userId = route.params.userId;
+  const [token, setToken] = useState("");
+  const [userId, setUserId] = useState("");
   const [creditAmount, setCreditAmount] = useState(0);
   const [plugName, setPlugName] = useState("")
   const [disabled, setDisabled] = useState(true);
@@ -46,13 +46,44 @@ const HomePage = ({route}) => {
     { value: "Patinete/Bike T2", disable: false },
     { value: "Patinete/Bike T3", disable: false }
   ]);
+  const [loading, setLoading] = useState(true);
 
-  // useEffect(() => {
-  //   const Token = getToken();
-  //   setToken(Token);
-  //   var decoded = jwt_decode(Token);
-  //   setUserId(decoded.userId);
-  // }, [])
+  const getUserPlug = async () => {
+    return plugRepository.getPlug(token, userId)
+      .then((res) => {
+        setPlugInUse(getUserTomada(res.data));
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  const getPlugs = async () => {
+    return plugRepository.getPlug(token)
+      .then((res) => {
+        setPlugs(getTomadas(res.data));
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  useEffect(() => {
+    const Token = getToken();
+    setToken(Token);
+    console.log(token);
+    var decoded = jwt_decode(Token);
+    setUserId(decoded.userId);
+  }, [])
+
+  useEffect(() => {
+    setTimeout(() => {
+      getUserPlug();
+      getPlugs();
+    }, 3000);
+  }, [token])
 
   useEffect(() => {
     if (creditAmount != 0 && plugName != "")
@@ -61,25 +92,25 @@ const HomePage = ({route}) => {
       setDisabled(true)
   }, [creditAmount])
 
-  const query = useQuery('getUserPlug', () => plugRepository.getPlug(token, userId), {
-    initialData: plugInUse,
-    enabled: !!token,
-  });
+  // const query = useQuery('getUserPlug', () => plugRepository.getPlug(token, userId), {
+  //   initialData: plugInUse,
+  //   enabled: !!token,
+  // });
 
-  useEffect(() => {
-    var x = [];
-    x = getUserTomada(query.data);
-  }, [query.isFetched])
+  // useEffect(() => {
+  //   var x = [];
+  //   x = getUserTomada(query.data);
+  // }, [query.isFetched])
 
-  const queryPlugs = useQuery('getPlugs', () => plugRepository.getPlug(token), {
-    initialData: plugs,
-    enabled: !!token,
-    retry: 3,
-  });
+  // const queryPlugs = useQuery('getPlugs', () => plugRepository.getPlug(token), {
+  //   initialData: plugs,
+  //   enabled: !!token,
+  //   retry: 3,
+  // });
 
-  useEffect(() => {
-    const x = getTomadas(queryPlugs.data);
-  }, [queryPlugs.data])
+  // useEffect(() => {
+  //   const x = getTomadas(queryPlugs.data);
+  // }, [queryPlugs.data])
 
   function getTomadas(listOfPlugs) {
     var auxList = []
@@ -155,11 +186,12 @@ const HomePage = ({route}) => {
       setPlugName("Tomada 3");
   }
 
-  if(query.status == "success") {
-    console.log("hha", query.data);
+  if (!loading) {
+    console.log("plugInUse: ", plugInUse);
+    console.log("\nplugs: ", plugs);
   }
 
-  if (query.isLoading || query.isFetching) {
+  if (loading) {
     return (
       <View style={styles.container}>
         <NavbarComponent />
@@ -167,11 +199,11 @@ const HomePage = ({route}) => {
         <BottomTabs icons={bottomTabIcons} />
       </View>
     )
-    }
+  }
   return (
     <View style={styles.container}>
       <NavbarComponent />
-      <Balance tomada={getUserTomada(query.data)} />
+      <Balance tomada={plugInUse} />
       <TouchableOpacity
         style={styles.button1}
         onPress={() => navigation.navigate('compra')}
@@ -204,7 +236,7 @@ const HomePage = ({route}) => {
               {" "}
               Selecione a tomada que deseja usar:{" "}
             </Text>
-            <RadioButton data={data} onSelect={(value) => selectPlug(value)} disable={getTomadas(queryPlugs.data)} />
+            <RadioButton data={data} onSelect={(value) => selectPlug(value)} disable={plugs} />
             <TextInput
               style={styles.input}
               placeholder="Quantidade de créditos:"

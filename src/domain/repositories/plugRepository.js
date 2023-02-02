@@ -25,6 +25,6 @@ async function getPlug(token, userId = "", inUse = true) {
     let ret = await _axios.get(`/get-plugs?inUse=${inUse}&userId=${userId}`);
 
     // ?inUse=${inUse}&userId=${userId}`);
-    return ret.data;
+    return ret;
 }
 
