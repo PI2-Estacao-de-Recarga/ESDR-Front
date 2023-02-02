@@ -3,14 +3,16 @@ import { View, Text, TouchableOpacity, Modal, TouchableWithoutFeedback } from 'r
 import { styles } from './styles';
 import { useSelector, useDispatch } from 'react-redux';
 import { setModalSessionClose } from '../../store/modalSession/modalSessionSlice';
+import { useNavigation } from '@react-navigation/native';
 
 export function ModalSessionOut(props) {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const { modalSessionOpen } = useSelector((state) => state.modalSession);
 
   const handleSessionOut = () => {
     dispatch(setModalSessionClose());
-
+    navigation.replace('login');
   }
 
   return (

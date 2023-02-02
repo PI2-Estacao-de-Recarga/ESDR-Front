@@ -34,7 +34,6 @@ const BottonTabs = ({ icons }) => {
 
     if (token !== "" && expireIn !== "" && expireIn * 1000 <= Date.now()) {
         console.log('token expired:: ', Date.now(), ' - ', expireIn * 1000, " ::", expireIn * 1000 <= Date.now());
-        navigation.replace('login');
         dispatch(logout());
         dispatch(setModalSessionOpen());
     }
