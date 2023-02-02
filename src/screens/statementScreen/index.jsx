@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Image, ScrollView } from 'react-native';
+import { View, Text, Image, ScrollView, ActivityIndicator } from 'react-native';
 import { styles } from './styles';
 import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
 import NavbarComponent from '../../components/navbarComponent';
@@ -25,10 +25,9 @@ const Statement = () => {
 
   useEffect(() => {
     const Token = getToken();
-    setToken(Token);
-    console.log(Token);
     var decoded = jwt_decode(Token);
     setUserId(decoded.userId);
+    setToken(Token);
   }, [])
 
   function formatDate(date) {
@@ -47,6 +46,7 @@ const Statement = () => {
 
   const query = useQuery(['getUser', token, userId], () => authRepository.getUser(token, userId), {
     initialData: operations,
+    enabled: !!token,
   });
 
   useEffect(() => {
@@ -59,28 +59,33 @@ const Statement = () => {
 
   return (
     <View style={styles.container}>
-      <NavbarComponent/>
-      <View style={styles.page}>
-        <Text style={styles.body}>
-            Olá, {operations.name}, seu extrato:
-          </Text>
-          <ScrollView>
-            {operations.operations.map((item)  => (
-              <View key={item.id} style={styles.item}>
-                <Text style={styles.date}>{formatDate(item.createdAt)}</Text>
-                <View style={styles.movimentation}>
-                  <Text style={styles.quantity}>
-                    {getSign(item.operationType)}{item.creditAmount}
-                  </Text>
-                  <Image
-                    source={require("../../../assets/dolar.png")}
-                    style={styles.dolar}
-                  />
+      <NavbarComponent />
+      {query.isLoading || query.isFetching ?
+        <ActivityIndicator size={80} color="#000000" />
+        :
+        <>
+          <View style={styles.page}>
+            <Text style={styles.body}>
+              Olá, {operations.name}, seu extrato:
+            </Text>
+            <ScrollView>
+              {operations.operations.map((item) => (
+                <View key={item.id} style={styles.item}>
+                  <Text style={styles.date}>{formatDate(item.createdAt)}</Text>
+                  <View style={styles.movimentation}>
+                    <Text style={styles.quantity}>
+                      {getSign(item.operationType)}{item.creditAmount}
+                    </Text>
+                    <Image
+                      source={require("../../../assets/dolar.png")}
+                      style={styles.dolar}
+                    />
+                  </View>
                 </View>
-              </View>
-            ))}
-          </ScrollView>
-        </View>
+              ))}
+            </ScrollView>
+          </View>
+        </>}
       <BottomTabs icons={bottomTabIcons} />
     </View>
   );

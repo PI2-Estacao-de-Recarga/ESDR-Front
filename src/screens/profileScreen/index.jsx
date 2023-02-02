@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image } from 'react-native';
+import { View, Text, Image, ActivityIndicator } from 'react-native';
 import { styles } from './styles';
 import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
 import { authRepository } from '../../store/auth/authRepository';
@@ -11,8 +11,8 @@ import NavbarComponent from '../../components/navbarComponent';
 
 const Profile = () => {
   const [profile, setProfile] = useState({
-    name: 'Teste',
-    email: 'teste@email.com',
+    name: '',
+    email: '',
     cpf: '***.***.***-**',
   });
   const [token, setToken] = useState('');
@@ -20,14 +20,15 @@ const Profile = () => {
 
   useEffect(() => {
     const Token = getToken();
-    setToken(Token);
-    console.log(Token);
+    console.log("AAAAAAAAAAAAA:\n\n\n", Token);
     var decoded = jwt_decode(Token);
     setUserId(decoded.userId);
+    setToken(Token);
   }, [])
 
-  const query = useQuery(['getUser', token, userId], () => authRepository.getUser(token, userId), {
+  const query = useQuery('getUser', () => authRepository.getUser(token, userId), {
     initialData: profile,
+    enabled: !!token,
   });
 
   useEffect(() => {
@@ -43,27 +44,32 @@ const Profile = () => {
   return (
     <View style={styles.container}>
       <NavbarComponent />
-      {/* <ActivityIndicator animating={isLoading} color="#000000" size="large" /> */}
-      <View style={styles.profilePic}>
-        <Image
-          style={styles.profilePicImage}
-          source={require('../../../assets/profilePic.png')}
-        />
-      </View>
-      <View style={styles.profileContent}>
-        <Text style={styles.title}>Nome</Text>
-        <Text style={styles.body}>
-          {profile.name}
-        </Text>
-        <Text style={styles.title}>Email</Text>
-        <Text style={styles.body}>
-          {profile.email}
-        </Text>
-        <Text style={styles.title}>CPF</Text>
-        <Text style={styles.body}>
-          {profile.cpf}
-        </Text>
-      </View>
+      {query.isLoading || query.isFetching ?
+        <ActivityIndicator size={80} color="#000000" />
+        :
+        <>
+          <View style={styles.profilePic}>
+            <Image
+              style={styles.profilePicImage}
+              source={require('../../../assets/profilePic.png')}
+            />
+          </View>
+          <View style={styles.profileContent}>
+            <Text style={styles.title}>Nome</Text>
+            <Text style={styles.body}>
+              {profile.name}
+            </Text>
+            <Text style={styles.title}>Email</Text>
+            <Text style={styles.body}>
+              {profile.email}
+            </Text>
+            <Text style={styles.title}>CPF</Text>
+            <Text style={styles.body}>
+              {profile.cpf}
+            </Text>
+          </View>
+        </>
+      }
       <BottomTabs icons={bottomTabIcons} />
     </View>
   );

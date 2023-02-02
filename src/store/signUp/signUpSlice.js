@@ -25,6 +25,9 @@ const signUpSlice = createSlice({
     setError: (state, action) => {
       state.error = action.payload.error;
       state.errorMessage = action.payload.errorMessage;
+    },
+    setSuccess: (state, action) => {
+      state.success = action.payload.success;
     }
   },
   extraReducers: builder => {
@@ -44,6 +47,6 @@ const signUpSlice = createSlice({
 
 const { actions, reducer } = signUpSlice
 
-export const { signUp, setError } = actions
+export const { signUp, setError, setSuccess } = actions
 
 export default reducer

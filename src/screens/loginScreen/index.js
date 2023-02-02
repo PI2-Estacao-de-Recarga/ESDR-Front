@@ -87,17 +87,18 @@ const Login = () => {
         animationType="slide"
         visible={showError}
         transparent={true}
-        style={styles.modal}
         onRequestClose={() => setShowError(false)}
       >
-        <View style={styles.modalContent}>
-          <Text>{auth.errorMessage}</Text>
-          <TouchableOpacity
-            onPress={() => closeErrorModal()}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Rescrever Dados</Text>
-          </TouchableOpacity>
+        <View style={styles.modal}>
+          <View style={styles.modalContent}>
+            <Text style={styles.errorText}>{auth.errorMessage}</Text>
+            <TouchableOpacity
+              onPress={() => closeErrorModal()}
+              style={styles.button}
+            >
+              <Text style={styles.buttonText}>Rescrever Dados</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
     </View>
