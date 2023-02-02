@@ -17,9 +17,9 @@ const Stack = createStackNavigator();
 export function AuthRoutes() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const { expireIn } = useSelector((state) => state.auth.tokenInfo);
+  const { expireIn, token } = useSelector((state) => state.auth.tokenInfo);
 
-  if (expireIn !== "" && expireIn <= Date.now()) {
+  if (token !== "" && expireIn !== "" && expireIn <= Date.now()) {
     dispatch(logout());
     dispatch(setModalSessionOpen());
     navigation.replace('login');
