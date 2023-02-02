@@ -60,18 +60,26 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#FFFFFF',
     },
+    errorText: {
+        fontFamily: theme.fonts.InterBold,
+        fontSize: 16,
+        color: '#000',
+    },
     modal: {
-        width: '100%',
-        height: '100%',
-        justifyContent: 'center',
+        flex: 1,
         alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     modalContent: {
-        flex: 1,
-        backgroundColor: '#FFF',
-        borderRadius: 10,
+        height: '30%',
+        width: '80%',
+        backgroundColor: 'white',
+        padding: 22,
         justifyContent: 'center',
         alignItems: 'center',
+        borderRadius: 10,
+        borderColor: 'rgba(0, 0, 0, 0.1)',
     },
 });
 
