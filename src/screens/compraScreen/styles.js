@@ -25,7 +25,8 @@ const styles = StyleSheet.create({
     },
     itemTitle2: {
         borderTopWidth: 2,
-        fontSize: 15,
+        fontFamily: theme.fonts.InterBold,
+        fontSize: 20,
         fontWeight: '600',
         margin: 20,
         paddingTop: 50,

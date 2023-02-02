@@ -5,12 +5,16 @@ const styles = StyleSheet.create({
     container:{
         backgroundColor: '#59595912',
         alignSelf: 'center',
-        marginBottom: -100,
         height: 200,
         width: 300,
         borderRadius: 15,
         paddingStart: 5,
         paddingEnd: 5,
+    },
+    carrousel: {
+        height: 200,
+        maxHeight: 200,
+        margin: 0,
     },
     item:{
         margin: 10,

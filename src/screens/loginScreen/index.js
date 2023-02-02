@@ -6,7 +6,7 @@ import { login } from '../../store/auth/authSlice';
 import { View, Text, TextInput, TouchableOpacity, Modal } from 'react-native';
 import styles from './styles';
 import { setError } from '../../store/auth/authSlice';
-
+import jwt_decode from 'jwt-decode';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -29,7 +29,9 @@ const Login = () => {
     setShowError(false);
 
     if (auth.isAuthenticated) {
-      navigation.replace('home');
+      var token = auth.tokenInfo.token;
+      var decoded = jwt_decode(token);
+      navigation.navigate('home', { token: auth.tokenInfo.token , userId: decoded.userId });
     }
 
     if (auth.error) {
@@ -87,17 +89,18 @@ const Login = () => {
         animationType="slide"
         visible={showError}
         transparent={true}
-        style={styles.modal}
         onRequestClose={() => setShowError(false)}
       >
-        <View style={styles.modalContent}>
-          <Text>{auth.errorMessage}</Text>
-          <TouchableOpacity
-            onPress={() => closeErrorModal()}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Rescrever Dados</Text>
-          </TouchableOpacity>
+        <View style={styles.modal}>
+          <View style={styles.modalContent}>
+            <Text style={styles.errorText}>{auth.errorMessage}</Text>
+            <TouchableOpacity
+              onPress={() => closeErrorModal()}
+              style={styles.button}
+            >
+              <Text style={styles.buttonText}>Rescrever Dados</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
     </View>

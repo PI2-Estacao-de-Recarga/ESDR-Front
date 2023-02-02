@@ -2,6 +2,7 @@ import HttpClient from "../../utils/httpClient";
 
 export const plugRepository= {
     setPlug,
+    getPlug,
 };
 
 async function setPlug(token, userId, timeAmount, name) {
@@ -16,5 +17,14 @@ async function setPlug(token, userId, timeAmount, name) {
     let ret = await _axios.post(`set-plug`, body);
     
     return ret.data;
+}
+
+async function getPlug(token, userId = "", inUse = true) {
+    let _axios = new HttpClient({ api: true, authenticated: true, token: token }).instance;
+
+    let ret = await _axios.get(`/get-plugs?inUse=${inUse}&userId=${userId}`);
+
+    // ?inUse=${inUse}&userId=${userId}`);
+    return ret;
 }
 
