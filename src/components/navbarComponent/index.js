@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity, Modal } from 'react-native';
 import { authRepository } from '../../store/auth/authRepository';
 import { useQuery } from "react-query";
 import { getToken } from '../../utils/getToken';
@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { styles } from './styles';
 
 const NavbarComponent = () => {
+    const [carregarOption, setCarregarOption] = useState(false);
     const [amount, setAmount] = useState({
         name: 'Teste',
         balance: '0'
@@ -40,7 +41,40 @@ const NavbarComponent = () => {
         <Text style={styles.body}>
             {amount.balance}
         </Text>
+        
+        <TouchableOpacity
+        onPress={() => setCarregarOption(true)}
+      >
         <Icon name="info" size={30} color="#000" style={styles.iconRight} />
+      </TouchableOpacity>
+      <Modal
+        animationType={'slide'}
+        transparent={true}
+        visible={carregarOption}
+        onRequestClose={() => {
+          setCarregarOption(!carregarOption);
+        }}
+      >
+        <View style={styles.modalView}>
+          <View style={styles.centeredView}>
+            <Text style={styles.paragraph}>
+              {" "}
+              1 minuto de carregamento = 1 crédito{" "}
+            </Text>
+            <Text style={styles.paragraph}>
+              {" "}
+              1 minuto de carregamento = R$0,05{" "}
+            </Text>
+            <View style={styles.buttons}>
+              <TouchableOpacity
+                style={styles.buttonClose}
+                onPress={() => {setCarregarOption(false)}}>
+                <Text style={styles.textStyle}>OK</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
         </View>
     );
 };
