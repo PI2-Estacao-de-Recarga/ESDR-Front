@@ -22,7 +22,7 @@ import jwt_decode from 'jwt-decode';
 import { paymentRepository } from "../../domain/repositories/paymentRepository";
 import { plugRepository } from "../../domain/repositories/plugRepository";
 import { queryClient } from "../../../App"
-import { axios } from "axios";
+import axios from 'axios';
 
 const HomePage = ({ route }) => {
   const navigation = useNavigation();
@@ -172,7 +172,7 @@ const HomePage = ({ route }) => {
     const resp = axios({
       url: `http://192.168.4.1/${paramAxios}`,
       method: "GET",
-      timeout: 5000,
+      timeout: 10000,
       headers: {
         Accept: 'application/json',
         'content-type': 'application/json',
@@ -181,7 +181,7 @@ const HomePage = ({ route }) => {
       console.log("Deu certo", response.data);
       mutationPlug.mutate();
     }).catch((error) => {
-      console.error(error)
+      console.log("Error", error.response.data);
     })
     // mutationPlug.mutate();
   }
