@@ -15,6 +15,7 @@ export const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderBottomWidth: 1,
         borderBottomColor: '#ddd',
+        zIndex: 1
     },
     iconRight: {
         marginLeft: 'auto',
