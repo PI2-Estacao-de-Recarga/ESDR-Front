@@ -6,7 +6,8 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
+  TouchableWithoutFeedback, Keyboard,
 } from 'react-native';
 import styles from './styles';
 import Balance from '../../components/balance';
@@ -237,38 +238,40 @@ const HomePage = ({ route }) => {
             setCarregarOption(!carregarOption);
           }}
         >
-          <View style={styles.modalView}>
-            <View style={styles.centeredView}>
-              <Text style={styles.paragraph}>
-                {" "}
-                Selecione a tomada que deseja usar:{" "}
-              </Text>
-              <RadioButton data={data} onSelect={(value) => selectPlug(value)} disable={userPlugs} />
-              <TextInput
-                style={styles.input}
-                placeholder="Quantidade de créditos:"
-                value={creditAmount}
-                onChangeText={setCreditAmount}
-                keyboardType="numeric"
-                inputMode='numeric'
-              />
+          <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <View style={styles.modalView}>
+              <View style={styles.centeredView}>
+                <Text style={styles.paragraph}>
+                  {" "}
+                  Selecione a tomada que deseja usar:{" "}
+                </Text>
+                <RadioButton data={data} onSelect={(value) => selectPlug(value)} disable={userPlugs} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Quantidade de créditos:"
+                  value={creditAmount}
+                  onChangeText={setCreditAmount}
+                  keyboardType="numeric"
+                  inputMode='numeric'
+                />
 
-              <View style={styles.buttons}>
-                <TouchableOpacity
-                  style={styles.buttonClose}
-                  onPress={() => { setCarregarOption(false); setPlugName(""); setCreditAmount(0); }}>
-                  <Text style={styles.textStyle}>Fechar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.buttonClose}
-                  onPress={() => confirmModal()}
-                  disabled={disabled}
-                >
-                  <Text style={styles.textStyle}>Confirmar</Text>
-                </TouchableOpacity>
+                <View style={styles.buttons}>
+                  <TouchableOpacity
+                    style={styles.buttonClose}
+                    onPress={() => { setCarregarOption(false); setPlugName(""); setCreditAmount(0); }}>
+                    <Text style={styles.textStyle}>Fechar</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.buttonClose}
+                    onPress={() => confirmModal()}
+                    // disabled={disabled}
+                  >
+                    <Text style={styles.textStyle}>Confirmar</Text>
+                  </TouchableOpacity>
+                </View>
               </View>
             </View>
-          </View>
+          </TouchableWithoutFeedback>
         </Modal>
 
         <BottomTabs icons={bottomTabIcons} />
