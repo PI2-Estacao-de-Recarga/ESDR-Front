@@ -76,7 +76,7 @@ const authSlice = createSlice({
 
 const { actions, reducer } = authSlice
 
-export const { setSignIn, setLoading, setError } = actions
+export const { setSignIn, setLoading, setError, logout } = actions
 
 export default reducer
 

@@ -20,7 +20,7 @@ export function AuthRoutes() {
   const { expireIn } = useSelector((state) => state.auth.tokenInfo);
 
   if (expireIn !== "" && expireIn <= Date.now()) {
-    dispatch(logout);
+    dispatch(logout());
     dispatch(setModalSessionOpen());
     navigation.replace('login');
   }

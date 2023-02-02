@@ -30,6 +30,10 @@ const Register = ({ }) => {
     );
   }
 
+  const isAnyFieldEmpty = () => {
+    return name === '' || cpf === '' || email === '' || password === '' || passwordConfirmation === '';
+  }
+
   const closeErrorModal = () => {
     dispatch(setError({ error: false, errorMessage: '' }));
   }
@@ -95,6 +99,7 @@ const Register = ({ }) => {
       <TouchableOpacity
         style={styles.button}
         onPress={() => signUpConfirm()}
+        disabled={isAnyFieldEmpty()}
       >
         <Text style={styles.buttonText}>
           Criar Conta
