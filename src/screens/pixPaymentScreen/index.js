@@ -33,7 +33,7 @@ const PixPayment = ({ route }) => {
     alert("Texto Copiado!");
   }
 
-  const mutation = useMutation(() => paymentRepository.createOperation(token, userId, "COMPRA", data.id), {
+  const mutation = useMutation(() => paymentRepository.createOperation(token, userId, "COMPRA", (data.totalAmount/0.05)), {
     onSuccess: async (data) => {
       console.log(data);
       queryClient.invalidateQueries("getUser");

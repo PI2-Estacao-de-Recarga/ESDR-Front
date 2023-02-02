@@ -56,7 +56,7 @@ const CompraPage = () => {
   }
 
   const handleSubmit = async () => {
-    navigation.navigate('choosePaymentScreen',  { value: (creditos/0.05) });
+    navigation.navigate('choosePaymentScreen',  { value: creditos });
   }
 
   return (
@@ -68,8 +68,9 @@ const CompraPage = () => {
           style={styles.input}
           placeholder='Valor em reais'
           value={creditos}
-          onChangeText={setCreditos}
+          onChangeText={creditos => setCreditos(creditos.replace(/[^0-9]/g, ''))}
           keyboardType='numeric'
+          maxLength={7}
         />
         <View style={styles.viewMoneyIcon}>
           <Image
