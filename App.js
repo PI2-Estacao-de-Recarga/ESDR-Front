@@ -6,7 +6,7 @@ import {
   useFonts,
 } from '@expo-google-fonts/inter';
 import * as SplashScreen from 'expo-splash-screen';
-import { View, StatusBar } from 'react-native';
+import { View, StatusBar, TouchableWithoutFeedback, Keyboard } from 'react-native';
 import { Routes } from './src/routes';
 import React from 'react';
 import { Provider } from 'react-redux';
@@ -38,10 +38,12 @@ const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Provider store={store}>
-        <View style={{ backgroundColor: "#FFFFFF", flex: 1 }}>
-          <StatusBar barStyle="dark-content" backgroundColor="transparent" />
-          <Routes />
-        </View>
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+          <View style={{ backgroundColor: "#FFFFFF", flex: 1 }}>
+            <StatusBar barStyle="dark-content" backgroundColor="transparent" />
+            <Routes />
+          </View>
+        </TouchableWithoutFeedback>
       </Provider>
     </QueryClientProvider>
   )
