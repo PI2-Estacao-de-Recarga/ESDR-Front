@@ -55,6 +55,7 @@ const HomePage = () => {
       mutationOperation.mutate();
     },
     onError: (error) => {
+      Alert.alert(error.response.data.error)
       console.log(error.response.data.error)
     } 
   });
@@ -65,6 +66,8 @@ const HomePage = () => {
       queryClient.invalidateQueries("getUser");
     },
     onError: (error) => {
+      
+      Alert.alert(error.response.data.error)
       console.log(error.response.data.error)
     } 
     
