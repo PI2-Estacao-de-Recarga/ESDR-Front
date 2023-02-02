@@ -104,23 +104,24 @@ const Register = ({ }) => {
         animationType="slide"
         visible={signUpState.error}
         transparent={true}
-        style={styles.modal}
         onRequestClose={() => closeErrorModal()}
       >
-        <View style={styles.modalContent}>
-          <Text>{signUpState.errorMessage}</Text>
-          <TouchableOpacity
-            onPress={() => closeErrorModal()}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Rescrever Dados</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('login')}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Ir para Login</Text>
-          </TouchableOpacity>
+        <View style={styles.modal}>
+          <View style={styles.modalContent}>
+            <Text style={styles.errorText}>{signUpState.errorMessage}</Text>
+            <TouchableOpacity
+              onPress={() => closeErrorModal()}
+              style={styles.button}
+            >
+              <Text style={styles.buttonText}>Rescrever Dados</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('login')}
+              style={styles.button}
+            >
+              <Text style={styles.buttonText}>Ir para Login</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
       <Modal
