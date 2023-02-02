@@ -6,7 +6,7 @@ import { login } from '../../store/auth/authSlice';
 import { View, Text, TextInput, TouchableOpacity, Modal } from 'react-native';
 import styles from './styles';
 import { setError } from '../../store/auth/authSlice';
-
+import jwt_decode from 'jwt-decode';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -29,7 +29,9 @@ const Login = () => {
     setShowError(false);
 
     if (auth.isAuthenticated) {
-      navigation.navigate('home');
+      var token = auth.tokenInfo.token;
+      var decoded = jwt_decode(token);
+      navigation.navigate('home', { token: auth.tokenInfo.token , userId: decoded.userId });
     }
 
     if (auth.error) {

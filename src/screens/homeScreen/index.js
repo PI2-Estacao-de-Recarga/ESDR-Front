@@ -24,11 +24,11 @@ import { queryClient } from "../../../App"
 
 
 
-const HomePage = () => {
+const HomePage = ({route}) => {
   const navigation = useNavigation();
   const [carregarOption, setCarregarOption] = useState(false);
-  const [token, setToken] = useState('');
-  const [userId, setUserId] = useState('');
+  const token = route.params.token;
+  const userId = route.params.userId;
   const [creditAmount, setCreditAmount] = useState(0);
   const [plugName, setPlugName] = useState("")
   const [disabled, setDisabled] = useState(true);
@@ -47,12 +47,12 @@ const HomePage = () => {
     { value: "Patinete/Bike T3", disable: false }
   ]);
 
-  useEffect(() => {
-    const Token = getToken();
-    setToken(Token);
-    var decoded = jwt_decode(Token);
-    setUserId(decoded.userId);
-  }, [])
+  // useEffect(() => {
+  //   const Token = getToken();
+  //   setToken(Token);
+  //   var decoded = jwt_decode(Token);
+  //   setUserId(decoded.userId);
+  // }, [])
 
   useEffect(() => {
     if (creditAmount != 0 && plugName != "")
@@ -67,8 +67,8 @@ const HomePage = () => {
   });
 
   useEffect(() => {
-    const x = getUserTomada(query.data);
-    console.log("Nomes", x)
+    var x = [];
+    x = getUserTomada(query.data);
   }, [query.isFetched])
 
   const queryPlugs = useQuery('getPlugs', () => plugRepository.getPlug(token), {
@@ -79,10 +79,9 @@ const HomePage = () => {
 
   useEffect(() => {
     const x = getTomadas(queryPlugs.data);
-    console.log("Plugs", x)
-  }, [query.isFetched])
+  }, [queryPlugs.data])
 
-  function getTomadas(listOfPlugs){
+  function getTomadas(listOfPlugs) {
     var auxList = []
     listOfPlugs.forEach(item => {
       auxList.push(item.name)
@@ -90,13 +89,17 @@ const HomePage = () => {
     return auxList;
   }
 
-  function getUserTomada(listOfPlugs){
+  function seta(x) {
+    setLista([lista, x])
+  }
+
+  function getUserTomada(listOfPlugs) {
     var auxList = []
     listOfPlugs.forEach(item => {
-        auxList.push({
-          name: item.name,
-          useFinish: item.dateTimeToDeactivate,
-        })
+      auxList.push({
+        name: item.name,
+        useFinish: item.dateTimeToDeactivate,
+      })
     });
     return auxList;
   }
@@ -152,32 +155,41 @@ const HomePage = () => {
       setPlugName("Tomada 3");
   }
 
+  if(query.status == "success") {
+    console.log("hha", query.data);
+  }
+
+  if (query.isLoading || query.isFetching) {
+    return (
+      <View style={styles.container}>
+        <NavbarComponent />
+        <ActivityIndicator size={80} color="#000000" />
+        <BottomTabs icons={bottomTabIcons} />
+      </View>
+    )
+    }
   return (
     <View style={styles.container}>
       <NavbarComponent />
-      {query.isLoading || query.isFetching ?
-        <ActivityIndicator size={80} color="#000000" />
-        :
-        <>
-          <Balance tomada={getUserTomada(query.data)} />
-          <TouchableOpacity
-            style={styles.button1}
-            onPress={() => navigation.navigate('compra')}
-          >
-            <Text style={styles.textButton}>
-              Comprar Créditos
-            </Text>
-          </TouchableOpacity>
+      <Balance tomada={getUserTomada(query.data)} />
+      <TouchableOpacity
+        style={styles.button1}
+        onPress={() => navigation.navigate('compra')}
+      >
+        <Text style={styles.textButton}>
+          Comprar Créditos
+        </Text>
+      </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.button2}
-            onPress={() => setCarregarOption(true)}
-          >
-            <Text style={styles.textButton}>
-              Carregamento
-            </Text>
-          </TouchableOpacity>
-        </>}
+      <TouchableOpacity
+        style={styles.button2}
+        onPress={() => setCarregarOption(true)}
+      >
+        <Text style={styles.textButton}>
+          Carregamento
+        </Text>
+      </TouchableOpacity>
+
       <Modal
         animationType={'slide'}
         transparent={true}

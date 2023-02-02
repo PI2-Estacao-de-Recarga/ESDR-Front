@@ -9,6 +9,7 @@ function Balance({ tomada }) {
         status2: "Disponível para uso"
     })
     const [useTime, setUseTime] = useState("00:00")
+    
 
     useEffect(() => {
         console.log("Tomada", tomada);
