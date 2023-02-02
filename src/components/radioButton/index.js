@@ -8,17 +8,17 @@ export default function RadioButton({ data, onSelect, disable}) {
   const [tomada2, setTomada2] = useState(false);
   const [tomada3, setTomada3] = useState(false);
 
-  useEffect(() => {
-    disable.forEach(item => {
-      if (item == "Tomada 1")
-        data[0].disable = true
-      if (item == "Tomada 2")
-        data[1].disable = true
-        console.log("Aqui", data);
-      if (item == "Tomada 3")
-        data[2].disable = true
-      });
-  }, [])
+  // useEffect(() => {
+  //   disable.forEach(item => {
+  //     if (item == "Tomada 1")
+  //       data[0].disable = true
+  //     if (item == "Tomada 2")
+  //       data[1].disable = true
+  //       console.log("Aqui", data);
+  //     if (item == "Tomada 3")
+  //       data[2].disable = true
+  //     });
+  // }, [])
 
   const selectHandler = (value, indice) => {
     onSelect(value.value);
@@ -31,7 +31,7 @@ export default function RadioButton({ data, onSelect, disable}) {
       {data.map((item, indice) => {
         return (
           <Pressable
-          disabled={item.disable}
+          // disabled={item.disable}
             style={
               item.value === userOption ? styles.selected : styles.unselected
             }

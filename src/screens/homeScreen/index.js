@@ -21,6 +21,7 @@ import jwt_decode from 'jwt-decode';
 import { paymentRepository } from "../../domain/repositories/paymentRepository";
 import { plugRepository } from "../../domain/repositories/plugRepository";
 import { queryClient } from "../../../App"
+import { axios } from "axios";
 
 const HomePage = ({ route }) => {
   const navigation = useNavigation();
@@ -36,7 +37,7 @@ const HomePage = ({ route }) => {
     name: "",
     dateTimeToDeactivate: ""
   }])
-  const [plugs, setPlugs] = useState([{
+  const [userPlugs, setUserPlugs] = useState([{
     name: "",
     dateTimeToDeactivate: "",
   }]);
@@ -48,10 +49,11 @@ const HomePage = ({ route }) => {
   ]);
   const [loading, setLoading] = useState(true);
 
-  const getUserPlug = async () => {
-    return plugRepository.getPlug(token, userId)
+  const getUserPlug = async (Token, UserId) => {
+    return plugRepository.getPlug(Token, UserId)
       .then((res) => {
-        setPlugInUse(getUserTomada(res.data));
+        console.log("getUserPlug:: ", res.data);
+        setUserPlugs(getUserTomada(res.data));
         setLoading(false);
       })
       .catch((err) => {
@@ -59,10 +61,11 @@ const HomePage = ({ route }) => {
       });
   }
 
-  const getPlugs = async () => {
-    return plugRepository.getPlug(token)
+  const getPlugs = async (Token) => {
+    return plugRepository.getPlug(Token)
       .then((res) => {
-        setPlugs(getTomadas(res.data));
+        console.log("getPlugs:: ", res.data);
+        setPlugInUse(getTomadas(res.data));
         setLoading(false);
       })
       .catch((err) => {
@@ -73,16 +76,18 @@ const HomePage = ({ route }) => {
   useEffect(() => {
     const Token = getToken();
     setToken(Token);
-    console.log(token);
+    console.log('token:: ', token);
     var decoded = jwt_decode(Token);
     setUserId(decoded.userId);
+
+    setTimeout(() => {
+      getUserPlug(Token, decoded.userId);
+      getPlugs(Token);
+    }, 5000);
   }, [])
 
   useEffect(() => {
-    setTimeout(() => {
-      getUserPlug();
-      getPlugs();
-    }, 3000);
+
   }, [token])
 
   useEffect(() => {
@@ -102,36 +107,36 @@ const HomePage = ({ route }) => {
   //   x = getUserTomada(query.data);
   // }, [query.isFetched])
 
-  // const queryPlugs = useQuery('getPlugs', () => plugRepository.getPlug(token), {
-  //   initialData: plugs,
+  // const queryuserPlugs = useQuery('getuserPlugs', () => plugRepository.getPlug(token), {
+  //   initialData: userPlugs,
   //   enabled: !!token,
   //   retry: 3,
   // });
 
   // useEffect(() => {
-  //   const x = getTomadas(queryPlugs.data);
-  // }, [queryPlugs.data])
+  //   const x = getTomadas(queryuserPlugs.data);
+  // }, [queryuserPlugs.data])
 
-  function getTomadas(listOfPlugs) {
+  function getTomadas(listOfuserPlugs) {
     var auxList = []
-    listOfPlugs.forEach(item => {
+    listOfuserPlugs.forEach(item => {
       auxList.push(item.name)
     });
+
+    console.log("getTomadas:: ", auxList)
     return auxList;
   }
 
-  function seta(x) {
-    setLista([lista, x])
-  }
-
-  function getUserTomada(listOfPlugs) {
+  function getUserTomada(listOfuserPlugs) {
     var auxList = []
-    listOfPlugs.forEach(item => {
+    listOfuserPlugs.forEach(item => {
       auxList.push({
         name: item.name,
         useFinish: item.dateTimeToDeactivate,
       })
     });
+
+    console.log("getUserTomadas:: ", auxList) 
     return auxList;
   }
 
@@ -158,24 +163,24 @@ const HomePage = ({ route }) => {
 
   const confirmModal = async () => {
     setCarregarOption(false);
-    // const paramAxios = plugName.substring(0, 1) + plugName.substring(7, 8);
-    //   console.log(paramAxios);
-    //   const resp = axios({
-    //     url: `http://192.168.4.1/${paramAxios}`,
-    //     method: "GET",
-    //     timeout: 5000,
-    //     headers: {
-    //       Accept: 'application/json',
-    //       'content-type': 'application/json',
-    //     }
-    //   }).then((response) => {
-    //     console.log("Deu certo", response.data);
-    //     mutationPlug.mutate();
-    //   }).catch((error) => {
-    //     console.error(error)
-    //   })
-    mutationPlug.mutate();
-  }
+    const paramAxios = plugName.substring(0, 1) + plugName.substring(7, 8);
+      console.log(paramAxios);
+      const resp = axios({
+        url: `http://192.168.4.1/${paramAxios}`,
+        method: "GET",
+        timeout: 5000,
+        headers: {
+          Accept: 'application/json',
+          'content-type': 'application/json',
+        }
+      }).then((response) => {
+        console.log("Deu certo", response.data);
+        mutationPlug.mutate();
+      }).catch((error) => {
+        console.error(error)
+      })
+    // mutationPlug.mutate();
+  } 
 
   const selectPlug = async (value) => {
     if (value == "Celular")
@@ -188,7 +193,7 @@ const HomePage = ({ route }) => {
 
   if (!loading) {
     console.log("plugInUse: ", plugInUse);
-    console.log("\nplugs: ", plugs);
+    console.log("\nuserPlugs: ", userPlugs);
   }
 
   if (loading) {
@@ -199,74 +204,75 @@ const HomePage = ({ route }) => {
         <BottomTabs icons={bottomTabIcons} />
       </View>
     )
-  }
-  return (
-    <View style={styles.container}>
-      <NavbarComponent />
-      <Balance tomada={plugInUse} />
-      <TouchableOpacity
-        style={styles.button1}
-        onPress={() => navigation.navigate('compra')}
-      >
-        <Text style={styles.textButton}>
-          Comprar Créditos
-        </Text>
-      </TouchableOpacity>
+  } else {
+    return (
+      <View style={styles.container}>
+        <NavbarComponent />
+        <Balance tomadas={userPlugs} />
+        <TouchableOpacity
+          style={styles.button1}
+          onPress={() => navigation.navigate('compra')}
+        >
+          <Text style={styles.textButton}>
+            Comprar Créditos
+          </Text>
+        </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.button2}
-        onPress={() => setCarregarOption(true)}
-      >
-        <Text style={styles.textButton}>
-          Carregamento
-        </Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button2}
+          onPress={() => setCarregarOption(true)}
+        >
+          <Text style={styles.textButton}>
+            Carregamento
+          </Text>
+        </TouchableOpacity>
 
-      <Modal
-        animationType={'slide'}
-        transparent={true}
-        visible={carregarOption}
-        onRequestClose={() => {
-          setCarregarOption(!carregarOption);
-        }}
-      >
-        <View style={styles.modalView}>
-          <View style={styles.centeredView}>
-            <Text style={styles.paragraph}>
-              {" "}
-              Selecione a tomada que deseja usar:{" "}
-            </Text>
-            <RadioButton data={data} onSelect={(value) => selectPlug(value)} disable={plugs} />
-            <TextInput
-              style={styles.input}
-              placeholder="Quantidade de créditos:"
-              value={creditAmount}
-              onChangeText={setCreditAmount}
-              keyboardType="numeric"
-              inputMode='numeric'
-            />
+        <Modal
+          animationType={'slide'}
+          transparent={true}
+          visible={carregarOption}
+          onRequestClose={() => {
+            setCarregarOption(!carregarOption);
+          }}
+        >
+          <View style={styles.modalView}>
+            <View style={styles.centeredView}>
+              <Text style={styles.paragraph}>
+                {" "}
+                Selecione a tomada que deseja usar:{" "}
+              </Text>
+              <RadioButton data={data} onSelect={(value) => selectPlug(value)} disable={userPlugs} />
+              <TextInput
+                style={styles.input}
+                placeholder="Quantidade de créditos:"
+                value={creditAmount}
+                onChangeText={setCreditAmount}
+                keyboardType="numeric"
+                inputMode='numeric'
+              />
 
-            <View style={styles.buttons}>
-              <TouchableOpacity
-                style={styles.buttonClose}
-                onPress={() => { setCarregarOption(false); setPlugName(""); setCreditAmount(0); }}>
-                <Text style={styles.textStyle}>Fechar</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.buttonClose}
-                onPress={() => confirmModal()}
-                disabled={disabled}
-              >
-                <Text style={styles.textStyle}>Confirmar</Text>
-              </TouchableOpacity>
+              <View style={styles.buttons}>
+                <TouchableOpacity
+                  style={styles.buttonClose}
+                  onPress={() => { setCarregarOption(false); setPlugName(""); setCreditAmount(0); }}>
+                  <Text style={styles.textStyle}>Fechar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.buttonClose}
+                  onPress={() => confirmModal()}
+                  disabled={disabled}
+                >
+                  <Text style={styles.textStyle}>Confirmar</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        </View>
-      </Modal>
+        </Modal>
 
-      <BottomTabs icons={bottomTabIcons} />
-    </View>
-  );
+        <BottomTabs icons={bottomTabIcons} />
+      </View>
+    );
+  }
 };
 
 export default HomePage;
