@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { authRepository } from './authRepository';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-
+import jwt_decode from 'jwt-decode';
 //Slice
 
 export const login = createAsyncThunk('login', async (data, { rejectWithValue }) => {
@@ -44,6 +44,9 @@ const authSlice = createSlice({
     setError: (state, action) => {
       state.error = action.payload.error;
       state.errorMessage = action.payload.errorMessage;
+    },
+    logout: (state) => {
+      state = initialState;
     }
   },
   extraReducers: builder => {
@@ -55,7 +58,7 @@ const authSlice = createSlice({
       state.currentUser.name = action.payload.name;
       state.currentUser.email = action.payload.email;
       state.tokenInfo.token = action.payload.token;
-      state.tokenInfo.expireIn = action.payload.expireIn;
+      state.tokenInfo.expireIn = jwt_decode(action.payload.token).exp;
       state.error = false;
       state.errorMessage = '';
       state.isAuthenticated = true;

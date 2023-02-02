@@ -29,7 +29,7 @@ const Login = () => {
     setShowError(false);
 
     if (auth.isAuthenticated) {
-      navigation.navigate('home');
+      navigation.replace('home');
     }
 
     if (auth.error) {

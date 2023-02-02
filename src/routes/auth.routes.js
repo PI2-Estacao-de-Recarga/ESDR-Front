@@ -7,10 +7,24 @@ import CompraPage from '../screens/compraScreen';
 import Profile from '../screens/profileScreen';
 import Statement from '../screens/statementScreen';
 import ChoosePaymentScreen from '../screens/choosePaymentScreen';
+import { useSelector, useDispatch } from "react-redux";
+import { logout } from "../store/auth/authSlice";
+import { useNavigation } from "@react-navigation/native";
+import { setModalSessionOpen } from '../store/modalSession/modalSessionSlice';
 
 const Stack = createStackNavigator();
 
 export function AuthRoutes() {
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const { expireIn } = useSelector((state) => state.auth.tokenInfo);
+
+  if (expireIn !== "" && expireIn <= Date.now()) {
+    dispatch(logout);
+    dispatch(setModalSessionOpen());
+    navigation.replace('login');
+  }
+
   return (
     <Stack.Navigator
       screenOptions={{
