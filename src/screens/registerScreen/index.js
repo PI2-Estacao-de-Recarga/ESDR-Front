@@ -4,7 +4,7 @@ import { signUpThunk } from '../../store/signUp/signUpSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { styles } from './styles';
 import { useNavigation } from '@react-navigation/native';
-import { setError } from '../../store/signUp/signUpSlice';
+import { setError, setSuccess } from '../../store/signUp/signUpSlice';
 
 const Register = ({ }) => {
   const navigation = useNavigation();
@@ -33,6 +33,12 @@ const Register = ({ }) => {
   const closeErrorModal = () => {
     dispatch(setError({ error: false, errorMessage: '' }));
   }
+
+  const closeSuccessModal = () => {
+    setShowSuccess(false);
+    dispatch(setSuccess({success: false}));
+    navigation.navigate('login');
+  };
 
   useEffect(() => {
     if (signUpState.success) {
@@ -116,7 +122,7 @@ const Register = ({ }) => {
               <Text style={styles.buttonText}>Rescrever Dados</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => navigation.navigate('login')}
+              onPress={() => {closeErrorModal(); navigation.navigate('login')}}
               style={styles.button}
             >
               <Text style={styles.buttonText}>Ir para Login</Text>
@@ -128,17 +134,18 @@ const Register = ({ }) => {
         animationType="slide"
         visible={showSuccess}
         transparent={true}
-        style={styles.modal}
         onRequestClose={() => setShowSuccess(false)}
       >
-        <View style={styles.modalContent}>
-          <Text style={styles.text}>Conta criada com sucesso</Text>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('login')}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Fazer Login</Text>
-          </TouchableOpacity>
+        <View style={styles.modal}>
+          <View style={styles.modalContent}>
+            <Text style={styles.text}>Conta criada com sucesso</Text>
+            <TouchableOpacity
+              onPress={() => closeSuccessModal()}
+              style={styles.button}
+            >
+              <Text style={styles.buttonText}>Fazer Login</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </Modal>
     </View >
