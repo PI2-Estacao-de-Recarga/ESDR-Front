@@ -19,6 +19,9 @@ export const styles = StyleSheet.create({
     iconRight: {
         marginLeft: 'auto',
     },
+    textLeft: {
+        marginRight: 'auto',
+    },
     body: {
         fontFamily: theme.fonts.InterBold,
         fontSize: 15,
@@ -64,6 +67,16 @@ export const styles = StyleSheet.create({
         paddingTop: 5,
         paddingBottom: 20,
         color: "black",
+        letterSpacing: 0.1,
+    },
+    titleParagraph: {
+        alignSelf: 'center',
+        fontSize: 17,
+        fontWeight: '600',
+        paddingTop: 5,
+        paddingBottom: 20,
+        color: "black",
         fontWeight: "bold",
+        textDecorationLine: 'underline',
     }
 });

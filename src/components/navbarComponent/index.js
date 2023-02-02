@@ -38,14 +38,14 @@ const NavbarComponent = () => {
     return (
         <View style={styles.container}>
         <Icon name="attach-money" size={30} color="#000" />
-        <Text style={styles.body}>
+        <Text style={[styles.body, styles.textLeft]}>
             {amount.balance}
         </Text>
         
         <TouchableOpacity
-        onPress={() => setCarregarOption(true)}
-      >
-        <Icon name="info" size={30} color="#000" style={styles.iconRight} />
+          onPress={() => setCarregarOption(true)}
+        >
+      <Icon name="info" size={30} color="#000" style={styles.iconRight} />
       </TouchableOpacity>
       <Modal
         animationType={'slide'}
@@ -59,11 +59,21 @@ const NavbarComponent = () => {
           <View style={styles.centeredView}>
             <Text style={styles.paragraph}>
               {" "}
-              1 minuto de carregamento = 1 crédito{" "}
+              Compre créditos e utilize-os{'\n'}{" "}
+              {" "}    para recarregar seu{'\n'}{" "}
+              celular, patinete ou bicicleta!{" "}
+            </Text>
+          <Text style={styles.titleParagraph}>
+              {" "}
+              VALORES {" "}
             </Text>
             <Text style={styles.paragraph}>
               {" "}
-              1 minuto de carregamento = R$0,05{" "}
+              1 crédito  =  R$0,05{" "}
+            </Text>
+            <Text style={styles.paragraph}>
+              {" "}
+              1 minuto de uso =  1 crédito{" "}
             </Text>
             <View style={styles.buttons}>
               <TouchableOpacity
