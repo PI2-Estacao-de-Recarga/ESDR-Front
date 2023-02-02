@@ -52,9 +52,12 @@ export const styles = StyleSheet.create({
     marginVertical: 16,
   },
   input: {
+    flex: 0.8,
     width: 270,
+    height: 40,
     margin: 12,
     marginTop: 30,
+    marginBottom: 20,
     borderBottomWidth: 1,
     padding: 0
   },
@@ -78,6 +81,11 @@ export const styles = StyleSheet.create({
     paddingTop: 5,
     paddingBottom: 5,
     color: '#FFF'
-  }
+  },
+  copiaCola:{
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
 
 });

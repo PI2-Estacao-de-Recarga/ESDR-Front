@@ -136,7 +136,7 @@ const HomePage = ({ route }) => {
       })
     });
 
-    console.log("getUserTomadas:: ", auxList) 
+    console.log("getUserTomadas:: ", auxList)
     return auxList;
   }
 
@@ -146,16 +146,19 @@ const HomePage = ({ route }) => {
       mutationOperation.mutate();
     },
     onError: (error) => {
+      Alert.alert(error.response.data.error)
       console.log(error.response.data.error)
     }
   });
 
-  const mutationOperation = useMutation(() => paymentRepository.createOperation(token, userId, "USO", null, creditAmount), {
+  const mutationOperation = useMutation(() => paymentRepository.createOperation(token, userId, "USO", creditAmount), {
     onSuccess: async (data) => {
       console.log(data);
       queryClient.invalidateQueries("getUser");
     },
     onError: (error) => {
+
+      Alert.alert(error.response.data.error)
       console.log(error.response.data.error)
     }
 
@@ -164,23 +167,23 @@ const HomePage = ({ route }) => {
   const confirmModal = async () => {
     setCarregarOption(false);
     const paramAxios = plugName.substring(0, 1) + plugName.substring(7, 8);
-      console.log(paramAxios);
-      const resp = axios({
-        url: `http://192.168.4.1/${paramAxios}`,
-        method: "GET",
-        timeout: 5000,
-        headers: {
-          Accept: 'application/json',
-          'content-type': 'application/json',
-        }
-      }).then((response) => {
-        console.log("Deu certo", response.data);
-        mutationPlug.mutate();
-      }).catch((error) => {
-        console.error(error)
-      })
+    console.log(paramAxios);
+    const resp = axios({
+      url: `http://192.168.4.1/${paramAxios}`,
+      method: "GET",
+      timeout: 5000,
+      headers: {
+        Accept: 'application/json',
+        'content-type': 'application/json',
+      }
+    }).then((response) => {
+      console.log("Deu certo", response.data);
+      mutationPlug.mutate();
+    }).catch((error) => {
+      console.error(error)
+    })
     // mutationPlug.mutate();
-  } 
+  }
 
   const selectPlug = async (value) => {
     if (value == "Celular")
@@ -217,7 +220,6 @@ const HomePage = ({ route }) => {
             Comprar Créditos
           </Text>
         </TouchableOpacity>
-
         <TouchableOpacity
           style={styles.button2}
           onPress={() => setCarregarOption(true)}
