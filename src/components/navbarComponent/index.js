@@ -9,7 +9,6 @@ import { styles } from './styles';
 
 const NavbarComponent = () => {
     const [amount, setAmount] = useState({
-        name: 'Teste',
         balance: '0'
     });
     const [token, setToken] = useState('');
@@ -30,7 +29,6 @@ const NavbarComponent = () => {
     useEffect(() => {
         setAmount({
             ...amount,
-            name: query.data.name,
             balance: query.data.balance,
         });
     }, [query.data])
