@@ -44,7 +44,7 @@ const NavbarComponent = () => {
                 <ActivityIndicator size={20} color="#000000" />
                 :
                 <>
-                    <Text style={styles.body}>
+                    <Text style={[styles.body, styles.textLeft]}>
                         {amount.balance}
                     </Text>
                 </>}

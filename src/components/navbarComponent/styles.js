@@ -77,6 +77,5 @@ export const styles = StyleSheet.create({
         paddingBottom: 20,
         color: "black",
         fontWeight: "bold",
-        textDecorationLine: 'underline',
     }
 });
