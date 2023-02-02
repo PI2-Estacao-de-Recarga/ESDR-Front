@@ -20,7 +20,7 @@ async function createPayment(token, userId, value) {
     return ret.data;
 }
 
-async function createOperation(token, userId, operationType, paymentId = null, creditAmount = null){
+async function createOperation(token, userId, operationType, creditAmount){
     let _axios = new HttpClient({ api: true, authenticated: true, token: token }).instance;
     let body = {};
 
@@ -28,7 +28,7 @@ async function createOperation(token, userId, operationType, paymentId = null, c
         body = {
             operationType: operationType,
             userId: userId,
-            paymentId: paymentId,
+            creditAmount: creditAmount,
         }
     } else if (operationType == "USO") {
         body = {
