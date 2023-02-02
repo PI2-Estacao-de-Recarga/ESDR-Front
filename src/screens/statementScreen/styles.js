@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: '100%',
-    width: '100%'
+    width: '100%',
   },
   item: {
     flexDirection: 'row',
@@ -23,6 +23,12 @@ export const styles = StyleSheet.create({
   quantity: {
     fontFamily: theme.fonts.InterBold,
     fontSize: 20,
+  },
+  noOperations: {
+    fontFamily: theme.fonts.InterBold,
+    fontSize: 20,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   dolar: {
     marginLeft: 4,
@@ -45,8 +51,10 @@ export const styles = StyleSheet.create({
     color: "#000000",
   },
   page: {
+    marginTop: '20%',
     position: 'relative',
     height: '80%',
     flex: 1,
+    zIndex: 0
   },
 });
