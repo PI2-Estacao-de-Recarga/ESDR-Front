@@ -33,7 +33,7 @@ const PixPayment = ({ route }) => {
     alert("Texto Copiado!");
   }
 
-  const mutation = useMutation(() => paymentRepository.createOperation(token, userId, "COMPRA", data.id), {
+  const mutation = useMutation(() => paymentRepository.createOperation(token, userId, "COMPRA", (data.totalAmount/0.05)), {
     onSuccess: async (data) => {
       console.log(data);
       queryClient.invalidateQueries("getUser");
@@ -72,14 +72,15 @@ const PixPayment = ({ route }) => {
       <Text style={styles.fontSubtitle}>
         Código - copia e cola
       </Text>
+      <View style={styles.copiaCola}>
       <TextInput
         value={data.qrCodeText}
         style={styles.input}
         readOnly={true}
         showSoftInputOnFocus={false}
       />
-      {/* Achar o icone certo */}
-      <Icon name='home' size={20} color="#000" onPress={() => copyToClipboard()} />
+      <Icon name='content-copy' style={styles.icone} size={30} color="#000" onPress={() => copyToClipboard()} />
+      </View>
       <TouchableOpacity
         style={styles.button}
         onPress={() => mutation.mutate()}

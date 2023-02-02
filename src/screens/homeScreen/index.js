@@ -59,7 +59,7 @@ const HomePage = () => {
     } 
   });
 
-  const mutationOperation = useMutation(() => paymentRepository.createOperation(token, userId, "USO", null, creditAmount), {
+  const mutationOperation = useMutation(() => paymentRepository.createOperation(token, userId, "USO", creditAmount), {
     onSuccess: async (data) => {
       console.log(data);
       queryClient.invalidateQueries("getUser");
@@ -140,8 +140,9 @@ const HomePage = () => {
               style={styles.input}
               placeholder="Quantidade de créditos:"
               value={creditAmount}
-              onChangeText={setCreditAmount}
-              keyboardType="numeric"
+              onChangeText={creditAmount => setCreditAmount(creditAmount.replace(/[^0-9]/g, ''))}
+              keyboardType='numeric'
+              maxLength={7}
               inputMode='numeric'
             />
 
