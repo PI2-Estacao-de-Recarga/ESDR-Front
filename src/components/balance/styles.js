@@ -10,11 +10,15 @@ const styles = StyleSheet.create({
         borderRadius: 15,
         paddingStart: 5,
         paddingEnd: 5,
+        marginHorizontal: 10,
     },
     carrousel: {
         height: 200,
         maxHeight: 200,
+        maxWidth: 315,
+        marginTop: 75,
         margin: 0,
+        overflow: 'hidden',
     },
     item:{
         margin: 10,

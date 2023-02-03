@@ -11,12 +11,14 @@ import ChoosePaymentScreen from '../screens/choosePaymentScreen';
 const Stack = createStackNavigator();
 
 export function AuthRoutes() {
+
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
         cardStyle: { backgroundColor: '#FFFFFF' },
       }}
+      firstRouteName="login"
     >
       <Stack.Screen
         name="login"

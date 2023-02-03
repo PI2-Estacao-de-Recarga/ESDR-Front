@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Image, ActivityIndicator } from 'react-native';
+import { View, Text, Image, ActivityIndicator, TouchableOpacity } from 'react-native';
 import { styles } from './styles';
 import BottomTabs, { bottomTabIcons } from '../../components/footerComponent';
 import { authRepository } from '../../store/auth/authRepository';
@@ -8,8 +8,14 @@ import { getToken } from '../../utils/getToken';
 import jwt_decode from 'jwt-decode';
 import { useEffect } from 'react';
 import NavbarComponent from '../../components/navbarComponent';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../store/auth/authSlice';
+import { useNavigation } from '@react-navigation/native';
+import { setActiveTab } from '../../store/footer/footerSlice';
 
 const Profile = () => {
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
   const [profile, setProfile] = useState({
     name: '',
     email: '',
@@ -20,7 +26,6 @@ const Profile = () => {
 
   useEffect(() => {
     const Token = getToken();
-    console.log("AAAAAAAAAAAAA:\n\n\n", Token);
     var decoded = jwt_decode(Token);
     setUserId(decoded.userId);
     setToken(Token);
@@ -40,6 +45,12 @@ const Profile = () => {
       email: query.data.email,
     });
   }, [query.data])
+
+  const handleLogoutAccount = () => {
+    dispatch({ type: 'auth/logout'});
+    dispatch(setActiveTab('home'))
+    navigation.popToTop('login')
+  }
 
   return (
     <View style={styles.container}>
@@ -68,6 +79,9 @@ const Profile = () => {
               {profile.cpf}
             </Text>
           </View>
+          <TouchableOpacity style={styles.button} onPress={() => handleLogoutAccount()}>
+            <Text style={styles.textButton}>Sair da conta</Text>
+          </TouchableOpacity>
         </>
       }
       <BottomTabs icons={bottomTabIcons} />

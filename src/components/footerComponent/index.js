@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
 import { Divider } from 'react-native-elements';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { setActiveTab } from '../../store/footer/footerSlice';
+import { logout } from "../../store/auth/authSlice";
+import { ModalSessionOut } from "../modalSessionOut";
+import { setModalSessionOpen } from '../../store/modalSession/modalSessionSlice';
 
 export const bottomTabIcons = [
     {
@@ -26,7 +29,14 @@ export const bottomTabIcons = [
 const BottonTabs = ({ icons }) => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
-    const { activeTab } = useSelector((state) => state.footer)
+    const { activeTab } = useSelector((state) => state.root.footer)
+    const { expireIn, token } = useSelector((state) => state.root.auth.tokenInfo);
+
+    if (token !== "" && expireIn !== "" && expireIn * 1000 <= Date.now()) {
+        console.log('token expired:: ', Date.now(), ' - ', expireIn * 1000, " ::", expireIn * 1000 <= Date.now());
+        dispatch(logout());
+        dispatch(setModalSessionOpen());
+    }
 
     const buttonPress = (icon) => {
         navigation.navigate(icon.name);
@@ -48,6 +58,7 @@ const BottonTabs = ({ icons }) => {
                     <Icon key={index} icon={icon} />
                 ))}
             </View>
+            <ModalSessionOut />
         </View>
     );
 }

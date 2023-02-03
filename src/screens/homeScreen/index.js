@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
-  TouchableWithoutFeedback, Keyboard,
+  TouchableWithoutFeedback, Keyboard, ScrollView, RefreshControl, BackHandler
 } from 'react-native';
 import styles from './styles';
 import Balance from '../../components/balance';
@@ -23,6 +23,7 @@ import { paymentRepository } from "../../domain/repositories/paymentRepository";
 import { plugRepository } from "../../domain/repositories/plugRepository";
 import { queryClient } from "../../../App"
 import axios from 'axios';
+import { Pressable } from 'react-native';
 
 const HomePage = ({ route }) => {
   const navigation = useNavigation();
@@ -43,11 +44,6 @@ const HomePage = ({ route }) => {
     dateTimeToDeactivate: "",
   }]);
   const [lista, setLista] = useState([]);
-  const [data, setData] = useState([
-    { value: "Celular", disable: false },
-    { value: "Patinete/Bike T2", disable: false },
-    { value: "Patinete/Bike T3", disable: false }
-  ]);
   const [loading, setLoading] = useState(true);
 
   const getUserPlug = async (Token, UserId) => {
@@ -75,6 +71,66 @@ const HomePage = ({ route }) => {
   }
 
   useEffect(() => {
+    const backAction = () => {
+      Alert.alert('Espere um pouco!', 'Certeza que deseja voltar? voce será desconectado', [
+        {
+          text: 'Cancelar',
+          onPress: () => { },
+          style: 'cancel',
+        },
+        { text: 'Deslogar', onPress: () => BackHandler.exitApp() },
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
+  const deactivatePlug = async (plugName) => {
+    console.log("Deactivate plugName:: ", plugName);
+    const plugEsp = plugName.substring(0, 1) + plugName.substring(7, 8);
+    const resp = axios({
+        url: `http://192.168.4.1/${plugEsp}`,
+        method: "GET",
+        timeout: 10000,
+        headers: {
+          Accept: 'application/json',
+          'content-type': 'application/json',
+        }
+      }).then((response) => {
+        console.log("Deu certo", response.data);
+        mutationDeactivatePlug.mutate(plugName)
+      }).catch((error) => {
+        console.log("Error", error.response.data);
+      })
+    // mutationDeactivatePlug.mutate(plugName);
+  }
+
+  const checkPlugsTimes = () => {
+    plugInUse.map((item) => {
+      const now = new Date();
+
+      if (item !== "" && new Date(item.useFinish).getTime() <= now.getTime()) {
+        deactivatePlug(item.name);
+      }
+    })
+  }
+
+  const resetNavigationHistory = () => {
+    const navigationState = navigation.getState();
+    navigationState.history = [];
+
+    navigation.reset(navigationState);
+  }
+
+  useEffect(() => {
+    resetNavigationHistory();
+
     const Token = getToken();
     setToken(Token);
     console.log('token:: ', token);
@@ -82,14 +138,15 @@ const HomePage = ({ route }) => {
     setUserId(decoded.userId);
 
     setTimeout(() => {
-      getUserPlug(Token, decoded.userId);
       getPlugs(Token);
-    }, 5000);
+      checkPlugsTimes();
+    }, 1000);
+
+    setTimeout(() => {
+      getUserPlug(Token, decoded.userId);
+    }, 2000);
+
   }, [])
-
-  useEffect(() => {
-
-  }, [token])
 
   useEffect(() => {
     if (creditAmount != 0 && plugName != "")
@@ -121,7 +178,10 @@ const HomePage = ({ route }) => {
   function getTomadas(listOfuserPlugs) {
     var auxList = []
     listOfuserPlugs.forEach(item => {
-      auxList.push(item.name)
+      auxList.push({
+        name: item.name,
+        useFinish: item.dateTimeToDeactivate,
+      })
     });
 
     console.log("getTomadas:: ", auxList)
@@ -140,6 +200,16 @@ const HomePage = ({ route }) => {
     console.log("getUserTomadas:: ", auxList)
     return auxList;
   }
+
+  const mutationDeactivatePlug = useMutation((plugName) => plugRepository.setPlug(token, userId, 0, plugName), {
+    onSuccess: async (data) => {
+      console.log("data", data);
+    },
+    onError: (error) => {
+      Alert.alert(error.response.data.error)
+      console.log(error.response.data.error)
+    }
+  });
 
   const mutationPlug = useMutation(() => plugRepository.setPlug(token, userId, creditAmount, plugName), {
     onSuccess: async (data) => {
@@ -166,6 +236,7 @@ const HomePage = ({ route }) => {
   });
 
   const confirmModal = async () => {
+    onRefresh();
     setCarregarOption(false);
     const paramAxios = plugName.substring(0, 1) + plugName.substring(7, 8);
     console.log(paramAxios);
@@ -195,10 +266,25 @@ const HomePage = ({ route }) => {
       setPlugName("Tomada 3");
   }
 
-  if (!loading) {
-    console.log("plugInUse: ", plugInUse);
-    console.log("\nuserPlugs: ", userPlugs);
-  }
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    setPlugInUse([]);
+    setUserPlugs([]);
+
+    const Token = getToken();
+
+    var decoded = jwt_decode(Token);
+    getPlugs(Token);
+    checkPlugsTimes();
+
+    setTimeout(() => {
+      getUserPlug(Token, decoded.userId);
+    }, 1000);
+
+    setRefreshing(false);
+  }, []);
 
   if (loading) {
     return (
@@ -212,68 +298,77 @@ const HomePage = ({ route }) => {
     return (
       <View style={styles.container}>
         <NavbarComponent />
-        <Balance tomadas={userPlugs} />
-        <TouchableOpacity
-          style={styles.button1}
-          onPress={() => navigation.navigate('compra')}
+        <ScrollView
+          contentContainerStyle={styles.scrollView}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+          showsVerticalScrollIndicator={false}
         >
-          <Text style={styles.textButton}>
-            Comprar Créditos
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button2}
-          onPress={() => setCarregarOption(true)}
-        >
-          <Text style={styles.textButton}>
-            Carregamento
-          </Text>
-        </TouchableOpacity>
+          <Pressable>
+            <Balance tomadas={userPlugs} deactivatePlug={deactivatePlug} loading={loading || refreshing} />
+          </Pressable>
+          <TouchableOpacity
+            style={styles.button1}
+            onPress={() => navigation.navigate('compra')}
+          >
+            <Text style={styles.textButton}>
+              Comprar Créditos
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button2}
+            onPress={() => setCarregarOption(true)}
+          >
+            <Text style={styles.textButton}>
+              Carregamento
+            </Text>
+          </TouchableOpacity>
 
-        <Modal
-          animationType={'slide'}
-          transparent={true}
-          visible={carregarOption}
-          onRequestClose={() => {
-            setCarregarOption(!carregarOption);
-          }}
-        >
-          <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-            <View style={styles.modalView}>
-              <View style={styles.centeredView}>
-                <Text style={styles.paragraph}>
-                  {" "}
-                  Selecione a tomada que deseja usar:{" "}
-                </Text>
-                <RadioButton data={data} onSelect={(value) => selectPlug(value)} disable={userPlugs} />
-                <TextInput
-                  style={styles.input}
-                  placeholder="Quantidade de créditos:"
-                  value={creditAmount}
-                  onChangeText={setCreditAmount}
-                  keyboardType="numeric"
-                  inputMode='numeric'
-                />
+          <Modal
+            animationType={'slide'}
+            transparent={true}
+            visible={carregarOption}
+            onRequestClose={() => {
+              setCarregarOption(!carregarOption);
+            }}
+          >
+            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+              <View style={styles.modalView}>
+                <View style={styles.centeredView}>
+                  <Text style={styles.paragraph}>
+                    {" "}
+                    Selecione a tomada que deseja usar:{" "}
+                  </Text>
+                  <RadioButton onSelect={(value) => selectPlug(value)} inUse={plugInUse} />
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Quantidade de créditos:"
+                    value={creditAmount}
+                    onChangeText={setCreditAmount}
+                    keyboardType="numeric"
+                    inputMode='numeric'
+                  />
 
-                <View style={styles.buttons}>
-                  <TouchableOpacity
-                    style={styles.buttonClose}
-                    onPress={() => { setCarregarOption(false); setPlugName(""); setCreditAmount(0); }}>
-                    <Text style={styles.textStyle}>Fechar</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.buttonClose}
-                    onPress={() => confirmModal()}
+                  <View style={styles.buttons}>
+                    <TouchableOpacity
+                      style={styles.buttonClose}
+                      onPress={() => { setCarregarOption(false); setPlugName(""); setCreditAmount(0); }}>
+                      <Text style={styles.textStyle}>Fechar</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.buttonClose}
+                      onPress={() => confirmModal()}
                     // disabled={disabled}
-                  >
-                    <Text style={styles.textStyle}>Confirmar</Text>
-                  </TouchableOpacity>
+                    >
+                      <Text style={styles.textStyle}>Confirmar</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
-            </View>
-          </TouchableWithoutFeedback>
-        </Modal>
-
+            </TouchableWithoutFeedback>
+          </Modal>
+        </ScrollView>
         <BottomTabs icons={bottomTabIcons} />
       </View>
     );

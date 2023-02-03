@@ -9,7 +9,7 @@ import { setError, setSuccess } from '../../store/signUp/signUpSlice';
 const Register = ({ }) => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
-  const signUpState = useSelector((state) => state.signUp);
+  const signUpState = useSelector((state) => state.root.signUp);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -28,6 +28,10 @@ const Register = ({ }) => {
         confirmPassword: passwordConfirmation
       })
     );
+  }
+
+  const isAnyFieldEmpty = () => {
+    return name === '' || cpf === '' || email === '' || password === '' || passwordConfirmation === '';
   }
 
   const closeErrorModal = () => {
@@ -99,8 +103,9 @@ const Register = ({ }) => {
         secureTextEntry
       />
       <TouchableOpacity
-        style={styles.button}
+        style={isAnyFieldEmpty() ? styles.buttonDisabled : styles.button}
         onPress={() => signUpConfirm()}
+        disabled={isAnyFieldEmpty()}
       >
         <Text style={styles.buttonText}>
           Criar Conta

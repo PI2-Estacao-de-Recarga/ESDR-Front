@@ -6,25 +6,28 @@ const styles = StyleSheet.create({
     color: "white",
     textAlign: "center"
   },
+  inUse: {
+
+  },
   unselected: {
-    backgroundColor: "#9E9E9E",
+    backgroundColor: "#575757",
     margin: 5,
-    padding: 5,
     borderRadius: 10,
-    width: 150,
+    width: 200,
     height: 40,
-    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center",
     textAlign: "center"
   },
   selected: {
-    backgroundColor: "#595959",
+    backgroundColor: "#111111",
     margin: 5,
-    padding: 5,
     borderRadius: 10,
-    width: 150,
+    width: 200,
     height: 40,
-    alignSelf: "center",
-    textAlign: "center"
+    alignItems: "center",
+    textAlign: "center",
+    justifyContent: "center",
   }
 });
 

@@ -13,7 +13,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const auth  = useSelector((state) => state.auth);
+  const auth  = useSelector((state) => state.root.auth);
   const [showError, setShowError] = useState(false);
 
   const handleSubmit = async () => {
@@ -29,9 +29,7 @@ const Login = () => {
     setShowError(false);
 
     if (auth.isAuthenticated) {
-      var token = auth.tokenInfo.token;
-      var decoded = jwt_decode(token);
-      navigation.navigate('home', { token: auth.tokenInfo.token , userId: decoded.userId });
+      navigation.navigate('home');
     }
 
     if (auth.error) {
