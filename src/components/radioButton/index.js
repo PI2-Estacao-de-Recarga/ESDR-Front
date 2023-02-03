@@ -13,27 +13,27 @@ export default function RadioButton({ onSelect, inUse }) {
   const [items, setItems] = useState(data);
   const [userOption, setUserOption] = useState(null);
 
-  useEffect(() => {
-    console.log('inUse:: ', inUse)
-    if (inUse.length > 0) {
-      setItems(prevItems =>
-        prevItems.filter((item, index) => {
-          return item.id !== inUse[index].name;
-        })
-      );
-    }
-  }, []);
+  // useEffect(() => {
+  //   console.log('inUse:: ', inUse)
+  //   if (inUse.length > 0) {
+  //     setItems(prevItems =>
+  //       prevItems.filter((item, index) => {
+  //         return item.id !== inUse[index].name;
+  //       })
+  //     );
+  //   }
+  // }, []);
 
-  useEffect(() => {
-    console.log('inUse:: ', inUse)
-    if (inUse.length > 0) {
-      setItems(prevItems =>
-        prevItems.filter((item, index) => {
-          return item.id !== inUse[index].name;
-        })
-      );
-    }
-  }, [inUse]);
+  // useEffect(() => {
+  //   console.log('inUse:: ', inUse)
+  //   if (inUse.length > 0) {
+  //     setItems(prevItems =>
+  //       prevItems.filter((item, index) => {
+  //         return item.id !== inUse[index].name;
+  //       })
+  //     );
+  //   }
+  // }, [inUse]);
 
   const selectHandler = (value, indice) => {
     onSelect(value.value);

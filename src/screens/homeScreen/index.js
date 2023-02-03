@@ -236,7 +236,6 @@ const HomePage = ({ route }) => {
   });
 
   const confirmModal = async () => {
-    onRefresh();
     setCarregarOption(false);
     const paramAxios = plugName.substring(0, 1) + plugName.substring(7, 8);
     console.log(paramAxios);
@@ -255,6 +254,7 @@ const HomePage = ({ route }) => {
       console.log("Error", error.response.data);
     })
     // mutationPlug.mutate();
+    onRefresh();
   }
 
   const selectPlug = async (value) => {
