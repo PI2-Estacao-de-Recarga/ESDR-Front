@@ -29,9 +29,6 @@ const Login = () => {
     setShowError(false);
 
     if (auth.isAuthenticated) {
-      var token = auth.tokenInfo.token;
-      var decoded = jwt_decode(token);
-      // navigation.navigate('home', { token: auth.tokenInfo.token , userId: decoded.userId });
       navigation.navigate('home');
     }
 

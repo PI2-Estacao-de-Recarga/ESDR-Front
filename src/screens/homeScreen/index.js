@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
   ActivityIndicator,
-  TouchableWithoutFeedback, Keyboard, ScrollView, RefreshControl
+  TouchableWithoutFeedback, Keyboard, ScrollView, RefreshControl, BackHandler
 } from 'react-native';
 import styles from './styles';
 import Balance from '../../components/balance';
@@ -44,11 +44,6 @@ const HomePage = ({ route }) => {
     dateTimeToDeactivate: "",
   }]);
   const [lista, setLista] = useState([]);
-  const [data, setData] = useState([
-    { value: "Celular", disable: false },
-    { value: "Patinete/Bike T2", disable: false },
-    { value: "Patinete/Bike T3", disable: false }
-  ]);
   const [loading, setLoading] = useState(true);
 
   const getUserPlug = async (Token, UserId) => {
@@ -75,11 +70,32 @@ const HomePage = ({ route }) => {
       });
   }
 
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert('Espere um pouco!', 'Certeza que deseja voltar? voce será desconectado', [
+        {
+          text: 'Cancelar',
+          onPress: () => { },
+          style: 'cancel',
+        },
+        { text: 'Deslogar', onPress: () => BackHandler.exitApp() },
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction,
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
   const deactivatePlug = async (plugName) => {
     console.log("Deactivate plugName:: ", plugName);
-    setPlugName(plugName);
+    const plugEsp = plugName.slice(0, 1) + plugName.slice(7, 8)
     // const resp = axios({
-    //     url: `http://192.168.4.1/${plugName}`,
+    //     url: `http://192.168.4.1/${plugEsp}`,
     //     method: "GET",
     //     timeout: 10000,
     //     headers: {
@@ -88,24 +104,33 @@ const HomePage = ({ route }) => {
     //     }
     //   }).then((response) => {
     //     console.log("Deu certo", response.data);
-    //     mutationPlug.mutate();
+    //     mutationDeactivatePlug.mutate(plugName)
     //   }).catch((error) => {
     //     console.log("Error", error.response.data);
     //   })
-    mutationPlug.mutate();
+    mutationDeactivatePlug.mutate(plugName);
   }
 
   const checkPlugsTimes = () => {
     plugInUse.map((item) => {
-      // if (item != "" && (new Date(item) - Date.now('UTC-3')) <= 0) {
-      //   setPlugName(item.name);
-      //   deactivatePlug(item.name.slice(0, 1) + item.name.slice(7, 8));
-      // }
+      const now = new Date(Date.UTC(2022, 0, 1, 0, 0, 0, 0) - 10800000);
+
+      if (item !== "" && new Date(item.useFinish).getTime() <= now.getTime()) {
+        deactivatePlug(item.name);
+      }
     })
   }
 
+  const resetNavigationHistory = () => {
+    const navigationState = navigation.getState();
+    navigationState.history = [];
+
+    navigation.reset(navigationState);
+  }
+
   useEffect(() => {
-    navigation.pop(0);
+    resetNavigationHistory();
+
     const Token = getToken();
     setToken(Token);
     console.log('token:: ', token);
@@ -113,11 +138,14 @@ const HomePage = ({ route }) => {
     setUserId(decoded.userId);
 
     setTimeout(() => {
-      getUserPlug(Token, decoded.userId);
       getPlugs(Token);
+      checkPlugsTimes();
+    }, 1000);
+
+    setTimeout(() => {
+      getUserPlug(Token, decoded.userId);
     }, 2000);
 
-    checkPlugsTimes();
   }, [])
 
   useEffect(() => {
@@ -173,6 +201,16 @@ const HomePage = ({ route }) => {
     return auxList;
   }
 
+  const mutationDeactivatePlug = useMutation((plugName) => plugRepository.setPlug(token, userId, 0, plugName), {
+    onSuccess: async (data) => {
+      console.log("data", data);
+    },
+    onError: (error) => {
+      Alert.alert(error.response.data.error)
+      console.log(error.response.data.error)
+    }
+  });
+
   const mutationPlug = useMutation(() => plugRepository.setPlug(token, userId, creditAmount, plugName), {
     onSuccess: async (data) => {
       console.log("data", data);
@@ -198,6 +236,7 @@ const HomePage = ({ route }) => {
   });
 
   const confirmModal = async () => {
+    onRefresh();
     setCarregarOption(false);
     // const paramAxios = plugName.substring(0, 1) + plugName.substring(7, 8);
     // console.log(paramAxios);
@@ -227,18 +266,24 @@ const HomePage = ({ route }) => {
       setPlugName("Tomada 3");
   }
 
-  if (!loading) {
-    console.log("plugInUse: ", plugInUse);
-    console.log("\nuserPlugs: ", userPlugs);
-  }
-
   const [refreshing, setRefreshing] = React.useState(false);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    setPlugInUse([]);
+    setUserPlugs([]);
+
+    const Token = getToken();
+
+    var decoded = jwt_decode(Token);
+    getPlugs(Token);
+    checkPlugsTimes();
+
     setTimeout(() => {
-      setRefreshing(false);
-    }, 3000);
+      getUserPlug(Token, decoded.userId);
+    }, 1000);
+
+    setRefreshing(false);
   }, []);
 
   if (loading) {
@@ -261,7 +306,7 @@ const HomePage = ({ route }) => {
           showsVerticalScrollIndicator={false}
         >
           <Pressable>
-            <Balance tomadas={userPlugs} deactivatePlug={deactivatePlug}/>
+            <Balance tomadas={userPlugs} deactivatePlug={deactivatePlug} loading={loading || refreshing} />
           </Pressable>
           <TouchableOpacity
             style={styles.button1}
@@ -295,7 +340,7 @@ const HomePage = ({ route }) => {
                     {" "}
                     Selecione a tomada que deseja usar:{" "}
                   </Text>
-                  <RadioButton data={data} onSelect={(value) => selectPlug(value)} inUse={plugInUse}/>
+                  <RadioButton onSelect={(value) => selectPlug(value)} inUse={plugInUse} />
                   <TextInput
                     style={styles.input}
                     placeholder="Quantidade de créditos:"

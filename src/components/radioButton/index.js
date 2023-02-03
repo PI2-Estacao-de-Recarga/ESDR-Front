@@ -2,23 +2,27 @@ import React, { useEffect, useState } from "react";
 import { View, Text, Pressable } from "react-native";
 import styles from "./styles";
 
-export default function RadioButton({ data, onSelect, inUse }) {
+export default function RadioButton({ onSelect, inUse }) {
+  const data = [
+    {value: "Celular"},
+    {value: "Patinete/Bike T2"},
+    {value: "Patinete/Bike T3"},
+  ];
+  console.log('DATA:: ', data)
+
   const [items, setItems] = useState(data);
   const [userOption, setUserOption] = useState(null);
 
   useEffect(() => {
     if (inUse.length > 0) {
-      inUse.map((item) => {
-        if (item.name === "Tomada 1") {
-          setItems(items.pop(items.indexOf("Celular")));
-        } else if (item.name === "Tomada 2") {
-          setItems(items.pop(items.indexOf("Patinete/Bike T2")));
-        } else if (item.name === "Tomada 3") {
-          setItems(items.pop(items.indexOf("Patinete/Bike T3")));
-        }
-      });
+      setItems(prevItems =>
+        prevItems.filter(
+          item => !inUse.some(tomada => tomada.name === item.value)
+        )
+      );
     }
-  }, [])
+  }, [inUse]);
+
 
   const selectHandler = (value, indice) => {
     onSelect(value.value);
