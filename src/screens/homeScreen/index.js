@@ -37,11 +37,11 @@ const HomePage = ({ route }) => {
   const [disabled, setDisabled] = useState(true);
   const [plugInUse, setPlugInUse] = useState([{
     name: "",
-    dateTimeToDeactivate: ""
+    useFinish: ""
   }])
   const [userPlugs, setUserPlugs] = useState([{
     name: "",
-    dateTimeToDeactivate: "",
+    useFinish: "",
   }]);
   const [lista, setLista] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -49,7 +49,7 @@ const HomePage = ({ route }) => {
   const getUserPlug = async (Token, UserId) => {
     return plugRepository.getPlug(Token, UserId)
       .then((res) => {
-        console.log("getUserPlug:: ", res.data);
+        // console.log("getUserPlug:: ", res.data);
         setUserPlugs(getUserTomada(res.data));
         setLoading(false);
       })
@@ -61,7 +61,7 @@ const HomePage = ({ route }) => {
   const getPlugs = async (Token) => {
     return plugRepository.getPlug(Token)
       .then((res) => {
-        console.log("getPlugs:: ", res.data);
+        // console.log("getPlugs:: ", res.data);
         setPlugInUse(getTomadas(res.data));
         setLoading(false);
       })
@@ -112,8 +112,13 @@ const HomePage = ({ route }) => {
   }
 
   const checkPlugsTimes = () => {
+    console.log(plugInUse)
     plugInUse.map((item) => {
       const now = new Date();
+      console.log(item.useFinish)
+      console.log(new Date(item.useFinish).getTime() <= now.getTime())
+      console.log(new Date(item.useFinish).getTime())
+      console.log(now.getTime())
 
       if (item !== "" && new Date(item.useFinish).getTime() <= now.getTime()) {
         deactivatePlug(item.name);
@@ -133,7 +138,7 @@ const HomePage = ({ route }) => {
 
     const Token = getToken();
     setToken(Token);
-    console.log('token:: ', token);
+    // console.log('token:: ', token);
     var decoded = jwt_decode(Token);
     setUserId(decoded.userId);
 
@@ -144,6 +149,7 @@ const HomePage = ({ route }) => {
 
     setTimeout(() => {
       getUserPlug(Token, decoded.userId);
+      getPlugs(Token);
     }, 2000);
 
   }, [])
@@ -155,26 +161,6 @@ const HomePage = ({ route }) => {
       setDisabled(true)
   }, [creditAmount])
 
-  // const query = useQuery('getUserPlug', () => plugRepository.getPlug(token, userId), {
-  //   initialData: plugInUse,
-  //   enabled: !!token,
-  // });
-
-  // useEffect(() => {
-  //   var x = [];
-  //   x = getUserTomada(query.data);
-  // }, [query.isFetched])
-
-  // const queryuserPlugs = useQuery('getuserPlugs', () => plugRepository.getPlug(token), {
-  //   initialData: userPlugs,
-  //   enabled: !!token,
-  //   retry: 3,
-  // });
-
-  // useEffect(() => {
-  //   const x = getTomadas(queryuserPlugs.data);
-  // }, [queryuserPlugs.data])
-
   function getTomadas(listOfuserPlugs) {
     var auxList = []
     listOfuserPlugs.forEach(item => {
@@ -184,7 +170,7 @@ const HomePage = ({ route }) => {
       })
     });
 
-    console.log("getTomadas:: ", auxList)
+    // console.log("getTomadas:: ", auxList)
     return auxList;
   }
 
@@ -197,13 +183,13 @@ const HomePage = ({ route }) => {
       })
     });
 
-    console.log("getUserTomadas:: ", auxList)
+    // console.log("getUserTomadas:: ", auxList)
     return auxList;
   }
 
   const mutationDeactivatePlug = useMutation((plugName) => plugRepository.setPlug(token, userId, 0, plugName), {
     onSuccess: async (data) => {
-      console.log("data", data);
+      // console.log("data", data);
     },
     onError: (error) => {
       Alert.alert(error.response.data.error)
@@ -213,7 +199,7 @@ const HomePage = ({ route }) => {
 
   const mutationPlug = useMutation(() => plugRepository.setPlug(token, userId, creditAmount, plugName), {
     onSuccess: async (data) => {
-      console.log("data", data);
+      // console.log("data", data);
       mutationOperation.mutate();
     },
     onError: (error) => {
@@ -281,7 +267,8 @@ const HomePage = ({ route }) => {
 
     setTimeout(() => {
       getUserPlug(Token, decoded.userId);
-    }, 1000);
+      getPlugs(Token);
+    }, 2000);
 
     setRefreshing(false);
   }, []);
