@@ -47,6 +47,7 @@ const authSlice = createSlice({
     },
     logout: (state) => {
       state = initialState;
+      console.log("Logout: ", state);
     }
   },
   extraReducers: builder => {

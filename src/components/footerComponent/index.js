@@ -29,8 +29,8 @@ export const bottomTabIcons = [
 const BottonTabs = ({ icons }) => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
-    const { activeTab } = useSelector((state) => state.footer)
-    const { expireIn, token } = useSelector((state) => state.auth.tokenInfo);
+    const { activeTab } = useSelector((state) => state.root.footer)
+    const { expireIn, token } = useSelector((state) => state.root.auth.tokenInfo);
 
     if (token !== "" && expireIn !== "" && expireIn * 1000 <= Date.now()) {
         console.log('token expired:: ', Date.now(), ' - ', expireIn * 1000, " ::", expireIn * 1000 <= Date.now());

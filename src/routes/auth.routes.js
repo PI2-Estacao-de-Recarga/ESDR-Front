@@ -18,6 +18,7 @@ export function AuthRoutes() {
         headerShown: false,
         cardStyle: { backgroundColor: '#FFFFFF' },
       }}
+      firstRouteName="login"
     >
       <Stack.Screen
         name="login"

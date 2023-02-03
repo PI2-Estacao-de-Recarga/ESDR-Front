@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import styles from './styles';
+import { Pressable } from 'react-native';
 
 function Balance({ tomadas }) {
     //Alterar depois para receber de maneira externa ao app se a tomada estará ou não em uso.
@@ -22,7 +23,7 @@ function Balance({ tomadas }) {
                     </View>
                 )
                     : tomadas.map((tomada, indice) =>
-                        <View style={styles.container}>
+                        <Pressable style={styles.container}>
                             <View style={styles.item}>
                                 <Text style={styles.itemTitle1}>{estado.status1}</Text>
                                 <Text style={styles.itemTitle2}>{tomada.name}</Text>
@@ -36,7 +37,7 @@ function Balance({ tomadas }) {
                                     </Text>
                                 </View>
                             </View>
-                        </View>
+                        </Pressable>
                     )
             }
         </ScrollView>

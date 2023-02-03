@@ -8,6 +8,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    scrollView: {
+        flex: 1,
+    },
     button1:{
         backgroundColor: 'black',
         borderRadius: 10,

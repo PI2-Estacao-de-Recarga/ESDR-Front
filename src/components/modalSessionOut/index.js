@@ -8,11 +8,11 @@ import { useNavigation } from '@react-navigation/native';
 export function ModalSessionOut(props) {
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const { modalSessionOpen } = useSelector((state) => state.modalSession);
+  const { modalSessionOpen } = useSelector((state) => state.root.modalSession);
 
   const handleSessionOut = () => {
     dispatch(setModalSessionClose());
-    navigation.replace('login');
+    navigation.popToTop('login');
   }
 
   return (
