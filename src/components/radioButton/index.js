@@ -4,9 +4,9 @@ import styles from "./styles";
 
 export default function RadioButton({ onSelect, inUse }) {
   const data = [
-    {value: "Celular"},
-    {value: "Patinete/Bike T2"},
-    {value: "Patinete/Bike T3"},
+    {value: "Celular", id: "Tomada 1"},
+    {value: "Patinete/Bike T2", id: "Tomada 2"},
+    {value: "Patinete/Bike T3", id: "Tomada 3"},
   ];
   console.log('DATA:: ', data)
 
@@ -14,14 +14,15 @@ export default function RadioButton({ onSelect, inUse }) {
   const [userOption, setUserOption] = useState(null);
 
   useEffect(() => {
+    console.log('inUse:: ', inUse)
     if (inUse.length > 0) {
       setItems(prevItems =>
-        prevItems.filter(
-          item => !inUse.some(tomada => tomada.name === item.value)
-        )
+        prevItems.filter((item, index) => {
+          return item.id !== inUse[index].name;
+        })
       );
     }
-  }, [inUse]);
+  }, []);
 
 
   const selectHandler = (value, indice) => {
