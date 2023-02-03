@@ -24,6 +24,17 @@ export default function RadioButton({ onSelect, inUse }) {
     }
   }, []);
 
+  useEffect(() => {
+    console.log('inUse:: ', inUse)
+    if (inUse.length > 0) {
+      setItems(prevItems =>
+        prevItems.filter((item, index) => {
+          return item.id !== inUse[index].name;
+        })
+      );
+    }
+  }, [inUse]);
+
 
   const selectHandler = (value, indice) => {
     onSelect(value.value);
