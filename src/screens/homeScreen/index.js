@@ -77,6 +77,7 @@ const HomePage = ({ route }) => {
 
   const deactivatePlug = async (plugName) => {
     console.log("Deactivate plugName:: ", plugName);
+    setPlugName(plugName);
     // const resp = axios({
     //     url: `http://192.168.4.1/${plugName}`,
     //     method: "GET",
@@ -96,14 +97,15 @@ const HomePage = ({ route }) => {
 
   const checkPlugsTimes = () => {
     plugInUse.map((item) => {
-      if (item != "" && (((new Date(item) - Date.now('UTC-3')) / 60000) / 60) <= 0) {
-        setPlugName(item.name);
-        deactivatePlug(item.name.slice(0, 1) + item.name.slice(7, 8));
-      }
+      // if (item != "" && (new Date(item) - Date.now('UTC-3')) <= 0) {
+      //   setPlugName(item.name);
+      //   deactivatePlug(item.name.slice(0, 1) + item.name.slice(7, 8));
+      // }
     })
   }
 
   useEffect(() => {
+    navigation.pop(0);
     const Token = getToken();
     setToken(Token);
     console.log('token:: ', token);
@@ -259,7 +261,7 @@ const HomePage = ({ route }) => {
           showsVerticalScrollIndicator={false}
         >
           <Pressable>
-            <Balance tomadas={userPlugs} />
+            <Balance tomadas={userPlugs} deactivatePlug={deactivatePlug}/>
           </Pressable>
           <TouchableOpacity
             style={styles.button1}
@@ -293,7 +295,7 @@ const HomePage = ({ route }) => {
                     {" "}
                     Selecione a tomada que deseja usar:{" "}
                   </Text>
-                  <RadioButton data={data} onSelect={(value) => selectPlug(value)} inUse={plugInUse} />
+                  <RadioButton data={data} onSelect={(value) => selectPlug(value)} inUse={plugInUse}/>
                   <TextInput
                     style={styles.input}
                     placeholder="Quantidade de créditos:"

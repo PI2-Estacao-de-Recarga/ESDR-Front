@@ -103,7 +103,7 @@ const Register = ({ }) => {
         secureTextEntry
       />
       <TouchableOpacity
-        style={styles.button}
+        style={isAnyFieldEmpty() ? styles.buttonDisabled : styles.button}
         onPress={() => signUpConfirm()}
         disabled={isAnyFieldEmpty()}
       >

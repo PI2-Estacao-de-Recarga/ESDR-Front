@@ -23,7 +23,7 @@ function Balance({ tomadas }) {
                     </View>
                 )
                     : tomadas.map((tomada, indice) =>
-                        <Pressable style={styles.container}>
+                        <Pressable style={styles.container} key={indice}>
                             <View style={styles.item}>
                                 <Text style={styles.itemTitle1}>{estado.status1}</Text>
                                 <Text style={styles.itemTitle2}>{tomada.name}</Text>
