@@ -93,7 +93,7 @@ const HomePage = ({ route }) => {
 
   const deactivatePlug = async (plugName) => {
     console.log("Deactivate plugName:: ", plugName);
-    const plugEsp = plugName.slice(0, 1) + plugName.slice(7, 8)
+    const plugEsp = plugName.substring(0, 1) + plugName.substring(7, 8);
     // const resp = axios({
     //     url: `http://192.168.4.1/${plugEsp}`,
     //     method: "GET",
@@ -113,7 +113,7 @@ const HomePage = ({ route }) => {
 
   const checkPlugsTimes = () => {
     plugInUse.map((item) => {
-      const now = new Date(Date.UTC(2022, 0, 1, 0, 0, 0, 0) - 10800000);
+      const now = new Date();
 
       if (item !== "" && new Date(item.useFinish).getTime() <= now.getTime()) {
         deactivatePlug(item.name);
