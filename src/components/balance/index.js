@@ -18,7 +18,6 @@ function Balance({ tomadas, deactivatePlug, loading }) {
         const differenceInMinutes = differenceInMs / 60000;
         const hours = Math.floor(differenceInMinutes / 60);
         const minutes = Math.floor(differenceInMinutes % 60);
-        console.log("balance ::", hours, minutes, typeof hours, typeof minutes)
         return `${hours}:${minutes}`;
     }
 

@@ -8,7 +8,6 @@ export default function RadioButton({ onSelect, inUse }) {
     {value: "Patinete/Bike T2", id: "Tomada 2"},
     {value: "Patinete/Bike T3", id: "Tomada 3"},
   ];
-  console.log('DATA:: ', data)
 
   const [items, setItems] = useState(data);
   const [userOption, setUserOption] = useState(null);

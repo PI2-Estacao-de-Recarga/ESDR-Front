@@ -28,30 +28,21 @@ import { Pressable } from 'react-native';
 const HomePage = ({ route }) => {
   const navigation = useNavigation();
   const [carregarOption, setCarregarOption] = useState(false);
-  // const token = route.params.token;
-  // const userId = route.params.userId;
   const [token, setToken] = useState("");
   const [userId, setUserId] = useState("");
   const [creditAmount, setCreditAmount] = useState(0);
   const [plugName, setPlugName] = useState("")
   const [disabled, setDisabled] = useState(true);
-  const [plugInUse, setPlugInUse] = useState([{
-    name: "",
-    dateTimeToDeactivate: ""
-  }])
-  const [userPlugs, setUserPlugs] = useState([{
-    name: "",
-    dateTimeToDeactivate: "",
-  }]);
-  const [lista, setLista] = useState([]);
+  const [plugInUse, setPlugInUse] = useState([])
+  const [userPlugs, setUserPlugs] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const getUserPlug = async (Token, UserId) => {
-    return plugRepository.getPlug(Token, UserId)
+    setUserPlugs([]);
+    return plugRepository.getPlug(Token, UserId, true)
       .then((res) => {
         // console.log("getUserPlug:: ", res.data);
         setUserPlugs(getUserTomada(res.data));
-        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -59,11 +50,11 @@ const HomePage = ({ route }) => {
   }
 
   const getPlugs = async (Token) => {
-    return plugRepository.getPlug(Token)
+    setPlugInUse([]);
+    return plugRepository.getPlug(Token, "", true)
       .then((res) => {
         // console.log("getPlugs:: ", res.data);
         setPlugInUse(getTomadas(res.data));
-        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -114,12 +105,12 @@ const HomePage = ({ route }) => {
   const checkTimeLeft = (tomada) => {
     const tomadaUseFinish = new Date(tomada.useFinish);
     const now = new Date();
-    const differenceInMs = tomadaUseFinish.getTime() - now.getTime();
+    const differenceInMs = tomadaUseFinish.valueOf() - now.valueOf();
     const differenceInMinutes = differenceInMs / 60000;
     const hours = Math.floor(differenceInMinutes / 60);
     const minutes = Math.floor(differenceInMinutes % 60);
-    console.log("hours:: ", hours, "minutes:: ", minutes, hours < 0 && minutes < 0)
-    return hours < 0 && minutes < 0;
+    console.log("hours:: ", Number(hours), "minutes:: ", Number(minutes), differenceInMs < 0)
+    return Number(hours) < 0 && Number(minutes) < 0;
   }
 
   const checkPlugsTime = () => {
@@ -128,6 +119,18 @@ const HomePage = ({ route }) => {
         deactivatePlug(item.name);
       }
     })
+  }
+
+  const checkUserPlugsTime = () => {
+    if (plugInUse.length == 0) {
+      console.log("entrou")
+      console.log("userPlugs:: ", userPlugs)
+      userPlugs.map((item) => {
+        if (checkTimeLeft(item)) {
+          deactivatePlug(item.name);
+        }
+      })
+    }
   }
 
   const resetNavigationHistory = () => {
@@ -139,6 +142,7 @@ const HomePage = ({ route }) => {
 
   useEffect(() => {
     resetNavigationHistory();
+    setLoading(true);
 
     const Token = getToken();
     setToken(Token);
@@ -148,13 +152,16 @@ const HomePage = ({ route }) => {
 
     setTimeout(() => {
       getPlugs(Token);
+      console.log("getPlugs:: ", plugInUse)
       checkPlugsTime();
     }, 1000);
 
     setTimeout(() => {
       getUserPlug(Token, decoded.userId);
+      checkUserPlugsTime();
     }, 2000);
 
+    setLoading(false);
   }, [])
 
   useEffect(() => {
@@ -163,26 +170,6 @@ const HomePage = ({ route }) => {
     else
       setDisabled(true)
   }, [creditAmount])
-
-  // const query = useQuery('getUserPlug', () => plugRepository.getPlug(token, userId), {
-  //   initialData: plugInUse,
-  //   enabled: !!token,
-  // });
-
-  // useEffect(() => {
-  //   var x = [];
-  //   x = getUserTomada(query.data);
-  // }, [query.isFetched])
-
-  // const queryuserPlugs = useQuery('getuserPlugs', () => plugRepository.getPlug(token), {
-  //   initialData: userPlugs,
-  //   enabled: !!token,
-  //   retry: 3,
-  // });
-
-  // useEffect(() => {
-  //   const x = getTomadas(queryuserPlugs.data);
-  // }, [queryuserPlugs.data])
 
   function getTomadas(listOfuserPlugs) {
     var auxList = []
@@ -193,7 +180,7 @@ const HomePage = ({ route }) => {
       })
     });
 
-    console.log("getTomadas:: ", auxList)
+    // console.log("getTomadas:: ", auxList)
     return auxList;
   }
 
@@ -206,13 +193,13 @@ const HomePage = ({ route }) => {
       })
     });
 
-    console.log("getUserTomadas:: ", auxList)
+    // console.log("getUserTomadas:: ", auxList)
     return auxList;
   }
 
   const mutationDeactivatePlug = useMutation((plugName) => plugRepository.setPlug(token, userId, 0, plugName), {
     onSuccess: async (data) => {
-      // console.log("data", data);
+      console.log("data", data);
     },
     onError: (error) => {
       Alert.alert(error.response.data.error)
@@ -277,111 +264,107 @@ const HomePage = ({ route }) => {
 
   const [refreshing, setRefreshing] = React.useState(false);
 
-  const onRefresh = React.useCallback(() => {
+  const onRefresh = React.useCallback(async () => {
     setRefreshing(true);
+    setLoading(true);
     setPlugInUse([]);
     setUserPlugs([]);
 
     const Token = getToken();
 
     var decoded = jwt_decode(Token);
-    getPlugs(Token);
+    await getPlugs(Token);
+    console.log("getPlugs:: ", plugInUse)
     checkPlugsTime();
 
     setTimeout(() => {
       getUserPlug(Token, decoded.userId);
-    }, 1000);
-
+    }, 1500);
+    setTimeout(() => {
+      checkUserPlugsTime();
+    }, 500);
     setRefreshing(false);
+    setLoading(false);
   }, []);
 
-  if (loading) {
-    return (
-      <View style={styles.container}>
-        <NavbarComponent />
-        <ActivityIndicator size={80} color="#000000" />
-        <BottomTabs icons={bottomTabIcons} />
-      </View>
-    )
-  } else {
-    return (
-      <View style={styles.container}>
-        <NavbarComponent />
-        <ScrollView
-          contentContainerStyle={styles.scrollView}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
-          showsVerticalScrollIndicator={false}
+
+  return (
+    <View style={styles.container}>
+      <NavbarComponent />
+      <ScrollView
+        contentContainerStyle={styles.scrollView}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        showsVerticalScrollIndicator={false}
+      >
+        <Pressable>
+          <Balance tomadas={userPlugs} deactivatePlug={deactivatePlug} loading={loading || refreshing} />
+        </Pressable>
+        <TouchableOpacity
+          style={styles.button1}
+          onPress={() => navigation.navigate('compra')}
         >
-          <Pressable>
-            <Balance tomadas={userPlugs} deactivatePlug={deactivatePlug} loading={loading || refreshing} />
-          </Pressable>
-          <TouchableOpacity
-            style={styles.button1}
-            onPress={() => navigation.navigate('compra')}
-          >
-            <Text style={styles.textButton}>
-              Comprar Créditos
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.button2}
-            onPress={() => setCarregarOption(true)}
-          >
-            <Text style={styles.textButton}>
-              Carregamento
-            </Text>
-          </TouchableOpacity>
+          <Text style={styles.textButton}>
+            Comprar Créditos
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button2}
+          onPress={() => setCarregarOption(true)}
+        >
+          <Text style={styles.textButton}>
+            Carregamento
+          </Text>
+        </TouchableOpacity>
 
-          <Modal
-            animationType={'slide'}
-            transparent={true}
-            visible={carregarOption}
-            onRequestClose={() => {
-              setCarregarOption(!carregarOption);
-            }}
-          >
-            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-              <View style={styles.modalView}>
-                <View style={styles.centeredView}>
-                  <Text style={styles.paragraph}>
-                    {" "}
-                    Selecione a tomada que deseja usar:{" "}
-                  </Text>
-                  <RadioButton onSelect={(value) => selectPlug(value)} inUse={plugInUse} />
-                  <TextInput
-                    style={styles.input}
-                    placeholder="Quantidade de créditos:"
-                    value={creditAmount}
-                    onChangeText={setCreditAmount}
-                    keyboardType="numeric"
-                    inputMode='numeric'
-                  />
+        <Modal
+          animationType={'slide'}
+          transparent={true}
+          visible={carregarOption}
+          onRequestClose={() => {
+            setCarregarOption(!carregarOption);
+          }}
+        >
+          <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+            <View style={styles.modalView}>
+              <View style={styles.centeredView}>
+                <Text style={styles.paragraph}>
+                  {" "}
+                  Selecione a tomada que deseja usar:{" "}
+                </Text>
+                <RadioButton onSelect={(value) => selectPlug(value)} inUse={plugInUse} />
+                <TextInput
+                  style={styles.input}
+                  placeholder="Quantidade de créditos:"
+                  value={creditAmount}
+                  onChangeText={setCreditAmount}
+                  keyboardType="numeric"
+                  inputMode='numeric'
+                />
 
-                  <View style={styles.buttons}>
-                    <TouchableOpacity
-                      style={styles.buttonClose}
-                      onPress={() => { setCarregarOption(false); setPlugName(""); setCreditAmount(0); }}>
-                      <Text style={styles.textStyle}>Fechar</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={styles.buttonClose}
-                      onPress={() => confirmModal()}
-                    // disabled={disabled}
-                    >
-                      <Text style={styles.textStyle}>Confirmar</Text>
-                    </TouchableOpacity>
-                  </View>
+                <View style={styles.buttons}>
+                  <TouchableOpacity
+                    style={styles.buttonClose}
+                    onPress={() => { setCarregarOption(false); setPlugName(""); setCreditAmount(0); }}>
+                    <Text style={styles.textStyle}>Fechar</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.buttonClose}
+                    onPress={() => confirmModal()}
+                  // disabled={disabled}
+                  >
+                    <Text style={styles.textStyle}>Confirmar</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
-            </TouchableWithoutFeedback>
-          </Modal>
-        </ScrollView>
-        <BottomTabs icons={bottomTabIcons} />
-      </View>
-    );
-  }
+            </View>
+          </TouchableWithoutFeedback>
+        </Modal>
+      </ScrollView>
+      <BottomTabs icons={bottomTabIcons} />
+    </View>
+  );
 };
 
 export default HomePage;
