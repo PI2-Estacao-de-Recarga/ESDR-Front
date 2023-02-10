@@ -49,7 +49,7 @@ const HomePage = ({ route }) => {
   const getUserPlug = async (Token, UserId) => {
     return plugRepository.getPlug(Token, UserId)
       .then((res) => {
-        console.log("getUserPlug:: ", res.data);
+        // console.log("getUserPlug:: ", res.data);
         setUserPlugs(getUserTomada(res.data));
         setLoading(false);
       })
@@ -61,7 +61,7 @@ const HomePage = ({ route }) => {
   const getPlugs = async (Token) => {
     return plugRepository.getPlug(Token)
       .then((res) => {
-        console.log("getPlugs:: ", res.data);
+        // console.log("getPlugs:: ", res.data);
         setPlugInUse(getTomadas(res.data));
         setLoading(false);
       })
@@ -93,29 +93,38 @@ const HomePage = ({ route }) => {
 
   const deactivatePlug = async (plugName) => {
     console.log("Deactivate plugName:: ", plugName);
-    const plugEsp = plugName.substring(0, 1) + plugName.substring(7, 8);
-    const resp = axios({
-        url: `http://192.168.4.1/${plugEsp}`,
-        method: "GET",
-        timeout: 10000,
-        headers: {
-          Accept: 'application/json',
-          'content-type': 'application/json',
-        }
-      }).then((response) => {
-        console.log("Deu certo", response.data);
-        mutationDeactivatePlug.mutate(plugName)
-      }).catch((error) => {
-        console.log("Error", error.response.data);
-      })
-    // mutationDeactivatePlug.mutate(plugName);
+    // const plugEsp = plugName.substring(0, 1) + plugName.substring(7, 8);
+    // const resp = axios({
+    //     url: `http://192.168.4.1/${plugEsp}`,
+    //     method: "GET",
+    //     timeout: 10000,
+    //     headers: {
+    //       Accept: 'application/json',
+    //       'content-type': 'application/json',
+    //     }
+    //   }).then((response) => {
+    //     console.log("Deu certo", response.data);
+    //     mutationDeactivatePlug.mutate(plugName)
+    //   }).catch((error) => {
+    //     console.log("Error", error.response.data);
+    //   })
+    mutationDeactivatePlug.mutate(plugName);
   }
 
-  const checkPlugsTimes = () => {
-    plugInUse.map((item) => {
-      const now = new Date();
+  const checkTimeLeft = (tomada) => {
+    const tomadaUseFinish = new Date(tomada.useFinish);
+    const now = new Date();
+    const differenceInMs = tomadaUseFinish.getTime() - now.getTime();
+    const differenceInMinutes = differenceInMs / 60000;
+    const hours = Math.floor(differenceInMinutes / 60);
+    const minutes = Math.floor(differenceInMinutes % 60);
+    console.log("hours:: ", hours, "minutes:: ", minutes, hours < 0 && minutes < 0)
+    return hours < 0 && minutes < 0;
+  }
 
-      if (item !== "" && new Date(item.useFinish).getTime() <= now.getTime()) {
+  const checkPlugsTime = () => {
+    plugInUse.map((item) => {
+      if (checkTimeLeft(item)) {
         deactivatePlug(item.name);
       }
     })
@@ -133,13 +142,13 @@ const HomePage = ({ route }) => {
 
     const Token = getToken();
     setToken(Token);
-    console.log('token:: ', token);
+    // console.log('token:: ', token);
     var decoded = jwt_decode(Token);
     setUserId(decoded.userId);
 
     setTimeout(() => {
       getPlugs(Token);
-      checkPlugsTimes();
+      checkPlugsTime();
     }, 1000);
 
     setTimeout(() => {
@@ -203,7 +212,7 @@ const HomePage = ({ route }) => {
 
   const mutationDeactivatePlug = useMutation((plugName) => plugRepository.setPlug(token, userId, 0, plugName), {
     onSuccess: async (data) => {
-      console.log("data", data);
+      // console.log("data", data);
     },
     onError: (error) => {
       Alert.alert(error.response.data.error)
@@ -213,7 +222,7 @@ const HomePage = ({ route }) => {
 
   const mutationPlug = useMutation(() => plugRepository.setPlug(token, userId, creditAmount, plugName), {
     onSuccess: async (data) => {
-      console.log("data", data);
+      // console.log("data", data);
       mutationOperation.mutate();
     },
     onError: (error) => {
@@ -224,7 +233,7 @@ const HomePage = ({ route }) => {
 
   const mutationOperation = useMutation(() => paymentRepository.createOperation(token, userId, "USO", creditAmount), {
     onSuccess: async (data) => {
-      console.log(data);
+      // console.log(data);
       queryClient.invalidateQueries("getUser");
     },
     onError: (error) => {
@@ -237,23 +246,23 @@ const HomePage = ({ route }) => {
 
   const confirmModal = async () => {
     setCarregarOption(false);
-    const paramAxios = plugName.substring(0, 1) + plugName.substring(7, 8);
-    console.log(paramAxios);
-    const resp = axios({
-      url: `http://192.168.4.1/${paramAxios}`,
-      method: "GET",
-      timeout: 10000,
-      headers: {
-        Accept: 'application/json',
-        'content-type': 'application/json',
-      }
-    }).then((response) => {
-      console.log("Deu certo", response.data);
-      mutationPlug.mutate();
-    }).catch((error) => {
-      console.log("Error", error.response.data);
-    })
-    // mutationPlug.mutate();
+    // const paramAxios = plugName.substring(0, 1) + plugName.substring(7, 8);
+    // console.log(paramAxios);
+    // const resp = axios({
+    //   url: `http://192.168.4.1/${paramAxios}`,
+    //   method: "GET",
+    //   timeout: 10000,
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'content-type': 'application/json',
+    //   }
+    // }).then((response) => {
+    //   console.log("Deu certo", response.data);
+    //   mutationPlug.mutate();
+    // }).catch((error) => {
+    //   console.log("Error", error.response.data);
+    // })
+    mutationPlug.mutate();
     onRefresh();
   }
 
@@ -277,7 +286,7 @@ const HomePage = ({ route }) => {
 
     var decoded = jwt_decode(Token);
     getPlugs(Token);
-    checkPlugsTimes();
+    checkPlugsTime();
 
     setTimeout(() => {
       getUserPlug(Token, decoded.userId);

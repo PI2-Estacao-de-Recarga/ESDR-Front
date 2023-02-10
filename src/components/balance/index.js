@@ -18,10 +18,9 @@ function Balance({ tomadas, deactivatePlug, loading }) {
         const differenceInMinutes = differenceInMs / 60000;
         const hours = Math.floor(differenceInMinutes / 60);
         const minutes = Math.floor(differenceInMinutes % 60);
-
+        console.log("balance ::", hours, minutes, typeof hours, typeof minutes)
         return `${hours}:${minutes}`;
     }
-
 
     const checaTempoNegativo = (tomada) => {
         const tomadaUseFinish = new Date(tomada.useFinish);
@@ -33,10 +32,11 @@ function Balance({ tomadas, deactivatePlug, loading }) {
 
         return hours < 0 || minutes < 0;
     }
-    const tomadasAtivas = (tomada) => {
-        if (checaTempoNegativo(tomada)) {
-            return <></>
-        }
+
+    const tomadasAtivas = (tomada, indice) => {
+        // if (checaTempoNegativo(tomada)) {
+        //     return <></>
+        // }
 
         return (
             <Pressable style={styles.container} key={indice}>
@@ -57,26 +57,33 @@ function Balance({ tomadas, deactivatePlug, loading }) {
         )
     }
 
+    const handleRender = () => { 
+        if (loading) {
+            return (
+                <View style={styles.container}>
+                    <Text style={styles.itemTitle2}>Carregando...</Text>
+                </View>
+            )
+        } else if (tomadas.length === 0) {
+            return (
+                <View style={styles.container}>
+                    <Text style={styles.itemTitle2}>Nenhuma tomada em uso</Text>
+                </View>
+            )
+        } else {
+            return tomadas.map((tomada, indice) =>
+                tomadasAtivas(tomada, indice)
+            )
+        }
+    }
+
     return (
         <ScrollView
             style={styles.carrousel}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
         >
-            {loading ? (
-                <View style={styles.container}>
-                    <Text style={styles.itemTitle2}>Carregando...</Text>
-                </View>
-            )
-                : tomadas.length === 0 ? (
-                    <View style={styles.container}>
-                        <Text style={styles.itemTitle2}>Nenhuma tomada em uso</Text>
-                    </View>
-                )
-                    : tomadas.map((tomada, indice) =>
-                        tomadasAtivas(tomada)
-                    )
-            }
+            {handleRender()}
         </ScrollView>
     );
 }
