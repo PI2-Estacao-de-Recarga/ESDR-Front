@@ -63,6 +63,8 @@ const HomePage = ({ route }) => {
       .then((res) => {
         console.log("getPlugs:: ", res.data);
         setPlugInUse(getTomadas(res.data));
+        let teste = getTomadas(res.data);
+        checkPlugsTimes(teste);
         setLoading(false);
       })
       .catch((err) => {
@@ -94,25 +96,26 @@ const HomePage = ({ route }) => {
   const deactivatePlug = async (plugName) => {
     console.log("Deactivate plugName:: ", plugName);
     const plugEsp = plugName.substring(0, 1) + plugName.substring(7, 8);
-    const resp = axios({
-        url: `http://192.168.4.1/${plugEsp}`,
-        method: "GET",
-        timeout: 10000,
-        headers: {
-          Accept: 'application/json',
-          'content-type': 'application/json',
-        }
-      }).then((response) => {
-        console.log("Deu certo", response.data);
-        mutationDeactivatePlug.mutate(plugName)
-      }).catch((error) => {
-        console.log("Error", error.response.data);
-      })
-    // mutationDeactivatePlug.mutate(plugName);
+    // const resp = axios({
+    //     url: `http://192.168.4.1/${plugEsp}`,
+    //     method: "GET",
+    //     timeout: 10000,
+    //     headers: {
+    //       Accept: 'application/json',
+    //       'content-type': 'application/json',
+    //     }
+    //   }).then((response) => {
+    //     console.log("Deu certo", response.data);
+    //     mutationDeactivatePlug.mutate(plugName)
+    //   }).catch((error) => {
+    //     console.log("Error", error.response.data);
+    //   })
+    mutationDeactivatePlug.mutate(plugName);
   }
 
-  const checkPlugsTimes = () => {
-    plugInUse.map((item) => {
+  const checkPlugsTimes = (teste) => {
+    console.log("Check Plug times:", teste);
+    teste.map((item) => {
       const now = new Date();
 
       if (item !== "" && new Date(item.useFinish).getTime() <= now.getTime()) {
@@ -139,7 +142,6 @@ const HomePage = ({ route }) => {
 
     setTimeout(() => {
       getPlugs(Token);
-      checkPlugsTimes();
     }, 1000);
 
     setTimeout(() => {
@@ -203,7 +205,7 @@ const HomePage = ({ route }) => {
 
   const mutationDeactivatePlug = useMutation((plugName) => plugRepository.setPlug(token, userId, 0, plugName), {
     onSuccess: async (data) => {
-      console.log("data", data);
+      console.log("Desativei tomada:", data);
     },
     onError: (error) => {
       Alert.alert(error.response.data.error)
@@ -226,6 +228,7 @@ const HomePage = ({ route }) => {
     onSuccess: async (data) => {
       console.log(data);
       queryClient.invalidateQueries("getUser");
+      onRefresh()
     },
     onError: (error) => {
 
@@ -239,21 +242,21 @@ const HomePage = ({ route }) => {
     setCarregarOption(false);
     const paramAxios = plugName.substring(0, 1) + plugName.substring(7, 8);
     console.log(paramAxios);
-    const resp = axios({
-      url: `http://192.168.4.1/${paramAxios}`,
-      method: "GET",
-      timeout: 10000,
-      headers: {
-        Accept: 'application/json',
-        'content-type': 'application/json',
-      }
-    }).then((response) => {
-      console.log("Deu certo", response.data);
-      mutationPlug.mutate();
-    }).catch((error) => {
-      console.log("Error", error.response.data);
-    })
-    // mutationPlug.mutate();
+    // const resp = axios({
+    //   url: `http://192.168.4.1/${paramAxios}`,
+    //   method: "GET",
+    //   timeout: 10000,
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'content-type': 'application/json',
+    //   }
+    // }).then((response) => {
+    //   console.log("Deu certo", response.data);
+    //   mutationPlug.mutate();
+    // }).catch((error) => {
+    //   console.log("Error", error.response.data);
+    // })
+    mutationPlug.mutate();
     onRefresh();
   }
 
@@ -277,7 +280,6 @@ const HomePage = ({ route }) => {
 
     var decoded = jwt_decode(Token);
     getPlugs(Token);
-    checkPlugsTimes();
 
     setTimeout(() => {
       getUserPlug(Token, decoded.userId);

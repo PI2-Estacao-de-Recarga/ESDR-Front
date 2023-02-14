@@ -39,7 +39,7 @@ function Balance({ tomadas, deactivatePlug, loading }) {
         }
 
         return (
-            <Pressable style={styles.container} key={indice}>
+            <Pressable style={styles.container}>
                 <View style={styles.item}>
                     <Text style={styles.itemTitle1}>{estado.status1}</Text>
                     <Text style={styles.itemTitle2}>{tomada.name}</Text>
