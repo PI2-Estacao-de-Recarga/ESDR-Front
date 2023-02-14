@@ -51,7 +51,6 @@ const HomePage = ({ route }) => {
       .then((res) => {
         console.log("getUserPlug:: ", res.data);
         setUserPlugs(getUserTomada(res.data));
-        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -65,7 +64,6 @@ const HomePage = ({ route }) => {
         setPlugInUse(getTomadas(res.data));
         let teste = getTomadas(res.data);
         checkPlugsTimes(teste);
-        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -96,21 +94,21 @@ const HomePage = ({ route }) => {
   const deactivatePlug = async (plugName) => {
     console.log("Deactivate plugName:: ", plugName);
     const plugEsp = plugName.substring(0, 1) + plugName.substring(7, 8);
-    // const resp = axios({
-    //     url: `http://192.168.4.1/${plugEsp}`,
-    //     method: "GET",
-    //     timeout: 10000,
-    //     headers: {
-    //       Accept: 'application/json',
-    //       'content-type': 'application/json',
-    //     }
-    //   }).then((response) => {
-    //     console.log("Deu certo", response.data);
-    //     mutationDeactivatePlug.mutate(plugName)
-    //   }).catch((error) => {
-    //     console.log("Error", error.response.data);
-    //   })
-    mutationDeactivatePlug.mutate(plugName);
+    const resp = axios({
+        url: `http://192.168.4.1/${plugEsp}`,
+        method: "GET",
+        timeout: 10000,
+        headers: {
+          Accept: 'application/json',
+          'content-type': 'application/json',
+        }
+      }).then((response) => {
+        console.log("Deu certo", response.data);
+        mutationDeactivatePlug.mutate(plugName)
+      }).catch((error) => {
+        console.log("Error", error.response.data);
+      })
+    // mutationDeactivatePlug.mutate(plugName);
   }
 
   const checkPlugsTimes = (teste) => {
@@ -133,6 +131,7 @@ const HomePage = ({ route }) => {
 
   useEffect(() => {
     resetNavigationHistory();
+    setLoading(true);
 
     const Token = getToken();
     setToken(Token);
@@ -148,6 +147,7 @@ const HomePage = ({ route }) => {
       getUserPlug(Token, decoded.userId);
     }, 2000);
 
+    setLoading(false);
   }, [])
 
   useEffect(() => {
@@ -156,26 +156,6 @@ const HomePage = ({ route }) => {
     else
       setDisabled(true)
   }, [creditAmount])
-
-  // const query = useQuery('getUserPlug', () => plugRepository.getPlug(token, userId), {
-  //   initialData: plugInUse,
-  //   enabled: !!token,
-  // });
-
-  // useEffect(() => {
-  //   var x = [];
-  //   x = getUserTomada(query.data);
-  // }, [query.isFetched])
-
-  // const queryuserPlugs = useQuery('getuserPlugs', () => plugRepository.getPlug(token), {
-  //   initialData: userPlugs,
-  //   enabled: !!token,
-  //   retry: 3,
-  // });
-
-  // useEffect(() => {
-  //   const x = getTomadas(queryuserPlugs.data);
-  // }, [queryuserPlugs.data])
 
   function getTomadas(listOfuserPlugs) {
     var auxList = []
@@ -242,21 +222,21 @@ const HomePage = ({ route }) => {
     setCarregarOption(false);
     const paramAxios = plugName.substring(0, 1) + plugName.substring(7, 8);
     console.log(paramAxios);
-    // const resp = axios({
-    //   url: `http://192.168.4.1/${paramAxios}`,
-    //   method: "GET",
-    //   timeout: 10000,
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'content-type': 'application/json',
-    //   }
-    // }).then((response) => {
-    //   console.log("Deu certo", response.data);
-    //   mutationPlug.mutate();
-    // }).catch((error) => {
-    //   console.log("Error", error.response.data);
-    // })
-    mutationPlug.mutate();
+    const resp = axios({
+      url: `http://192.168.4.1/${paramAxios}`,
+      method: "GET",
+      timeout: 10000,
+      headers: {
+        Accept: 'application/json',
+        'content-type': 'application/json',
+      }
+    }).then((response) => {
+      console.log("Deu certo", response.data);
+      mutationPlug.mutate();
+    }).catch((error) => {
+      console.log("Error", error.response.data);
+    })
+    // mutationPlug.mutate();
     onRefresh();
   }
 
@@ -273,6 +253,7 @@ const HomePage = ({ route }) => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    setLoading(true);
     setPlugInUse([]);
     setUserPlugs([]);
 
@@ -286,6 +267,7 @@ const HomePage = ({ route }) => {
     }, 1000);
 
     setRefreshing(false);
+    setLoading(false);
   }, []);
 
   if (loading) {
